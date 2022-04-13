@@ -1,0 +1,274 @@
+<!DOCTYPE html><html lang="zh-CN" data-theme="light"><head><meta charset="UTF-8"><meta http-equiv="X-UA-Compatible" content="IE=edge"><meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no"><title>7.5MySQL的约束控制 | 夏佳怡的Blog</title><meta name="keywords" content="数据库笔记"><meta name="author" content="夏佳怡"><meta name="copyright" content="夏佳怡"><meta name="format-detection" content="telephone=no"><meta name="theme-color" content="#ffffff"><meta name="description" content="数据库的完整性约束(1)实体完整性强制表中标识符列或主键的完整性例如：主键约束、惟一约束 (2)参照完整性(引用完整性)在删除和输入记录时，引用完整性保持表之间已定义的关系，引用完整性确保键值在所有表中一致。 (3)用户自定义完整性用户自己定义的业务规则,包含域完整性。包括类型、格式、取值范围等  MySQL中常用约束1.主键约束(PRIMARY KEY)用于定义基本表的主键，起唯一标识作用(不能">
+<meta property="og:type" content="article">
+<meta property="og:title" content="7.5MySQL的约束控制">
+<meta property="og:url" content="https://blog.topxls.cn/post/6b10c50b">
+<meta property="og:site_name" content="夏佳怡的Blog">
+<meta property="og:description" content="数据库的完整性约束(1)实体完整性强制表中标识符列或主键的完整性例如：主键约束、惟一约束 (2)参照完整性(引用完整性)在删除和输入记录时，引用完整性保持表之间已定义的关系，引用完整性确保键值在所有表中一致。 (3)用户自定义完整性用户自己定义的业务规则,包含域完整性。包括类型、格式、取值范围等  MySQL中常用约束1.主键约束(PRIMARY KEY)用于定义基本表的主键，起唯一标识作用(不能">
+<meta property="og:locale" content="zh_CN">
+<meta property="og:image" content="https://tuchuang-1309886987.cos.ap-beijing.myqcloud.com/壁纸.jpg">
+<meta property="article:published_time" content="2022-03-27T02:11:11.000Z">
+<meta property="article:modified_time" content="2022-04-07T03:25:01.754Z">
+<meta property="article:author" content="夏佳怡">
+<meta property="article:tag" content="数据库笔记">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="https://tuchuang-1309886987.cos.ap-beijing.myqcloud.com/壁纸.jpg"><link rel="shortcut icon" href="/img/favicon.png"><link rel="canonical" href="https://blog.topxls.cn/post/6b10c50b"><link rel="preconnect" href="//cdn.jsdelivr.net"/><link rel="preconnect" href="//busuanzi.ibruce.info"/><link rel="stylesheet" href="/css/index.css"><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free@6/css/all.min.css" media="print" onload="this.media='all'"><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/node-snackbar/dist/snackbar.min.css" media="print" onload="this.media='all'"><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fancyapps/ui/dist/fancybox.css" media="print" onload="this.media='all'"><script>const GLOBAL_CONFIG = { 
+  root: '/',
+  algolia: undefined,
+  localSearch: undefined,
+  translate: undefined,
+  noticeOutdate: undefined,
+  highlight: {"plugin":"highlighjs","highlightCopy":true,"highlightLang":true,"highlightHeightLimit":200},
+  copy: {
+    success: '复制成功',
+    error: '复制错误',
+    noSupport: '浏览器不支持'
+  },
+  relativeDate: {
+    homepage: false,
+    post: false
+  },
+  runtime: '天',
+  date_suffix: {
+    just: '刚刚',
+    min: '分钟前',
+    hour: '小时前',
+    day: '天前',
+    month: '个月前'
+  },
+  copyright: undefined,
+  lightbox: 'fancybox',
+  Snackbar: {"chs_to_cht":"你已切换为繁体","cht_to_chs":"你已切换为简体","day_to_night":"你已切换为深色模式","night_to_day":"你已切换为浅色模式","bgLight":"#49b1f5","bgDark":"#1f1f1f","position":"bottom-left"},
+  source: {
+    justifiedGallery: {
+      js: 'https://cdn.jsdelivr.net/npm/flickr-justified-gallery@2/dist/fjGallery.min.js',
+      css: 'https://cdn.jsdelivr.net/npm/flickr-justified-gallery@2/dist/fjGallery.min.css'
+    }
+  },
+  isPhotoFigcaption: false,
+  islazyload: false,
+  isAnchor: false
+}</script><script id="config-diff">var GLOBAL_CONFIG_SITE = {
+  title: '7.5MySQL的约束控制',
+  isPost: true,
+  isHome: false,
+  isHighlightShrink: false,
+  isToc: true,
+  postUpdate: '2022-04-07 11:25:01'
+}</script><noscript><style type="text/css">
+  #nav {
+    opacity: 1
+  }
+  .justified-gallery img {
+    opacity: 1
+  }
+
+  #recent-posts time,
+  #post-meta time {
+    display: inline !important
+  }
+</style></noscript><script>(win=>{
+    win.saveToLocal = {
+      set: function setWithExpiry(key, value, ttl) {
+        if (ttl === 0) return
+        const now = new Date()
+        const expiryDay = ttl * 86400000
+        const item = {
+          value: value,
+          expiry: now.getTime() + expiryDay,
+        }
+        localStorage.setItem(key, JSON.stringify(item))
+      },
+
+      get: function getWithExpiry(key) {
+        const itemStr = localStorage.getItem(key)
+
+        if (!itemStr) {
+          return undefined
+        }
+        const item = JSON.parse(itemStr)
+        const now = new Date()
+
+        if (now.getTime() > item.expiry) {
+          localStorage.removeItem(key)
+          return undefined
+        }
+        return item.value
+      }
+    }
+  
+    win.getScript = url => new Promise((resolve, reject) => {
+      const script = document.createElement('script')
+      script.src = url
+      script.async = true
+      script.onerror = reject
+      script.onload = script.onreadystatechange = function() {
+        const loadState = this.readyState
+        if (loadState && loadState !== 'loaded' && loadState !== 'complete') return
+        script.onload = script.onreadystatechange = null
+        resolve()
+      }
+      document.head.appendChild(script)
+    })
+  
+      win.activateDarkMode = function () {
+        document.documentElement.setAttribute('data-theme', 'dark')
+        if (document.querySelector('meta[name="theme-color"]') !== null) {
+          document.querySelector('meta[name="theme-color"]').setAttribute('content', '#0d0d0d')
+        }
+      }
+      win.activateLightMode = function () {
+        document.documentElement.setAttribute('data-theme', 'light')
+        if (document.querySelector('meta[name="theme-color"]') !== null) {
+          document.querySelector('meta[name="theme-color"]').setAttribute('content', '#ffffff')
+        }
+      }
+      const t = saveToLocal.get('theme')
+    
+          if (t === 'dark') activateDarkMode()
+          else if (t === 'light') activateLightMode()
+        
+      const asideStatus = saveToLocal.get('aside-status')
+      if (asideStatus !== undefined) {
+        if (asideStatus === 'hide') {
+          document.documentElement.classList.add('hide-aside')
+        } else {
+          document.documentElement.classList.remove('hide-aside')
+        }
+      }
+    
+    const detectApple = () => {
+      if(/iPad|iPhone|iPod|Macintosh/.test(navigator.userAgent)){
+        document.documentElement.classList.add('apple')
+      }
+    }
+    detectApple()
+    })(window)</script><meta name="generator" content="Hexo 5.4.1"></head><body><div id="loading-box"><div class="loading-left-bg"></div><div class="loading-right-bg"></div><div class="spinner-box"><div class="configure-border-1"><div class="configure-core"></div></div><div class="configure-border-2"><div class="configure-core"></div></div><div class="loading-word">加载中...</div></div></div><div id="sidebar"><div id="menu-mask"></div><div id="sidebar-menus"><div class="avatar-img is-center"><img src="https://s1.ax1x.com/2022/03/30/q2CW0s.jpg" onerror="onerror=null;src='/img/friend_404.gif'" alt="avatar"/></div><div class="site-data is-center"><div class="data-item"><a href="/archives/"><div class="headline">文章</div><div class="length-num">33</div></a></div><div class="data-item"><a href="/tags/"><div class="headline">标签</div><div class="length-num">3</div></a></div><div class="data-item"><a href="/categories/"><div class="headline">分类</div><div class="length-num">3</div></a></div></div><hr/><div class="menus_items"><div class="menus_item"><a class="site-page" target="_blank" rel="noopener" href="https://topxls.cn/"><i class="fa-fw fas fa-home"></i><span> 导航</span></a></div><div class="menus_item"><a class="site-page" href="/archives/"><i class="fa-fw fas fa-archive"></i><span> 总览</span></a></div><div class="menus_item"><a class="site-page" href="/tags/"><i class="fa-fw fas fa-tags"></i><span> 标签</span></a></div><div class="menus_item"><a class="site-page" href="/categories/"><i class="fa-fw fas fa-folder-open"></i><span> 分类</span></a></div><div class="menus_item"><a class="site-page group" href="javascript:void(0);"><i class="fa-fw fas fa-list"></i><span> 列表</span><i class="fas fa-chevron-down"></i></a><ul class="menus_item_child"><li><a class="site-page child" href="/music/"><i class="fa-fw fas fa-music"></i><span> 音乐</span></a></li><li><a class="site-page child" href="/movies/"><i class="fa-fw fas fa-video"></i><span> 电影</span></a></li></ul></div><div class="menus_item"><a class="site-page" href="/link/"><i class="fa-fw fas fa-link"></i><span> 友情链接</span></a></div><div class="menus_item"><a class="site-page" href="/about/"><i class="fa-fw fas fa-heart"></i><span> 关于我</span></a></div></div></div></div><div class="post" id="body-wrap"><header class="post-bg" id="page-header" style="background-image: url('https://tuchuang-1309886987.cos.ap-beijing.myqcloud.com/壁纸.jpg')"><nav id="nav"><span id="blog_name"><a id="site-name" href="/">夏佳怡的Blog</a></span><div id="menus"><div class="menus_items"><div class="menus_item"><a class="site-page" target="_blank" rel="noopener" href="https://topxls.cn/"><i class="fa-fw fas fa-home"></i><span> 导航</span></a></div><div class="menus_item"><a class="site-page" href="/archives/"><i class="fa-fw fas fa-archive"></i><span> 总览</span></a></div><div class="menus_item"><a class="site-page" href="/tags/"><i class="fa-fw fas fa-tags"></i><span> 标签</span></a></div><div class="menus_item"><a class="site-page" href="/categories/"><i class="fa-fw fas fa-folder-open"></i><span> 分类</span></a></div><div class="menus_item"><a class="site-page group" href="javascript:void(0);"><i class="fa-fw fas fa-list"></i><span> 列表</span><i class="fas fa-chevron-down"></i></a><ul class="menus_item_child"><li><a class="site-page child" href="/music/"><i class="fa-fw fas fa-music"></i><span> 音乐</span></a></li><li><a class="site-page child" href="/movies/"><i class="fa-fw fas fa-video"></i><span> 电影</span></a></li></ul></div><div class="menus_item"><a class="site-page" href="/link/"><i class="fa-fw fas fa-link"></i><span> 友情链接</span></a></div><div class="menus_item"><a class="site-page" href="/about/"><i class="fa-fw fas fa-heart"></i><span> 关于我</span></a></div></div><div id="toggle-menu"><a class="site-page"><i class="fas fa-bars fa-fw"></i></a></div></div></nav><div id="post-info"><h1 class="post-title">7.5MySQL的约束控制</h1><div id="post-meta"><div class="meta-firstline"><span class="post-meta-date"><i class="far fa-calendar-alt fa-fw post-meta-icon"></i><span class="post-meta-label">发表于</span><time class="post-meta-date-created" datetime="2022-03-27T02:11:11.000Z" title="发表于 2022-03-27 10:11:11">2022-03-27</time><span class="post-meta-separator">|</span><i class="fas fa-history fa-fw post-meta-icon"></i><span class="post-meta-label">更新于</span><time class="post-meta-date-updated" datetime="2022-04-07T03:25:01.754Z" title="更新于 2022-04-07 11:25:01">2022-04-07</time></span><span class="post-meta-categories"><span class="post-meta-separator">|</span><i class="fas fa-inbox fa-fw post-meta-icon"></i><a class="post-meta-categories" href="/categories/%E6%95%B0%E6%8D%AE%E5%BA%93/">数据库</a></span></div><div class="meta-secondline"><span class="post-meta-separator">|</span><span class="post-meta-wordcount"><i class="far fa-file-word fa-fw post-meta-icon"></i><span class="post-meta-label">字数总计:</span><span class="word-count">1.6k</span><span class="post-meta-separator">|</span><i class="far fa-clock fa-fw post-meta-icon"></i><span class="post-meta-label">阅读时长:</span><span>5分钟</span></span><span class="post-meta-separator">|</span><span class="post-meta-pv-cv" id="" data-flag-title="7.5MySQL的约束控制"><i class="far fa-eye fa-fw post-meta-icon"></i><span class="post-meta-label">阅读量:</span><span id="busuanzi_value_page_pv"></span></span></div></div></div></header><main class="layout" id="content-inner"><div id="post"><article class="post-content" id="article-container"><h1 id="数据库的完整性约束"><a href="#数据库的完整性约束" class="headerlink" title="数据库的完整性约束"></a>数据库的完整性约束</h1><h2 id="1-实体完整性"><a href="#1-实体完整性" class="headerlink" title="(1)实体完整性"></a>(1)实体完整性</h2><p>强制表中标识符列或主键的完整性<br>例如：主键约束、惟一约束</p>
+<h2 id="2-参照完整性-引用完整性"><a href="#2-参照完整性-引用完整性" class="headerlink" title="(2)参照完整性(引用完整性)"></a>(2)参照完整性(引用完整性)</h2><p>在删除和输入记录时，引用完整性保持表之间已定义的关系，引用完整性确保键值在所有表中一致。</p>
+<h2 id="3-用户自定义完整性"><a href="#3-用户自定义完整性" class="headerlink" title="(3)用户自定义完整性"></a>(3)用户自定义完整性</h2><p>用户自己定义的业务规则,包含域完整性。包括类型、格式、取值范围等</p>
+<hr>
+<h1 id="MySQL中常用约束"><a href="#MySQL中常用约束" class="headerlink" title="MySQL中常用约束"></a>MySQL中常用约束</h1><h2 id="1-主键约束-PRIMARY-KEY"><a href="#1-主键约束-PRIMARY-KEY" class="headerlink" title="1.主键约束(PRIMARY KEY)"></a>1.主键约束(PRIMARY KEY)</h2><p>用于定义基本表的主键，起唯一标识作用<code>(不能为NULL，不能重复)</code></p>
+<ul>
+<li><p>用于列约束的定义(单个列作为主键)</p>
+<figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">字段名 数据类型 [其它约束] <span class="keyword">PRIMARY</span> KEY</span><br></pre></td></tr></table></figure>
+</li>
+<li><p>用于表约束的定义(多个列组合为主键)</p>
+<figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">PRIMARY</span> KEY (列名[,列名])</span><br></pre></td></tr></table></figure></li>
+</ul>
+<h3 id="1-单个主键"><a href="#1-单个主键" class="headerlink" title="(1)单个主键"></a>(1)单个主键</h3><p>[例7-18]建立一个Stu表，定义Sno为Stu的主键。</p>
+<figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">CREATE</span> <span class="keyword">TABLE</span> Stu</span><br><span class="line">Sno <span class="type">char</span>(<span class="number">6</span>) <span class="keyword">PRIMARY</span> KEY,</span><br><span class="line">Sname <span class="type">char</span>(<span class="number">8</span>),</span><br><span class="line">Ssex <span class="type">char</span>(<span class="number">2</span>),</span><br><span class="line">Zno <span class="type">varchar</span>(<span class="number">20</span>));</span><br></pre></td></tr></table></figure>
+<p>or</p>
+<figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">CREATE</span> <span class="keyword">TABLE</span> Stu</span><br><span class="line">Sno <span class="type">char</span>(<span class="number">6</span>) <span class="keyword">NOT</span> <span class="keyword">NULL</span>,</span><br><span class="line">Sname <span class="type">char</span>(<span class="number">8</span>),</span><br><span class="line">Ssex <span class="type">char</span>(<span class="number">2</span>),</span><br><span class="line">Zno <span class="type">varchar</span>(<span class="number">20</span>),</span><br><span class="line"><span class="keyword">PRIMARY</span> KEY(Sno)</span><br><span class="line">);</span><br></pre></td></tr></table></figure>
+
+<h3 id="2-多个主键"><a href="#2-多个主键" class="headerlink" title="(2)多个主键"></a>(2)多个主键</h3><p>[例7-20]建立一个SC表，主键由Sno和Cno共同构成。</p>
+<figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">create</span> <span class="keyword">table</span> sc</span><br><span class="line">sno <span class="type">char</span>(<span class="number">12</span>),</span><br><span class="line">cno <span class="type">char</span>(<span class="number">10</span>) , </span><br><span class="line">score <span class="type">int</span>,</span><br><span class="line"><span class="keyword">primary</span> key(sno,cno)</span><br><span class="line">);</span><br></pre></td></tr></table></figure>
+
+<h3 id="3-给已有表添加主键约束"><a href="#3-给已有表添加主键约束" class="headerlink" title="(3)给已有表添加主键约束"></a>(3)给已有表添加主键约束</h3><figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">ALTER</span> <span class="keyword">TABLE</span> Stu</span><br><span class="line"><span class="keyword">ADD</span> <span class="keyword">PRIMARY</span> KEY (Sno);</span><br></pre></td></tr></table></figure>
+
+<h3 id="4-删除已有主键约束"><a href="#4-删除已有主键约束" class="headerlink" title="(4)删除已有主键约束"></a>(4)删除已有主键约束</h3><figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">ALTER</span> <span class="keyword">TABLE</span> Stu</span><br><span class="line"><span class="keyword">DROP</span> <span class="keyword">PRIMARY</span> KEY;</span><br></pre></td></tr></table></figure>
+
+<hr>
+<h2 id="2-外键约束-FOREIGN-KEY"><a href="#2-外键约束-FOREIGN-KEY" class="headerlink" title="2.外键约束(FOREIGN KEY)"></a>2.外键约束(FOREIGN KEY)</h2><p>子表的外键引用父表的主键</p>
+<figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">[<span class="keyword">FOREIGN</span> KEY (子表列名表)] <span class="keyword">REFERENCES</span> 父表名(列名表)</span><br><span class="line">[ <span class="keyword">on</span> <span class="keyword">delete</span> [ cascade <span class="operator">|</span> restrict <span class="operator">|</span> <span class="keyword">set</span> <span class="keyword">null</span> <span class="operator">|</span> <span class="keyword">no</span> action ]]</span><br><span class="line">[ <span class="keyword">on</span> <span class="keyword">update</span> [ cascade <span class="operator">|</span> restrict <span class="operator">|</span> <span class="keyword">set</span> <span class="keyword">null</span> <span class="operator">|</span> <span class="keyword">no</span> action ]]</span><br></pre></td></tr></table></figure>
+
+<p>cascade：级联删除，就是删除主键表的同时，外键表同时删除。</p>
+<blockquote>
+<p>假如院系表中的某个院系被删除了，那么在学生表中要想查询这个被删除的院系号所对应的院信息就会报错，因为已经不存在这个系了，所以，删除院系表（主键表）时必须删除其他与之关联的表，这里就说明了外键的作用，保持数据的一致性、完整性。当然反过来讲，你删除学生表中的记录，并不影响院系表中的数据，你查询院系号也能正确查询。所以删除外键表中的数据并不影响主键表。</p>
+</blockquote>
+<p>set null：当取值为Set Null时，则当在主键表中删除对应记录时，首先检查该记录是否有对应外键，如果有则设置子表中该外键值为null</p>
+<p>no action、restrict：默认的；意思为拒绝操作，如果父表中的主键被子表引用时，删除父表主键时，会拒绝操作</p>
+<blockquote>
+<p>NO ACTION和RESTRICT的区别：只有在及个别的情况下会导致区别，前者是在其他约束的动作之后执行，后者具有最高的优先权执行。</p>
+</blockquote>
+<p>例题：建立SC表，定义Sno为外键，参照S表的sno</p>
+<figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">CREATE</span> <span class="keyword">TABLE</span> SC</span><br><span class="line">(Sno <span class="type">char</span>(<span class="number">6</span>)，</span><br><span class="line"> Cno <span class="type">char</span>(<span class="number">3</span>),</span><br><span class="line"> Score <span class="type">Int</span>,</span><br><span class="line"><span class="keyword">PRIMARY</span> KEY (Sno, Cno),</span><br><span class="line"><span class="keyword">FOREIGN</span> key (Sno) <span class="keyword">REFERENCES</span> S(Sno)</span><br><span class="line"> )ENGINE<span class="operator">=</span>InnoDB;</span><br><span class="line"></span><br></pre></td></tr></table></figure>
+<p>要注意：MyISAM存储引擎不支持外键</p>
+<hr>
+<h2 id="3-非空约束-not-null"><a href="#3-非空约束-not-null" class="headerlink" title="3.非空约束(not null)"></a>3.非空约束(not null)</h2><p><code>注意：NULL不同于0、&quot;&quot;、空格、&#39;NULL&#39;</code></p>
+<h3 id="1-语法"><a href="#1-语法" class="headerlink" title="(1)语法"></a>(1)语法</h3><figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">属性名 数据类型 [<span class="keyword">NULL</span> <span class="operator">|</span> <span class="keyword">NOT</span> <span class="keyword">NULL</span>]</span><br></pre></td></tr></table></figure>
+
+<h3 id="2-例题"><a href="#2-例题" class="headerlink" title="(2)例题"></a>(2)例题</h3><p>建立一个S表，对Sname字段设置为非空</p>
+<figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">CREATE</span> <span class="keyword">TABLE</span> S</span><br><span class="line">(Sno <span class="type">char</span>(<span class="number">6</span>),</span><br><span class="line">Sname <span class="type">char</span>(<span class="number">8</span>) <span class="keyword">NOT</span> <span class="keyword">NULL</span>,</span><br><span class="line">Ssex <span class="type">char</span>(<span class="number">2</span>),</span><br><span class="line">Sbirth <span class="type">date</span>);</span><br></pre></td></tr></table></figure>
+
+<h3 id="3-给已存在表的某个属性添加非空约束"><a href="#3-给已存在表的某个属性添加非空约束" class="headerlink" title="(3)给已存在表的某个属性添加非空约束"></a>(3)给已存在表的某个属性添加非空约束</h3><p>如果在一个已经创建的Stu表中对Sname字段设置非空约束<br>使用<code>modify</code>修改，不能使用ADD增加</p>
+<figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">ALTER</span> <span class="keyword">TABLE</span> S</span><br><span class="line">MODIFY Sname <span class="type">char</span>(<span class="number">8</span>) <span class="keyword">not</span> <span class="keyword">null</span>;</span><br></pre></td></tr></table></figure>
+
+<hr>
+<h2 id="4-惟一约束-UNIQUE"><a href="#4-惟一约束-UNIQUE" class="headerlink" title="4.惟一约束(UNIQUE)"></a>4.惟一约束(UNIQUE)</h2><p>指明基本表在某一列或多个列组合的取值必须惟一<br>在建立UNIQUE约束时，需要考虑以下几个因素:</p>
+<ul>
+<li>一个表中可以允许有<code>多个UNIQUE约束</code>。</li>
+<li>满足UNIQUE约束的字段<code>允许取NULL值</code>。</li>
+<li>可以把UNIQUE约束定义在多个字段上。</li>
+<li>UNIQUE约束自动在指定字段上创建唯一索引,如果删除唯一约束，可直接删除该索引</li>
+</ul>
+<h3 id="1-单个属性"><a href="#1-单个属性" class="headerlink" title="(1)单个属性"></a>(1)单个属性</h3><p>[例7-26]建立一个Dept表，定义Dname为惟一约束</p>
+<figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">CREATE</span> <span class="keyword">TABLE</span> Dept</span><br><span class="line">(Dno <span class="type">char</span>(<span class="number">6</span>)<span class="keyword">PRIMARY</span> KEY,</span><br><span class="line"> Dname,<span class="type">varchar</span>(<span class="number">20</span>) <span class="keyword">UNIQUE</span>,</span><br><span class="line"> Tel <span class="type">char</span>(<span class="number">13</span>),</span><br><span class="line"> Address <span class="type">varchar</span> (<span class="number">20</span>)</span><br><span class="line"> );</span><br></pre></td></tr></table></figure>
+
+<h3 id="2-多个属性"><a href="#2-多个属性" class="headerlink" title="(2)多个属性"></a>(2)多个属性</h3><p>[例]建立一个SC表，定义Sno+Cno为惟一键。</p>
+<figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">CREATE</span> <span class="keyword">TABLE</span> SC</span><br><span class="line">(Sno <span class="type">char</span>(<span class="number">6</span>),</span><br><span class="line">Cno <span class="type">char</span>(<span class="number">8</span>),</span><br><span class="line">Score <span class="type">int</span>,</span><br><span class="line"><span class="keyword">UNIQUE</span> (Sno,Cno)</span><br><span class="line">);</span><br></pre></td></tr></table></figure>
+
+<h3 id="3-表已存在修改"><a href="#3-表已存在修改" class="headerlink" title="(3)表已存在修改"></a>(3)表已存在修改</h3><figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">ALTER</span> TABEL S</span><br><span class="line">MODIFY SNO <span class="type">char</span>(<span class="number">20</span>) <span class="keyword">NOT</span> <span class="keyword">NULL</span> <span class="keyword">UNIQUE</span>;</span><br></pre></td></tr></table></figure>
+
+<h3 id="4-PRIMARY-KEY与UNIQUE的区别"><a href="#4-PRIMARY-KEY与UNIQUE的区别" class="headerlink" title="(4)PRIMARY KEY与UNIQUE的区别"></a>(4)PRIMARY KEY与UNIQUE的区别</h3><ul>
+<li>一个基本表中只能有一个PRIMARY KEY，但可以有多个UNIQUE</li>
+<li>对于指定为PRIMARY KEY的一个列或多个列的组合，其中任何一个列都不能出现NULL值，而对于UNIQUE所约束的惟一键，则允许为NULL</li>
+</ul>
+<hr>
+<h2 id="5-默认约束-DEFAULT"><a href="#5-默认约束-DEFAULT" class="headerlink" title="5.默认约束(DEFAULT)"></a>5.默认约束(DEFAULT)</h2><p>为某个字段添加默认值</p>
+<h3 id="1-语法格式："><a href="#1-语法格式：" class="headerlink" title="(1)语法格式："></a>(1)语法格式：</h3><figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">字段名 数据类型 [其它约束] <span class="keyword">DEFAULT</span> 默认值</span><br></pre></td></tr></table></figure>
+
+<h3 id="2-例题-1"><a href="#2-例题-1" class="headerlink" title="(2)例题"></a>(2)例题</h3><p>创建课程C表，其选课人数上限up_limit字段设置默认值约束,且默认值为整数100人。</p>
+<figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">CREATE</span> <span class="keyword">TABLE</span> C</span><br><span class="line">(Cno <span class="type">char</span>(<span class="number">8</span>),</span><br><span class="line"> Cname <span class="type">varchar</span>(<span class="number">20</span>),</span><br><span class="line"> up_limit <span class="type">int</span> <span class="keyword">default</span> <span class="number">100</span></span><br><span class="line">);</span><br></pre></td></tr></table></figure>
+
+<hr>
+<h2 id="6-自增约束-AUTO-INCREMENT"><a href="#6-自增约束-AUTO-INCREMENT" class="headerlink" title="6.自增约束(AUTO_INCREMENT)"></a>6.自增约束(AUTO_INCREMENT)</h2><ul>
+<li>是自动扩展的完整性约束，向表中插入新纪录时，字段的值会自动生成唯一的ID。</li>
+<li>一个表只能建一个该约束，必须为<code>整型</code>。<h3 id="1-语法格式"><a href="#1-语法格式" class="headerlink" title="(1)语法格式"></a>(1)语法格式</h3><figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">列名 数据类型 AUTO_INCREMENT</span><br></pre></td></tr></table></figure></li>
+</ul>
+<h3 id="2-例题-2"><a href="#2-例题-2" class="headerlink" title="(2)例题"></a>(2)例题</h3><p>创建系部表Dept表，要求系部编号自动增加。</p>
+<figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">CREATE</span> <span class="keyword">TABLE</span> Dept1</span><br><span class="line">(Dno <span class="type">INT</span> <span class="keyword">PRIMARY</span> KEY AUTO_INCREMENT,</span><br><span class="line"> Dname <span class="type">varchar</span>(<span class="number">20</span>) <span class="keyword">UNIQUE</span>,</span><br><span class="line"> Tel <span class="type">char</span>(<span class="number">13</span>),</span><br><span class="line"> Address <span class="type">varchar</span> (<span class="number">20</span>)</span><br><span class="line">);</span><br></pre></td></tr></table></figure>
+<p><code>这种递增的列必须为主键，AUTO_INCREMENT必须配合PRIMARY KEY</code></p>
+<hr>
+<h2 id="7-可以给约束命名-constraint"><a href="#7-可以给约束命名-constraint" class="headerlink" title="7.可以给约束命名(constraint)"></a>7.可以给约束命名(constraint)</h2><h3 id="1-默认命名"><a href="#1-默认命名" class="headerlink" title="(1)默认命名"></a>(1)默认命名</h3><p>若未命名，创建约束时，系统会自动给约束命名<br>可以用语句查看创建表时所用的所用命令包括约束</p>
+<figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">show</span> <span class="keyword">create</span> <span class="keyword">table</span> <span class="operator">&lt;</span>表名<span class="operator">&gt;</span></span><br></pre></td></tr></table></figure>
+
+<h3 id="2-自定义命名"><a href="#2-自定义命名" class="headerlink" title="(2)自定义命名"></a>(2)自定义命名</h3><p>[例3-12]建立含有给约束命名SC表。</p>
+<figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">CREATE</span> <span class="keyword">TABLE</span> SC1</span><br><span class="line">(Sno <span class="type">char</span>(<span class="number">8</span>),</span><br><span class="line"> Cno <span class="type">char</span>(<span class="number">4</span>),</span><br><span class="line"> Grade <span class="type">INT</span> <span class="keyword">default</span> <span class="number">100</span> <span class="keyword">null</span>,</span><br><span class="line"> <span class="keyword">Primary</span> key(sno,cno),</span><br><span class="line"> <span class="keyword">constraint</span> s_sc_fk</span><br><span class="line"> <span class="keyword">Foreign</span> key (sno) <span class="keyword">references</span> Stu(sno)</span><br><span class="line"> ) ;</span><br></pre></td></tr></table></figure>
+
+<hr>
+<h2 id="7-删除约束"><a href="#7-删除约束" class="headerlink" title="7.删除约束"></a>7.删除约束</h2><h3 id="1-删除主键"><a href="#1-删除主键" class="headerlink" title="(1)删除主键"></a>(1)删除主键</h3><figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">alter</span> <span class="keyword">table</span> test </span><br><span class="line"><span class="keyword">drop</span> <span class="keyword">primary</span> key;</span><br></pre></td></tr></table></figure>
+<h3 id="2-删除外键约束"><a href="#2-删除外键约束" class="headerlink" title="(2)删除外键约束"></a>(2)删除外键约束</h3><p>删除名为test_ibfk_1的外键约束</p>
+<figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">alter</span> <span class="keyword">table</span> test </span><br><span class="line"><span class="keyword">drop</span> <span class="keyword">foreign</span> key test_ibfk_1;</span><br></pre></td></tr></table></figure>
+<h3 id="3-删除惟一约束"><a href="#3-删除惟一约束" class="headerlink" title="(3)删除惟一约束"></a>(3)删除惟一约束</h3><figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">alter</span> <span class="keyword">table</span> tableName </span><br><span class="line"><span class="keyword">drop</span> index key_name;</span><br></pre></td></tr></table></figure>
+<h3 id="4-删除默认约束"><a href="#4-删除默认约束" class="headerlink" title="(4)删除默认约束"></a>(4)删除默认约束</h3><figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">ALTER</span> <span class="keyword">TABLE</span> <span class="operator">&lt;</span>数据表名<span class="operator">&gt;</span> </span><br><span class="line">CHANGE <span class="keyword">COLUMN</span> <span class="operator">&lt;</span>字段名<span class="operator">&gt;</span> <span class="operator">&lt;</span>字段名<span class="operator">&gt;</span> <span class="operator">&lt;</span>数据类型<span class="operator">&gt;</span> <span class="keyword">DEFAULT</span> <span class="keyword">NULL</span>;</span><br></pre></td></tr></table></figure></article><div class="post-copyright"><div class="post-copyright__author"><span class="post-copyright-meta">文章作者: </span><span class="post-copyright-info"><a href="mailto:undefined">夏佳怡</a></span></div><div class="post-copyright__type"><span class="post-copyright-meta">文章链接: </span><span class="post-copyright-info"><a href="https://blog.topxls.cn/post/6b10c50b">https://blog.topxls.cn/post/6b10c50b</a></span></div><div class="post-copyright__notice"><span class="post-copyright-meta">版权声明: </span><span class="post-copyright-info">本博客所有文章除特别声明外，均采用 <a href="https://creativecommons.org/licenses/by-nc-sa/4.0/" target="_blank">CC BY-NC-SA 4.0</a> 许可协议。转载请注明来自 <a href="https://blog.topxls.cn" target="_blank">夏佳怡的Blog</a>！</span></div></div><div class="tag_share"><div class="post-meta__tag-list"><a class="post-meta__tags" href="/tags/%E6%95%B0%E6%8D%AE%E5%BA%93%E7%AC%94%E8%AE%B0/">数据库笔记</a></div><div class="post_share"><div class="social-share" data-image="https://tuchuang-1309886987.cos.ap-beijing.myqcloud.com/壁纸.jpg" data-sites="facebook,twitter,wechat,weibo,qq"></div><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/social-share.js/dist/css/share.min.css" media="print" onload="this.media='all'"><script src="https://cdn.jsdelivr.net/npm/social-share.js/dist/js/social-share.min.js" defer></script></div></div><div class="post-reward"><div class="reward-button"><i class="fas fa-qrcode"></i> 打赏</div><div class="reward-main"><ul class="reward-all"><li class="reward-item"><a href="https://s1.ax1x.com/2022/04/07/qx4Kyt.jpg" target="_blank"><img class="post-qr-code-img" src="https://s1.ax1x.com/2022/04/07/qx4Kyt.jpg" alt="微信"/></a><div class="post-qr-code-desc">微信</div></li><li class="reward-item"><a href="https://s1.ax1x.com/2022/04/07/qx4MOP.jpg" target="_blank"><img class="post-qr-code-img" src="https://s1.ax1x.com/2022/04/07/qx4MOP.jpg" alt="支付宝"/></a><div class="post-qr-code-desc">支付宝</div></li></ul></div></div><nav class="pagination-post" id="pagination"><div class="prev-post pull-left"><a href="/post/7d63e68c"><img class="prev-cover" src="https://ik.imagekit.io/zkeq/2021-12-31/3.jpg" onerror="onerror=null;src='/img/404.jpg'" alt="cover of previous post"><div class="pagination-info"><div class="label">上一篇</div><div class="prev_info">8.1、8.2、8.3 插入数据、修改数据、删除数据</div></div></a></div><div class="next-post pull-right"><a href="/post/7c0d5b72"><img class="next-cover" src="https://tuchuang-1309886987.cos.ap-beijing.myqcloud.com/壁纸.jpg" onerror="onerror=null;src='/img/404.jpg'" alt="cover of next post"><div class="pagination-info"><div class="label">下一篇</div><div class="next_info">7.4数据表的操作</div></div></a></div></nav><div class="relatedPosts"><div class="headline"><i class="fas fa-thumbs-up fa-fw"></i><span>相关推荐</span></div><div class="relatedPosts-list"><div><a href="/post/47b2e5ac" title="1.2.1 数据库系统特点"><img class="cover" src="https://gimg2.baidu.com/image_search/src=http%3A%2F%2Fstatic.leiphone.com%2Fuploads%2Fnew%2Fimages%2F20210302%2F603e140c494c6.jpeg%3FimageView2%2F2%2Fw%2F740&refer=http%3A%2F%2Fstatic.leiphone.com&app=2002&size=f9999,10000&q=a80&n=0&g=0n&fmt=auto?sec=1652321346&t=fe0145ea4148b559ce6f8a08dbc0ad85" alt="cover"><div class="content is-center"><div class="date"><i class="far fa-calendar-alt fa-fw"></i> 2022-03-02</div><div class="title">1.2.1 数据库系统特点</div></div></a></div><div><a href="/post/51680dda" title="1.2.2 数据库系统组成"><img class="cover" src="https://ik.imagekit.io/zkeq/2021-12-31/3.jpg" alt="cover"><div class="content is-center"><div class="date"><i class="far fa-calendar-alt fa-fw"></i> 2022-03-03</div><div class="title">1.2.2 数据库系统组成</div></div></a></div><div><a href="/post/81a9bf24" title="1.3.1三级模式"><img class="cover" src="https://pic.imgdb.cn/item/624e3232239250f7c50266fc.jpg" alt="cover"><div class="content is-center"><div class="date"><i class="far fa-calendar-alt fa-fw"></i> 2022-03-04</div><div class="title">1.3.1三级模式</div></div></a></div><div><a href="/post/926540d5" title="1.1 DB DBMS DBA DBS"><img class="cover" src="https://pic.imgdb.cn/item/624e3232239250f7c50266fc.jpg" alt="cover"><div class="content is-center"><div class="date"><i class="far fa-calendar-alt fa-fw"></i> 2022-03-01</div><div class="title">1.1 DB DBMS DBA DBS</div></div></a></div><div><a href="/post/f2865e9b" title="BS和CS"><img class="cover" src="https://gimg2.baidu.com/image_search/src=http%3A%2F%2Fstatic.leiphone.com%2Fuploads%2Fnew%2Fimages%2F20210302%2F603e140c494c6.jpeg%3FimageView2%2F2%2Fw%2F740&refer=http%3A%2F%2Fstatic.leiphone.com&app=2002&size=f9999,10000&q=a80&n=0&g=0n&fmt=auto?sec=1652321346&t=fe0145ea4148b559ce6f8a08dbc0ad85" alt="cover"><div class="content is-center"><div class="date"><i class="far fa-calendar-alt fa-fw"></i> 2022-03-05</div><div class="title">BS和CS</div></div></a></div><div><a href="/post/8aac6b3a" title="2.2数据模型"><img class="cover" src="https://tuchuang-1309886987.cos.ap-beijing.myqcloud.com/壁纸.jpg" alt="cover"><div class="content is-center"><div class="date"><i class="far fa-calendar-alt fa-fw"></i> 2022-03-06</div><div class="title">2.2数据模型</div></div></a></div></div></div></div><div class="aside-content" id="aside-content"><div class="card-widget card-info"><div class="is-center"><div class="avatar-img"><img src="https://s1.ax1x.com/2022/03/30/q2CW0s.jpg" onerror="this.onerror=null;this.src='/img/friend_404.gif'" alt="avatar"/></div><div class="author-info__name">夏佳怡</div><div class="author-info__description">夏佳怡的Blog</div></div><div class="card-info-data is-center"><div class="card-info-data-item"><a href="/archives/"><div class="headline">文章</div><div class="length-num">33</div></a></div><div class="card-info-data-item"><a href="/tags/"><div class="headline">标签</div><div class="length-num">3</div></a></div><div class="card-info-data-item"><a href="/categories/"><div class="headline">分类</div><div class="length-num">3</div></a></div></div><a id="card-info-btn" target="_blank" rel="noopener" href="https://github.com/krisxia0506"><i class="fab fa-github"></i><span>Follow Me</span></a><div class="card-info-social-icons is-center"><a class="social-icon" href="https://github.com/krisxia0506" target="_blank" title="Github"><i class="fab fa-github"></i></a><a class="social-icon" href="/xiajiayi0506@gmail.com" target="_blank" title="Email"><i class="fas fa-envelope"></i></a></div></div><div class="card-widget card-announcement"><div class="item-headline"><i class="fas fa-bullhorn fa-shake"></i><span>公告</span></div><div class="announcement_content">This is my Blog</div></div><div class="sticky_layout"><div class="card-widget" id="card-toc"><div class="item-headline"><i class="fas fa-stream"></i><span>目录</span><span class="toc-percentage"></span></div><div class="toc-content"><ol class="toc"><li class="toc-item toc-level-1"><a class="toc-link" href="#%E6%95%B0%E6%8D%AE%E5%BA%93%E7%9A%84%E5%AE%8C%E6%95%B4%E6%80%A7%E7%BA%A6%E6%9D%9F"><span class="toc-number">1.</span> <span class="toc-text">数据库的完整性约束</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#1-%E5%AE%9E%E4%BD%93%E5%AE%8C%E6%95%B4%E6%80%A7"><span class="toc-number">1.1.</span> <span class="toc-text">(1)实体完整性</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#2-%E5%8F%82%E7%85%A7%E5%AE%8C%E6%95%B4%E6%80%A7-%E5%BC%95%E7%94%A8%E5%AE%8C%E6%95%B4%E6%80%A7"><span class="toc-number">1.2.</span> <span class="toc-text">(2)参照完整性(引用完整性)</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#3-%E7%94%A8%E6%88%B7%E8%87%AA%E5%AE%9A%E4%B9%89%E5%AE%8C%E6%95%B4%E6%80%A7"><span class="toc-number">1.3.</span> <span class="toc-text">(3)用户自定义完整性</span></a></li></ol></li><li class="toc-item toc-level-1"><a class="toc-link" href="#MySQL%E4%B8%AD%E5%B8%B8%E7%94%A8%E7%BA%A6%E6%9D%9F"><span class="toc-number">2.</span> <span class="toc-text">MySQL中常用约束</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#1-%E4%B8%BB%E9%94%AE%E7%BA%A6%E6%9D%9F-PRIMARY-KEY"><span class="toc-number">2.1.</span> <span class="toc-text">1.主键约束(PRIMARY KEY)</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#1-%E5%8D%95%E4%B8%AA%E4%B8%BB%E9%94%AE"><span class="toc-number">2.1.1.</span> <span class="toc-text">(1)单个主键</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#2-%E5%A4%9A%E4%B8%AA%E4%B8%BB%E9%94%AE"><span class="toc-number">2.1.2.</span> <span class="toc-text">(2)多个主键</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#3-%E7%BB%99%E5%B7%B2%E6%9C%89%E8%A1%A8%E6%B7%BB%E5%8A%A0%E4%B8%BB%E9%94%AE%E7%BA%A6%E6%9D%9F"><span class="toc-number">2.1.3.</span> <span class="toc-text">(3)给已有表添加主键约束</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#4-%E5%88%A0%E9%99%A4%E5%B7%B2%E6%9C%89%E4%B8%BB%E9%94%AE%E7%BA%A6%E6%9D%9F"><span class="toc-number">2.1.4.</span> <span class="toc-text">(4)删除已有主键约束</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#2-%E5%A4%96%E9%94%AE%E7%BA%A6%E6%9D%9F-FOREIGN-KEY"><span class="toc-number">2.2.</span> <span class="toc-text">2.外键约束(FOREIGN KEY)</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#3-%E9%9D%9E%E7%A9%BA%E7%BA%A6%E6%9D%9F-not-null"><span class="toc-number">2.3.</span> <span class="toc-text">3.非空约束(not null)</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#1-%E8%AF%AD%E6%B3%95"><span class="toc-number">2.3.1.</span> <span class="toc-text">(1)语法</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#2-%E4%BE%8B%E9%A2%98"><span class="toc-number">2.3.2.</span> <span class="toc-text">(2)例题</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#3-%E7%BB%99%E5%B7%B2%E5%AD%98%E5%9C%A8%E8%A1%A8%E7%9A%84%E6%9F%90%E4%B8%AA%E5%B1%9E%E6%80%A7%E6%B7%BB%E5%8A%A0%E9%9D%9E%E7%A9%BA%E7%BA%A6%E6%9D%9F"><span class="toc-number">2.3.3.</span> <span class="toc-text">(3)给已存在表的某个属性添加非空约束</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#4-%E6%83%9F%E4%B8%80%E7%BA%A6%E6%9D%9F-UNIQUE"><span class="toc-number">2.4.</span> <span class="toc-text">4.惟一约束(UNIQUE)</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#1-%E5%8D%95%E4%B8%AA%E5%B1%9E%E6%80%A7"><span class="toc-number">2.4.1.</span> <span class="toc-text">(1)单个属性</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#2-%E5%A4%9A%E4%B8%AA%E5%B1%9E%E6%80%A7"><span class="toc-number">2.4.2.</span> <span class="toc-text">(2)多个属性</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#3-%E8%A1%A8%E5%B7%B2%E5%AD%98%E5%9C%A8%E4%BF%AE%E6%94%B9"><span class="toc-number">2.4.3.</span> <span class="toc-text">(3)表已存在修改</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#4-PRIMARY-KEY%E4%B8%8EUNIQUE%E7%9A%84%E5%8C%BA%E5%88%AB"><span class="toc-number">2.4.4.</span> <span class="toc-text">(4)PRIMARY KEY与UNIQUE的区别</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#5-%E9%BB%98%E8%AE%A4%E7%BA%A6%E6%9D%9F-DEFAULT"><span class="toc-number">2.5.</span> <span class="toc-text">5.默认约束(DEFAULT)</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#1-%E8%AF%AD%E6%B3%95%E6%A0%BC%E5%BC%8F%EF%BC%9A"><span class="toc-number">2.5.1.</span> <span class="toc-text">(1)语法格式：</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#2-%E4%BE%8B%E9%A2%98-1"><span class="toc-number">2.5.2.</span> <span class="toc-text">(2)例题</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#6-%E8%87%AA%E5%A2%9E%E7%BA%A6%E6%9D%9F-AUTO-INCREMENT"><span class="toc-number">2.6.</span> <span class="toc-text">6.自增约束(AUTO_INCREMENT)</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#1-%E8%AF%AD%E6%B3%95%E6%A0%BC%E5%BC%8F"><span class="toc-number">2.6.1.</span> <span class="toc-text">(1)语法格式</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#2-%E4%BE%8B%E9%A2%98-2"><span class="toc-number">2.6.2.</span> <span class="toc-text">(2)例题</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#7-%E5%8F%AF%E4%BB%A5%E7%BB%99%E7%BA%A6%E6%9D%9F%E5%91%BD%E5%90%8D-constraint"><span class="toc-number">2.7.</span> <span class="toc-text">7.可以给约束命名(constraint)</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#1-%E9%BB%98%E8%AE%A4%E5%91%BD%E5%90%8D"><span class="toc-number">2.7.1.</span> <span class="toc-text">(1)默认命名</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#2-%E8%87%AA%E5%AE%9A%E4%B9%89%E5%91%BD%E5%90%8D"><span class="toc-number">2.7.2.</span> <span class="toc-text">(2)自定义命名</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#7-%E5%88%A0%E9%99%A4%E7%BA%A6%E6%9D%9F"><span class="toc-number">2.8.</span> <span class="toc-text">7.删除约束</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#1-%E5%88%A0%E9%99%A4%E4%B8%BB%E9%94%AE"><span class="toc-number">2.8.1.</span> <span class="toc-text">(1)删除主键</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#2-%E5%88%A0%E9%99%A4%E5%A4%96%E9%94%AE%E7%BA%A6%E6%9D%9F"><span class="toc-number">2.8.2.</span> <span class="toc-text">(2)删除外键约束</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#3-%E5%88%A0%E9%99%A4%E6%83%9F%E4%B8%80%E7%BA%A6%E6%9D%9F"><span class="toc-number">2.8.3.</span> <span class="toc-text">(3)删除惟一约束</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#4-%E5%88%A0%E9%99%A4%E9%BB%98%E8%AE%A4%E7%BA%A6%E6%9D%9F"><span class="toc-number">2.8.4.</span> <span class="toc-text">(4)删除默认约束</span></a></li></ol></li></ol></li></ol></div></div><div class="card-widget card-recent-post"><div class="item-headline"><i class="fas fa-history"></i><span>最新文章</span></div><div class="aside-list"><div class="aside-list-item"><a class="thumbnail" href="/post/12eecc8d" title="JAVA类的继承"><img src="https://pic.imgdb.cn/item/624e3232239250f7c50266fc.jpg" onerror="this.onerror=null;this.src='/img/404.jpg'" alt="JAVA类的继承"/></a><div class="content"><a class="title" href="/post/12eecc8d" title="JAVA类的继承">JAVA类的继承</a><time datetime="2022-04-13T02:11:11.000Z" title="发表于 2022-04-13 10:11:11">2022-04-13</time></div></div><div class="aside-list-item"><a class="thumbnail" href="/post/4e214453" title="JetBrains全家桶安装、学生认证以及IDE中文设置"><img src="https://pic.imgdb.cn/item/624e3232239250f7c50266fc.jpg" onerror="this.onerror=null;this.src='/img/404.jpg'" alt="JetBrains全家桶安装、学生认证以及IDE中文设置"/></a><div class="content"><a class="title" href="/post/4e214453" title="JetBrains全家桶安装、学生认证以及IDE中文设置">JetBrains全家桶安装、学生认证以及IDE中文设置</a><time datetime="2022-04-12T02:11:11.000Z" title="发表于 2022-04-12 10:11:11">2022-04-12</time></div></div><div class="aside-list-item"><a class="thumbnail" href="/post/3c8aa586" title="8.4.4 高级查询"><img src="https://gimg2.baidu.com/image_search/src=http%3A%2F%2Fstatic.leiphone.com%2Fuploads%2Fnew%2Fimages%2F20210302%2F603e140c494c6.jpeg%3FimageView2%2F2%2Fw%2F740&amp;refer=http%3A%2F%2Fstatic.leiphone.com&amp;app=2002&amp;size=f9999,10000&amp;q=a80&amp;n=0&amp;g=0n&amp;fmt=auto?sec=1652321346&amp;t=fe0145ea4148b559ce6f8a08dbc0ad85" onerror="this.onerror=null;this.src='/img/404.jpg'" alt="8.4.4 高级查询"/></a><div class="content"><a class="title" href="/post/3c8aa586" title="8.4.4 高级查询">8.4.4 高级查询</a><time datetime="2022-04-10T02:11:11.000Z" title="发表于 2022-04-10 10:11:11">2022-04-10</time></div></div><div class="aside-list-item"><a class="thumbnail" href="/post/4b6413bb" title="8.4.3 条件查询"><img src="https://ik.imagekit.io/zkeq/2021-12-31/3.jpg" onerror="this.onerror=null;this.src='/img/404.jpg'" alt="8.4.3 条件查询"/></a><div class="content"><a class="title" href="/post/4b6413bb" title="8.4.3 条件查询">8.4.3 条件查询</a><time datetime="2022-04-09T02:11:11.000Z" title="发表于 2022-04-09 10:11:11">2022-04-09</time></div></div><div class="aside-list-item"><a class="thumbnail" href="/post/8b00d14c" title="8.4.1 SELECT和简单查询"><img src="https://gimg2.baidu.com/image_search/src=http%3A%2F%2Fstatic.leiphone.com%2Fuploads%2Fnew%2Fimages%2F20210302%2F603e140c494c6.jpeg%3FimageView2%2F2%2Fw%2F740&amp;refer=http%3A%2F%2Fstatic.leiphone.com&amp;app=2002&amp;size=f9999,10000&amp;q=a80&amp;n=0&amp;g=0n&amp;fmt=auto?sec=1652321346&amp;t=fe0145ea4148b559ce6f8a08dbc0ad85" onerror="this.onerror=null;this.src='/img/404.jpg'" alt="8.4.1 SELECT和简单查询"/></a><div class="content"><a class="title" href="/post/8b00d14c" title="8.4.1 SELECT和简单查询">8.4.1 SELECT和简单查询</a><time datetime="2022-03-29T02:11:11.000Z" title="发表于 2022-03-29 10:11:11">2022-03-29</time></div></div></div></div></div></div></main><footer id="footer"><div id="footer-wrap"><div class="copyright">&copy;2020 - 2022 By 夏佳怡</div><div class="framework-info"><span>框架 </span><a target="_blank" rel="noopener" href="https://hexo.io">Hexo</a><span class="footer-separator">|</span><span>主题 </span><a target="_blank" rel="noopener" href="https://github.com/jerryc127/hexo-theme-butterfly">Butterfly</a></div></div></footer></div><div id="rightside"><div id="rightside-config-hide"><button id="readmode" type="button" title="阅读模式"><i class="fas fa-book-open"></i></button><button id="darkmode" type="button" title="浅色和深色模式转换"><i class="fas fa-adjust"></i></button><button id="hide-aside-btn" type="button" title="单栏和双栏切换"><i class="fas fa-arrows-alt-h"></i></button></div><div id="rightside-config-show"><button id="rightside_config" type="button" title="设置"><i class="fas fa-cog fa-spin"></i></button><button class="close" id="mobile-toc-button" type="button" title="目录"><i class="fas fa-list-ul"></i></button><button id="go-up" type="button" title="回到顶部"><i class="fas fa-arrow-up"></i></button></div></div><div><script src="/js/utils.js"></script><script src="/js/main.js"></script><script src="https://cdn.jsdelivr.net/npm/@fancyapps/ui/dist/fancybox.umd.js"></script><script src="https://cdn.jsdelivr.net/npm/node-snackbar/dist/snackbar.min.js"></script><script>var preloader = {
+  endLoading: () => {
+    document.body.style.overflow = 'auto';
+    document.getElementById('loading-box').classList.add("loaded")
+  },
+  initLoading: () => {
+    document.body.style.overflow = '';
+    document.getElementById('loading-box').classList.remove("loaded")
+
+  }
+}
+window.addEventListener('load',preloader.endLoading())</script><div class="js-pjax"></div><script async data-pjax src="//busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script></div><!-- hexo injector body_end start -->
+  <script data-pjax src="https://cdn.jsdelivr.net/gh/Zfour/hexo-github-calendar@1.21/hexo_githubcalendar.js"></script>
+  <script data-pjax>
+        function GithubCalendarConfig(){
+            var git_githubapiurl ="https://python-github-calendar-api.vercel.app/api?krisxia0506";
+            var git_color =['#e5e3ee', '#c7dcfb', '#87cfff', '#97b3ff', '#a59cff', '#b67dff', '#c85eff', '#d845ff', '#e52eff', '#f316ff', '#6a46e6'];
+            var git_user ="krisxia0506";
+            var parent_div_git = document.getElementById('recent-posts');
+            var git_div_html = '<div class="recent-post-item" style="width:100%;height:auto;padding:10px;"><div id="github_loading" style="width:10%;height:100%;margin:0 auto;display: block"><svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink"  viewBox="0 0 50 50" style="enable-background:new 0 0 50 50" xml:space="preserve"><path fill="#d0d0d0" d="M25.251,6.461c-10.318,0-18.683,8.365-18.683,18.683h4.068c0-8.071,6.543-14.615,14.615-14.615V6.461z" transform="rotate(275.098 25 25)"><animateTransform attributeType="xml" attributeName="transform" type="rotate" from="0 25 25" to="360 25 25" dur="0.6s" repeatCount="indefinite"></animateTransform></path></svg></div><div id="github_container"></div></div>';
+            if(parent_div_git && location.pathname =='/'){
+                console.log('已挂载github calendar')
+                // parent_div_git.innerHTML=git_div_html+parent_div_git.innerHTML // 无报错，但不影响使用(支持pjax跳转)
+                parent_div_git.insertAdjacentHTML("afterbegin",git_div_html) // 有报错，但不影响使用(支持pjax跳转)
+            };
+            GithubCalendar(git_githubapiurl,git_color,git_user)
+        }
+        if(document.getElementById('recent-posts')){
+            GithubCalendarConfig()
+        }
+    </script>
+    <style>#github_container{min-height:280px}@media screen and (max-width:650px) {#github_container{background-image:;min-height:0px}}</style>
+    <style></style><!-- hexo injector body_end end --></body></html>
