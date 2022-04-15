@@ -1,0 +1,1027 @@
+<?xml version="1.0" encoding="utf-8"?>
+<search> 
+  
+  
+    
+    <entry>
+      <title>实验二 单表查询</title>
+      <link href="/post/229b247c.html"/>
+      <url>/post/229b247c.html</url>
+      
+        <content type="html"><![CDATA[<p>在实验一创建库、表、录入数据的基础上，完成下列操作。</p><h1 id="1-查询年级为2016的所有学生的学号、姓名和年级。"><a href="#1-查询年级为2016的所有学生的学号、姓名和年级。" class="headerlink" title="1.查询年级为2016的所有学生的学号、姓名和年级。"></a>1.查询年级为2016的所有学生的学号、姓名和年级。</h1><figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">select</span> sno,sname,Ssex</span><br><span class="line"><span class="keyword">from</span> Students</span><br><span class="line"><span class="keyword">where</span> grade<span class="operator">=</span><span class="string">&#x27;2016&#x27;</span>;</span><br></pre></td></tr></table></figure><p>分析：要显示的是学生的学号姓名班级，所以用<code>select sno,sname,Ssex</code>，这些属性都在Students表中，所以可以直接选取<code>from Students</code>，要选择的条件是年级为2016的，条件选择用<code>where</code></p><h1 id="2-查询课时为64或48的课程名称和学时。"><a href="#2-查询课时为64或48的课程名称和学时。" class="headerlink" title="2. 查询课时为64或48的课程名称和学时。"></a>2. 查询课时为64或48的课程名称和学时。</h1><figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">select</span> Cname,Chour</span><br><span class="line"><span class="keyword">from</span> Courses</span><br><span class="line"><span class="keyword">where</span> Chour<span class="operator">=</span><span class="number">64</span> <span class="keyword">or</span> Chour<span class="operator">=</span><span class="number">48</span>;</span><br></pre></td></tr></table></figure><p>分析：我们需要的是课程名称（cname）和学时（chour）这两个属性都在courses表中，所以可以直接选取courses表（from Courses），条件是chour为64或48，where条件可以用<strong>比较运算符</strong><code>or</code>连接</p><p>常用的比较运算符:</p><table><thead><tr><th>运算符</th><th>含义</th></tr></thead><tbody><tr><td>&#x3D;, &gt;,&lt;,&gt;&#x3D;,&lt;&#x3D;, !&#x3D;,&gt;</td><td>比较大小</td></tr><tr><td>AND, OR, NOT</td><td>多重条件</td></tr><tr><td>IN</td><td>确定集合</td></tr><tr><td>BETWEEN AND</td><td>确定范围</td></tr><tr><td>IS NULL</td><td>空值</td></tr><tr><td>LIKE</td><td>字符匹配</td></tr></tbody></table><h1 id="3-查询所有被选课程的课程号。"><a href="#3-查询所有被选课程的课程号。" class="headerlink" title="3.查询所有被选课程的课程号。"></a>3.查询所有被选课程的课程号。</h1><figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">select</span> <span class="keyword">distinct</span> cno</span><br><span class="line"><span class="keyword">from</span> STC;</span><br></pre></td></tr></table></figure><p>DISTINCT：返回所有不重复行，不写默认是ALL（返回所有行，包括重复行）</p><h1 id="4-查询所有课中含有“数”的课程号及课程名称。"><a href="#4-查询所有课中含有“数”的课程号及课程名称。" class="headerlink" title="4.查询所有课中含有“数”的课程号及课程名称。"></a>4.查询所有课中含有“数”的课程号及课程名称。</h1><figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">select</span> Cno,Cname</span><br><span class="line"><span class="keyword">from</span> Courses</span><br><span class="line"><span class="keyword">where</span> Cname <span class="keyword">LIKE</span> <span class="string">&#x27;%数%&#x27;</span>;</span><br></pre></td></tr></table></figure><p>此条涉及到<code>模糊查询字符串匹配</code></p><h2 id="字符串匹配"><a href="#字符串匹配" class="headerlink" title="字符串匹配"></a>字符串匹配</h2><p>格式:属性名 LIKE ‘&lt;匹配串&gt;’<br>属性名 NOT LIKE ‘&lt;匹配串&gt;’<br>例如</p><figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">Cname <span class="keyword">LIKE</span> <span class="string">&#x27;%数%&#x27;</span>  #含有“数”的</span><br><span class="line">Cname <span class="keyword">NOT</span> <span class="keyword">LIKE</span> <span class="string">&#x27;%数%&#x27;</span>  #不含有“数”的 例如 数学 高数 只要字符串里有‘数’都符合条件</span><br><span class="line">Cname <span class="keyword">LIKE</span> <span class="string">&#x27;数%&#x27;</span>  #以“数”开头的，例如 数学 数字 ，但是‘高数’不符合，因为‘高数’是高开头的</span><br></pre></td></tr></table></figure><p>◆&lt;匹配串&gt;&#x3D;字符常量+通配符<br>两种通配符:<br>%:代表<code>任意长度</code>（长度可以为0）的字符串<br>_:代表任意<code>单个</code>字符</p><h1 id="5-统计所有教师的平均工资。"><a href="#5-统计所有教师的平均工资。" class="headerlink" title="5. 统计所有教师的平均工资。"></a>5. 统计所有教师的平均工资。</h1><figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">select</span> <span class="built_in">AVG</span>(salary)</span><br><span class="line"><span class="keyword">from</span> Teachers</span><br></pre></td></tr></table></figure><p>SQL 拥有很多可用于计数和计算的内建函数。<br>AVG() 函数返回数值列的平均值。<br><a href="https://www.runoob.com/sql/sql-function.html">点击查看更多函数</a></p><h1 id="6-查询没有参加考试的学生学号。"><a href="#6-查询没有参加考试的学生学号。" class="headerlink" title="6. 查询没有参加考试的学生学号。"></a>6. 查询没有参加考试的学生学号。</h1><figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">select</span> Sno</span><br><span class="line"><span class="keyword">from</span> STC</span><br><span class="line"><span class="keyword">where</span> score <span class="keyword">is</span> <span class="keyword">null</span>;</span><br></pre></td></tr></table></figure><p>没有参加考试的学生，也就是<code>成绩为空</code>的学生</p><blockquote><h2 id="注意"><a href="#注意" class="headerlink" title="注意:"></a>注意:</h2><p>值为空，score is null 中的null不能加引号 ‘ ’ ，加了引号后表示字符串null，这种写法是错误的<code>score is &#39;null&#39;</code></p></blockquote><h1 id="7-查询每位教师所任课程的平均成绩，按平均成绩降序排列（提示：每个教师只担任一门课程）。"><a href="#7-查询每位教师所任课程的平均成绩，按平均成绩降序排列（提示：每个教师只担任一门课程）。" class="headerlink" title="7. 查询每位教师所任课程的平均成绩，按平均成绩降序排列（提示：每个教师只担任一门课程）。"></a>7. 查询每位教师所任课程的平均成绩，按平均成绩降序排列（提示：每个教师只担任一门课程）。</h1><figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">select</span> Tno,<span class="built_in">avg</span>(score)</span><br><span class="line"><span class="keyword">from</span> STC</span><br><span class="line"><span class="keyword">group</span> <span class="keyword">by</span> Tno</span><br><span class="line"><span class="keyword">order</span> <span class="keyword">by</span> <span class="built_in">avg</span>(score) <span class="keyword">desc</span>;</span><br></pre></td></tr></table></figure><table><thead><tr><th>代码</th><th>含义</th></tr></thead><tbody><tr><td>select Tno,avg(score)</td><td>选择（select）显示平均成绩（avg(score)）和教师编号（Tno），</td></tr><tr><td>group by Tno</td><td>根据教师编号(Tno)来分组</td></tr><tr><td>order by avg(score) desc</td><td>根据平均成绩，降序（desc）</td></tr></tbody></table><h1 id="8-统计各个课程的选课人数和最高成绩。"><a href="#8-统计各个课程的选课人数和最高成绩。" class="headerlink" title="8.统计各个课程的选课人数和最高成绩。"></a>8.统计各个课程的选课人数和最高成绩。</h1><figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">select</span> <span class="built_in">count</span>(<span class="operator">*</span>),<span class="built_in">max</span>(Score)</span><br><span class="line"><span class="keyword">from</span> STC</span><br><span class="line"><span class="keyword">group</span> <span class="keyword">by</span> Cno</span><br></pre></td></tr></table></figure><table><thead><tr><th>代码</th><th>含义</th></tr></thead><tbody><tr><td>group by Cno</td><td>统计各个课程的东西，所以要以课程号来分组</td></tr><tr><td>count(*)</td><td>统计选课人数，也就是，在stc表中统计每一个课程号出现的次数count(cno)，因为已经以cno分组了(group by Cno)，所以可以写成count(*)，count(cno)也不错</td></tr><tr><td>max(Score)</td><td>最高成绩可以用max函数</td></tr></tbody></table><h1 id="9-查询至少选修了3门课程的学生编号和选修课程数。"><a href="#9-查询至少选修了3门课程的学生编号和选修课程数。" class="headerlink" title="9.查询至少选修了3门课程的学生编号和选修课程数。"></a>9.查询至少选修了3门课程的学生编号和选修课程数。</h1><figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">select</span> Sno,<span class="built_in">count</span>(Cno)</span><br><span class="line"><span class="keyword">from</span> STC</span><br><span class="line"><span class="keyword">group</span> <span class="keyword">by</span> Sno <span class="keyword">having</span> <span class="built_in">count</span>(Cno)<span class="operator">&gt;=</span><span class="number">3</span>;</span><br></pre></td></tr></table></figure><p>要以学号来分组，统计每个学号的课程号个数。<br>在 SQL 中增加 HAVING 子句原因是，WHERE 关键字无法与聚合函数一起使用。<br>HAVING 子句可以让我们筛选分组后的各组数据。.</p><h1 id="10-查询选修了B001或B0-02任意一门课程的学生学号。"><a href="#10-查询选修了B001或B0-02任意一门课程的学生学号。" class="headerlink" title="10.查询选修了B001或B0 02任意一门课程的学生学号。"></a>10.查询选修了B001或B0 02任意一门课程的学生学号。</h1><figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">select</span> <span class="keyword">distinct</span> sno</span><br><span class="line"><span class="keyword">from</span> STC</span><br><span class="line"><span class="keyword">where</span> Cno<span class="operator">=</span><span class="string">&#x27;B001&#x27;</span> <span class="keyword">or</span> Cno<span class="operator">=</span><span class="string">&#x27;B002&#x27;</span>;</span><br></pre></td></tr></table></figure><h1 id="11-查询至少被三名学生选修的课程号。"><a href="#11-查询至少被三名学生选修的课程号。" class="headerlink" title="11. 查询至少被三名学生选修的课程号。"></a>11. 查询至少被三名学生选修的课程号。</h1><figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">select</span> Cno</span><br><span class="line"><span class="keyword">from</span> STC</span><br><span class="line"><span class="keyword">group</span> <span class="keyword">by</span> Cno <span class="keyword">HAVING</span> <span class="built_in">count</span>(Cno)<span class="operator">&gt;=</span><span class="number">3</span>;</span><br></pre></td></tr></table></figure><h1 id="总结"><a href="#总结" class="headerlink" title="总结"></a>总结</h1><ol><li>你select后面跟的东西，就是你想要显示的东西，例如：select Cno，那结果就会只显示Cno的内容</li><li>使用group by时，不能用where，WHERE 关键字无法与聚合函数一起使用，要改用having，HAVING 子句可以让我们筛选分组后的各组数据</li><li>count()统计括号中内容的个数，COUNT (*) 函数返回表中的记录有几条，常常和group by连用，分组后统计以group by分组的每个内容的个数，例如，我们根据cno分组，group by cno，COUNT(*) 就会返回每一种cno的个数</li></ol>]]></content>
+      
+      
+      <categories>
+          
+          <category> MySQL数据库 </category>
+          
+          <category> MySQL实验 </category>
+          
+      </categories>
+      
+      
+        <tags>
+            
+            <tag> MySQL实验 </tag>
+            
+        </tags>
+      
+    </entry>
+    
+    
+    
+    <entry>
+      <title>8.5.3 集合查询</title>
+      <link href="/post/99977bfd.html"/>
+      <url>/post/99977bfd.html</url>
+      
+        <content type="html"><![CDATA[<h1 id="UNION"><a href="#UNION" class="headerlink" title="UNION"></a>UNION</h1><p>UNION 操作符用于合并两个或多个 SELECT 语句的结果集。<br>请注意，UNION 内部的每个 SELECT 语句必须拥有相同数量的列。列也必须拥有相似的数据类型。同时，每个 SELECT 语句中的列的顺序必须相同。</p><p>【例1】查询专业号1102的学生和所有女生。<br>方法一:<br>UNION查并集，去掉重复行</p><figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">SELECT</span><span class="operator">*</span> <span class="keyword">FROM</span> S <span class="keyword">WHERE</span> Zno<span class="operator">=</span>‘<span class="number">1102</span><span class="string">&#x27;</span></span><br><span class="line"><span class="string">UNION</span></span><br><span class="line"><span class="string">SELECT * FROM S WHERE Ssex=‘女&quot;;</span></span><br></pre></td></tr></table></figure><p>方法二:<br>不去掉重复行</p><figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">SELECT</span> <span class="keyword">DISTINCT</span> <span class="operator">*</span></span><br><span class="line"><span class="keyword">FROM</span> S</span><br><span class="line"><span class="keyword">WHERE</span> Zno<span class="operator">=</span>‘<span class="number">1102</span>’<span class="keyword">OR</span> Ssex<span class="operator">=</span>‘女&quot;;</span><br></pre></td></tr></table></figure><p>【例3】设数据库中有一教师表Teache（Tno,Tname, . ..)，查询学校中所有师生的姓名。</p><figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">SELECT</span> Sname <span class="keyword">FROM</span> s</span><br><span class="line"><span class="keyword">UNION</span></span><br><span class="line"><span class="keyword">SELECT</span> Tname <span class="keyword">FROM</span> Teacher;</span><br></pre></td></tr></table></figure>]]></content>
+      
+      
+      <categories>
+          
+          <category> MySQL数据库 </category>
+          
+          <category> MYSQL数据操作管理 </category>
+          
+      </categories>
+      
+      
+        <tags>
+            
+            <tag> 数据库笔记 </tag>
+            
+        </tags>
+      
+    </entry>
+    
+    
+    
+    <entry>
+      <title>8.5.1 子查询</title>
+      <link href="/post/6e848069.html"/>
+      <url>/post/6e848069.html</url>
+      
+        <content type="html"><![CDATA[<h1 id="嵌套查询"><a href="#嵌套查询" class="headerlink" title="嵌套查询"></a>嵌套查询</h1><ol><li>一个SELECT-FROM-WHERE语句称为一个查询块</li><li>将一个查询块嵌套在另一个查询块的FROM子句、WHERE子句或HAVING短语中的查询称为嵌套查询。<br>例:<figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">SELECT</span> Sname #外层查询<span class="operator">/</span>父查询</span><br><span class="line"><span class="keyword">FROM</span> S</span><br><span class="line"><span class="keyword">WHERE</span> Sno <span class="keyword">IN</span></span><br><span class="line">(<span class="keyword">SELECT</span> Sno  #内层查询<span class="operator">/</span>子查询</span><br><span class="line"><span class="keyword">FROM</span> SC</span><br><span class="line"><span class="keyword">WHERE</span> Cno<span class="operator">=</span><span class="string">&#x27;C2&#x27;</span>);</span><br><span class="line"></span><br></pre></td></tr></table></figure></li></ol><h1 id="子查询的分类"><a href="#子查询的分类" class="headerlink" title="子查询的分类"></a>子查询的分类</h1><ol><li>不想关子查询<ol><li>子查询的查询条件不依赖于父查询</li><li>查询过程由内向外，逐层处理</li></ol></li><li>相关子查询<ol><li>子查询的查询条件依赖于父查询</li><li>查询过程外侧和内层查询同时作用</li></ol></li></ol><p>例如：<br>不相关子查询</p><figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">SELECT</span> Sname</span><br><span class="line"><span class="keyword">FROM</span> Student</span><br><span class="line"><span class="keyword">WHERE</span> Sno <span class="keyword">IN</span></span><br><span class="line">(<span class="keyword">SELECT</span> Sno <span class="keyword">FROM</span> SC</span><br><span class="line"><span class="keyword">WHERE</span> Cno<span class="operator">=</span><span class="string">&#x27;C2&#x27;</span>)</span><br></pre></td></tr></table></figure><p>相关子查询</p><figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">SELECT</span> Sno， Cno </span><br><span class="line"><span class="keyword">FROM</span> SC x</span><br><span class="line"><span class="keyword">WHERE</span> Grade<span class="operator">&gt;=</span></span><br><span class="line">(<span class="keyword">SELECT</span> <span class="built_in">AVG</span>(Grade)</span><br><span class="line"><span class="keyword">FROM</span> SC Y</span><br><span class="line"><span class="keyword">WHERE</span> X.Sno<span class="operator">=</span>Y.Sno)</span><br></pre></td></tr></table></figure><p>找那一个人的哪一科，的成绩超过了，自己所选课成绩的平均成绩找那一个人的哪一科，的成绩超过了，自己所有课成绩的平均成绩，换言之查找哪一科自己学的牛逼</p><h1 id="一、带有IN谓词的子查询"><a href="#一、带有IN谓词的子查询" class="headerlink" title="一、带有IN谓词的子查询"></a>一、带有IN谓词的子查询</h1><p>IN关键字：判断某个属性值是否在指定集合中出现</p><h2 id="不带IN"><a href="#不带IN" class="headerlink" title="不带IN"></a>不带IN</h2><p>查询选修数学的学生学号、姓名</p><figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">SELECT</span> S.sno,Sname</span><br><span class="line"><span class="keyword">FROM</span> S <span class="keyword">JOIN</span> SC <span class="keyword">ON</span> S.Sno <span class="operator">=</span>SC.Sno <span class="keyword">JOIN</span> C <span class="keyword">ON</span> SC.Cno <span class="operator">=</span> C.Cno</span><br><span class="line"><span class="keyword">WHERE</span> Cname<span class="operator">=</span><span class="string">&#x27;数学&#x27;</span>;</span><br><span class="line"></span><br><span class="line"><span class="keyword">SELECT</span> S.sno,Sname</span><br><span class="line"><span class="keyword">FROM</span> s,sc,c</span><br><span class="line"><span class="keyword">WHERE</span> S.Sno <span class="operator">=</span> SC.Sno</span><br><span class="line"><span class="keyword">AND</span> sc.Cno <span class="operator">=</span> C.Cno <span class="keyword">AND</span> Cname<span class="operator">=</span><span class="string">&#x27;数学&#x27;</span>;</span><br></pre></td></tr></table></figure><h2 id="带IN"><a href="#带IN" class="headerlink" title="带IN"></a>带IN</h2><h3 id="分解步骤"><a href="#分解步骤" class="headerlink" title="分解步骤"></a>分解步骤</h3><p>用IN谓词的子查询:<br>①首先在C关系中找出“数学”的课程号</p><figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">SELECT</span> Cno <span class="keyword">FROM</span> C</span><br><span class="line"><span class="keyword">WHERE</span> Cname<span class="operator">=</span>‘数学’</span><br></pre></td></tr></table></figure><p>结果: C2</p><p>②然后在SC关系中找出选修了C2号课程的学生学号</p><figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">SELECT</span> Sno <span class="keyword">FROM</span> sc</span><br><span class="line"><span class="keyword">WHERE</span> Cno <span class="keyword">IN</span>(①)</span><br></pre></td></tr></table></figure><p>结果:<br>‘140001’,’140011’,’149912’</p><p>③最后在S关系中取出Sno和Sname</p><figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">SELECT</span> Sno，Sname </span><br><span class="line"><span class="keyword">FROM</span> s </span><br><span class="line"><span class="keyword">WHERE</span> Sno <span class="keyword">IN</span>(②)</span><br></pre></td></tr></table></figure><h3 id="组合以后的代码"><a href="#组合以后的代码" class="headerlink" title="组合以后的代码"></a>组合以后的代码</h3><figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">SELECT</span> Sno, Sname</span><br><span class="line"><span class="keyword">FROM</span> Stu</span><br><span class="line"><span class="keyword">WHERE</span> Sno <span class="keyword">IN</span></span><br><span class="line">(<span class="keyword">SELECT</span> Sno </span><br><span class="line"><span class="keyword">FROM</span> sC</span><br><span class="line"><span class="keyword">WHERE</span> Cno <span class="keyword">IN</span></span><br><span class="line">(SLECT Cno</span><br><span class="line"><span class="keyword">FROM</span> C</span><br><span class="line"><span class="keyword">WHERE</span> Cname<span class="operator">=</span>‘数学))</span><br></pre></td></tr></table></figure><h1 id="二、带有EXISTS谓词的子查询"><a href="#二、带有EXISTS谓词的子查询" class="headerlink" title="二、带有EXISTS谓词的子查询"></a>二、带有EXISTS谓词的子查询</h1><p>相当于存在量词∃<br>说明:</p><ul><li>带有EXISTS的子查询不返回任何实际数据,<code>只返回逻辑值“真”或“假”。</code></li><li>当子查询的查询结果集合为<code>非空</code>时，外层的WHERE子句返回<code>真值</code>，否则返回假值。NOT EXISTS与此相反。</li><li>由EXISTS引出的子查询，其目标列表达式通常都用*。</li></ul><h2 id="1-用带EXISTS谓词的嵌套查询"><a href="#1-用带EXISTS谓词的嵌套查询" class="headerlink" title="1.用带EXISTS谓词的嵌套查询"></a>1.用带EXISTS谓词的嵌套查询</h2><p>查询所有选修了C2号课程的学生姓名</p><figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">SELECT</span> Sname <span class="keyword">FROM</span> s</span><br><span class="line"><span class="keyword">WHERE</span> <span class="keyword">EXISTS</span></span><br><span class="line">(<span class="keyword">SELECT</span> <span class="operator">*</span> <span class="keyword">FROM</span> SC</span><br><span class="line"><span class="keyword">WHERE</span> Sno<span class="operator">=</span>S.Sno <span class="keyword">AND</span> Cno<span class="operator">=</span><span class="string">&#x27;C2&#x27;</span>);</span><br></pre></td></tr></table></figure><p>S表</p><table><thead><tr><th>Sno</th><th>Sname</th><th>Ssex</th><th>Sage</th><th>Sdept</th></tr></thead><tbody><tr><td>s1</td><td>赵亦</td><td>女</td><td>17</td><td>计算机</td></tr><tr><td>s2</td><td>钱尔</td><td>男</td><td>18</td><td>信息</td></tr><tr><td>s3</td><td>孙珊</td><td>女</td><td>20</td><td>信息</td></tr><tr><td>s4</td><td>李思</td><td>男</td><td>21</td><td>自动化</td></tr></tbody></table><p>SC表</p><table><thead><tr><th>Sno</th><th>Cno</th><th>Grade</th></tr></thead><tbody><tr><td>s1</td><td>c1</td><td>90</td></tr><tr><td>s1</td><td>C2</td><td>85</td></tr><tr><td>s2</td><td>C5</td><td>57</td></tr><tr><td>s2</td><td>C7</td><td>80</td></tr><tr><td>S4</td><td>c2</td><td>85</td></tr></tbody></table><h2 id="2-用带EXISTS谓词的执行过程"><a href="#2-用带EXISTS谓词的执行过程" class="headerlink" title="2.用带EXISTS谓词的执行过程"></a>2.用带EXISTS谓词的执行过程</h2><p><img src="https://tuchuang-1309886987.cos.ap-beijing.myqcloud.com/20220414102127.png"><br>外循环指向第一条数据，内循环指向第一条数据，判断EXISTS子句是否满足，由于内循环第一条CNO是C1所以不满足，外循环不变，内循环指向下一条，此时条件满足SNO相等CNO也相等，EXISTS返回真，即输出sn赵亦，已经是真了，所以不用再向下遍历了<br><img src="https://tuchuang-1309886987.cos.ap-beijing.myqcloud.com/20220414102504.png"><br>对于外循环第二、三条数据，没有可以满足的，所以EXISTS子句恒为假，所以不输出<br><img src="https://tuchuang-1309886987.cos.ap-beijing.myqcloud.com/20220414102611.png"><br>对于外循环第四条，从内循环第一条开始遍历，直到内循环最后一条才符合，然后输出李思<br>总结：当子查询的查询结果集合为<code>非空</code>时，外层的WHERE子句返回<code>真值</code>，否则返回假值。所以有一个满足，后面就不用遍历了</p><h2 id="4-不同形式的查询间的替换"><a href="#4-不同形式的查询间的替换" class="headerlink" title="4.不同形式的查询间的替换"></a>4.不同形式的查询间的替换</h2><ul><li>一些带EXISTS或NOT EXISTS谓词的子查询不能被其他形式的子查询等价替换</li><li>所有带IN谓词子查询、连接查询都能用带EXISTS谓词的子查询等价替换。</li><li>总结:EXISTS谓词的表达能力是高于其他谓词的表达形式的。</li></ul><h2 id="5-效率"><a href="#5-效率" class="headerlink" title="5.效率"></a>5.效率</h2><p>通常情况下，3种查询方式的执行时间：<br>EXISTS &lt;&#x3D; IN &lt;&#x3D; JOIN<br>NOT EXISTS &lt;&#x3D; NOT IN &lt;&#x3D; LEFT JOIN  </p><p>只有当表中字段允许NULL时，NOT IN的方式最慢：<br>NOT EXISTS &lt;&#x3D; LEFT JOIN &lt;&#x3D; NOT IN<br><img src="https://tuchuang-1309886987.cos.ap-beijing.myqcloud.com/20220414103732.png"></p><blockquote><p>由于带EXISTS谓词的相关子查询只关心内层查询是否有返回值，并不需要查具体值，因此其效率并不一定低于其他查询。</p></blockquote><h1 id="三、带有ANY或ALL的子查询"><a href="#三、带有ANY或ALL的子查询" class="headerlink" title="三、带有ANY或ALL的子查询"></a>三、带有ANY或ALL的子查询</h1><p>ANY表示某一个值<br>ALL表示所有值</p><h2 id="1-需要配合使用比较运算符"><a href="#1-需要配合使用比较运算符" class="headerlink" title="1.需要配合使用比较运算符:"></a>1.需要配合使用比较运算符:</h2><table><thead><tr><th>1</th><th>1</th></tr></thead><tbody><tr><td>&gt;(&gt;&#x3D;)ANY</td><td>大于(大于等于)子查询结果中的某个值.</td></tr><tr><td>&gt;(&gt;&#x3D;)ALL</td><td>大于(大于等于)子查询结果中的所有值,</td></tr><tr><td>&lt;(&lt;&#x3D; )ANY</td><td>小于(小于等于)子查询结果中的某个值.</td></tr><tr><td>&lt;(&lt;&#x3D; )ALL</td><td>小于(小于等于)子查询结果中的所有值</td></tr><tr><td>&#x3D;ANY</td><td>等于子查询结果中的某个值</td></tr><tr><td>&#x3D;ALL</td><td>等于子查询结果中的所有值(通常无实际意义)</td></tr><tr><td>!&#x3D;ANY</td><td>不等于子查询结果中的某个值</td></tr><tr><td>!&#x3D;ALL</td><td>不等于子查询结果中的任何一个值</td></tr></tbody></table><p>[例53]查询比计算1401班某一个学生年龄小的学生姓名<br>和年龄。</p><figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">SELECT</span> Sname,<span class="keyword">Year</span>(Now())<span class="operator">-</span><span class="keyword">Year</span>(Sbirth) sage</span><br><span class="line"><span class="keyword">FROM</span> s</span><br><span class="line"><span class="keyword">WHERE</span> Sbirth <span class="operator">&gt;</span> <span class="keyword">ANY</span></span><br><span class="line">(<span class="keyword">SELECT</span> Sbirth</span><br><span class="line"><span class="keyword">FROM</span> s </span><br><span class="line"><span class="keyword">WHERE</span> Sclass<span class="operator">=</span><span class="string">&#x27;计算1401&#x27;</span>)</span><br><span class="line"><span class="keyword">AND</span> Sclass <span class="operator">&lt;&gt;</span><span class="string">&#x27;计算1401&#x27;</span>;</span><br></pre></td></tr></table></figure><p>ANY和ALL谓词有时可以用集函数实现<br>ANY、ALL与集函数的对应关系</p><table><thead><tr><th></th><th>&#x3D;</th><th>&lt;&gt;或!&#x3D;</th><th>&lt;</th><th>&lt;&#x3D;</th><th>&gt;</th><th>&gt;&#x3D;</th></tr></thead><tbody><tr><td>ANY</td><td>IN</td><td>–</td><td>&lt;MAX</td><td>&lt;&#x3D;MAX</td><td>&gt;MIN</td><td>&gt;&#x3D;MIN</td></tr><tr><td>ALL</td><td>–</td><td>NOT IN</td><td>&lt;MIN</td><td>&lt;&#x3D;MIN</td><td>&gt;MAX</td><td>&gt;&#x3D;MAX</td></tr></tbody></table><p>用ANY实现:</p><figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">SELECT</span> Sno, grade</span><br><span class="line"><span class="keyword">FROM</span> sC</span><br><span class="line"><span class="keyword">WHERE</span> Grade<span class="operator">&lt;</span><span class="keyword">ANY</span></span><br><span class="line">(<span class="keyword">SELECT</span> Grade <span class="keyword">FROM</span> SC</span><br><span class="line"><span class="keyword">WHERE</span> Cno<span class="operator">=</span><span class="string">&#x27;C2&#x27;</span>)</span><br><span class="line"><span class="keyword">AND</span> cno <span class="operator">&gt;</span><span class="string">&#x27;C2&#x27;</span>;</span><br></pre></td></tr></table></figure><p>用集函数实现:</p><figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">SELECT</span> Sno, grade</span><br><span class="line"><span class="keyword">FROM</span> Sc</span><br><span class="line"><span class="keyword">WHERE</span> Grade<span class="operator">&lt;</span></span><br><span class="line">(<span class="keyword">SELECT</span> <span class="built_in">MAX</span>(grade) <span class="keyword">FROM</span> sc</span><br><span class="line"><span class="keyword">WHERE</span> Cno<span class="operator">=</span><span class="string">&#x27;C2&#x27;</span>)</span><br><span class="line"><span class="keyword">AND</span> cno <span class="operator">&gt;</span><span class="string">&#x27;C2&#x27;</span>;</span><br></pre></td></tr></table></figure><p><code>用集函数实现子查询能够减少比较次数，提高查询效率(CPU) 。</code></p><h1 id="四、基于派生表的查询"><a href="#四、基于派生表的查询" class="headerlink" title="四、基于派生表的查询"></a>四、基于派生表的查询</h1><p>子查询出现在FROM子句中，这时子查询生成的临时派生表成为父查询的查询对象<br>[例]查询计算1401班男生的学号和姓名.</p><figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">SELECT</span> Sno, Sname</span><br><span class="line"><span class="keyword">FROM</span> ( <span class="keyword">SELECT</span> <span class="operator">*</span> <span class="keyword">FROM</span> S</span><br><span class="line"><span class="keyword">WHERE</span> Sclass<span class="operator">=</span><span class="string">&#x27;计算1401&#x27;</span> ) <span class="keyword">AS</span> Cs</span><br><span class="line"><span class="keyword">WHERE</span> Ssex<span class="operator">=</span><span class="string">&#x27;男&#x27;</span>;</span><br></pre></td></tr></table></figure><p>[例]查询课程选课人数达到或超过3人的课程号.</p><figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">SELECT</span> cno,人数</span><br><span class="line"><span class="keyword">FROM</span> (<span class="keyword">SELECT</span> cno,<span class="built_in">count</span>(<span class="operator">*</span>) 人数</span><br><span class="line"><span class="keyword">FROM</span> SC</span><br><span class="line"><span class="keyword">Group</span> <span class="keyword">by</span> cno ) <span class="keyword">AS</span> rs</span><br><span class="line"><span class="keyword">WHERE</span> 人数<span class="operator">&gt;=</span><span class="number">3</span></span><br></pre></td></tr></table></figure><p>[例]查询课程选课人数达到或超过3人的课名.</p><figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">SELECT</span> cname,人数</span><br><span class="line"><span class="keyword">FROM</span> C,(<span class="keyword">SELECT</span> cno,<span class="built_in">count</span>(<span class="operator">*</span>)人数</span><br><span class="line"><span class="keyword">FROM</span> SC</span><br><span class="line"><span class="keyword">Group</span> <span class="keyword">by</span> cno ) <span class="keyword">AS</span> rs</span><br><span class="line"><span class="keyword">WHERE</span> C.cno<span class="operator">=</span>rs.cno</span><br><span class="line"><span class="keyword">and</span> 人数<span class="operator">&gt;=</span><span class="number">3</span></span><br></pre></td></tr></table></figure><h1 id="将查询结果保存到指定表"><a href="#将查询结果保存到指定表" class="headerlink" title="将查询结果保存到指定表"></a>将查询结果保存到指定表</h1><h2 id="1-已存在的表"><a href="#1-已存在的表" class="headerlink" title="1.已存在的表"></a>1.已存在的表</h2><p>INSERT INTO SELECT 语句从一个表复制数据，然后把数据插入到一个已存在的表中。</p><figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">INSERT</span> <span class="keyword">INTO</span> table2  </span><br><span class="line"><span class="keyword">SELECT</span> <span class="operator">*</span> <span class="keyword">FROM</span> table1;</span><br></pre></td></tr></table></figure><p>只复 id&#x3D;1 的数据到 “Websites” 中：</p><figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">INSERT</span> <span class="keyword">INTO</span> Websites (name, country)  </span><br><span class="line"><span class="keyword">SELECT</span> app_name, country <span class="keyword">FROM</span> apps  </span><br><span class="line"><span class="keyword">WHERE</span> id<span class="operator">=</span><span class="number">1</span>;</span><br></pre></td></tr></table></figure>]]></content>
+      
+      
+      <categories>
+          
+          <category> MySQL数据库 </category>
+          
+          <category> MYSQL数据操作管理 </category>
+          
+      </categories>
+      
+      
+        <tags>
+            
+            <tag> 数据库笔记 </tag>
+            
+        </tags>
+      
+    </entry>
+    
+    
+    
+    <entry>
+      <title>8.5.1 连接查询</title>
+      <link href="/post/1fb689f6.html"/>
+      <url>/post/1fb689f6.html</url>
+      
+        <content type="html"><![CDATA[<h1 id="一、连接查询"><a href="#一、连接查询" class="headerlink" title="一、连接查询"></a>一、连接查询</h1><p>表的两种连接方式<br>(1)利用关键字JOIN—ON进行连接:<br>当将JOIN关键词放于FROM子句中时,关键词ON与之对应，用于表明连接的条件<br>(2)利用WHERE子句连接<br>FROM子句中给出查询用的表名，WHERE子句指明连接的列名及其连接条件</p><h2 id="JOIN—ON"><a href="#JOIN—ON" class="headerlink" title="JOIN—ON"></a>JOIN—ON</h2><figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">SELECT</span><span class="operator">&lt;</span>列名[<span class="operator">&lt;</span>列名<span class="operator">&gt;</span>]...</span><br><span class="line"><span class="keyword">FROM</span> <span class="operator">&lt;</span>表名<span class="number">1</span><span class="operator">&gt;</span> [连接类型] <span class="keyword">JOIN</span> <span class="operator">&lt;</span>表名<span class="number">2</span><span class="operator">&gt;</span> <span class="keyword">ON</span> 连接条件</span><br></pre></td></tr></table></figure><p>连接类型</p><ol><li>INNER 内； 默认</li><li>NATURAL 自然</li><li>LEFT 左外</li><li>RIGHT 右外</li></ol><h2 id="1-内连接"><a href="#1-内连接" class="headerlink" title="1.内连接"></a>1.内连接</h2><h3 id="1-等值连接"><a href="#1-等值连接" class="headerlink" title="1.等值连接"></a>1.等值连接</h3><p><a href="https://blog.topxls.cn/post/c2dbb682">3.1.4 专门关系运算#连接</a><br>[例43]对选修表SC和课程表C做等值连接查询</p><figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">SELECT</span><span class="operator">*</span></span><br><span class="line">FROMsC <span class="keyword">JOIN</span> C <span class="keyword">ON</span> SC.Cno <span class="operator">=</span> c.Cno;</span><br></pre></td></tr></table></figure><p>注意：在查询同名的属性时，要分清是哪个表的，例如下题<br>[思考]查询选修C2号课程的选课和课程信息。</p><figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">SELECT</span><span class="operator">*</span></span><br><span class="line"><span class="keyword">FROM</span> SC <span class="keyword">JOIN</span> C <span class="keyword">ON</span> SC.Cno<span class="operator">=</span> C.Cno </span><br><span class="line"><span class="keyword">WHERE</span> Cno<span class="operator">=</span><span class="string">&#x27;C2&#x27;</span></span><br></pre></td></tr></table></figure><p>此语法有误，WHERE Cno&#x3D;’C2’中的CNO有歧义，正确写法CNO改为SC.Cno或改为C.Cno</p><p>[补充]查询选修“数学”课的学生学号﹑姓名和成绩。</p><figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">SELECT</span> Sno,Sname,Grade</span><br><span class="line"><span class="keyword">FROM</span> s <span class="keyword">JOIN</span> SC <span class="keyword">ON</span> Stu.Sno <span class="operator">=</span> sc.Sno <span class="keyword">JOIN</span> c <span class="keyword">ON</span> SC.Cno <span class="operator">=</span> C.Cno</span><br><span class="line"><span class="keyword">WHERE</span> Cname<span class="operator">=</span><span class="string">&#x27;数学&#x27;</span>;</span><br></pre></td></tr></table></figure><h3 id="2-自然连接-NATURAL"><a href="#2-自然连接-NATURAL" class="headerlink" title="2.自然连接(NATURAL)"></a>2.自然连接(NATURAL)</h3><p>自然连接:在等值连接中，去掉目标列中的重复列<br>特点:<br>(1)无需指定连接条件<br>(2)默认进行同名属性的等值连接，并去掉重复列</p><p>[例44]对选修表SC和课程表C做自然连接查询</p><figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">SELECT</span> <span class="operator">*</span></span><br><span class="line"><span class="keyword">FROM</span> sC <span class="keyword">NATURAL</span> <span class="keyword">JOIN</span> C;</span><br></pre></td></tr></table></figure><h3 id="3-非等值连接"><a href="#3-非等值连接" class="headerlink" title="3.非等值连接"></a>3.非等值连接</h3><p>非等值连接:在连接操作中，连接条件运算符不是采用等号（&#x3D;)的连接操作。<br>[例44]对选修表SC和课程表C做非等值连接查询</p><figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">SELECT</span> <span class="operator">*</span></span><br><span class="line"><span class="keyword">FROM</span> SC <span class="keyword">INNER</span> <span class="keyword">JOIN</span> C <span class="keyword">ON</span> SC.Cno <span class="operator">!=</span> C.Cno;</span><br></pre></td></tr></table></figure><p>这种连接通常无意义!</p><h3 id="4-自身连接"><a href="#4-自身连接" class="headerlink" title="4.自身连接"></a>4.自身连接</h3><p>【例】查询每一门课及其先修课的课程名。</p><figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">SELECT</span> C1.Cname <span class="keyword">as</span> 课程,C2.Cnam <span class="keyword">as</span> 先修课程</span><br><span class="line"><span class="keyword">FROM</span> C <span class="keyword">AS</span> C1 <span class="keyword">JOIN</span> C <span class="keyword">AS</span> C2 <span class="keyword">ON</span> C1.cpno<span class="operator">=</span>C2.cno;</span><br></pre></td></tr></table></figure><h2 id="2-外连接"><a href="#2-外连接" class="headerlink" title="2.外连接"></a>2.外连接</h2><p>外连接:<br>(1)需要指定连接操作的主表<br>(2)主表与副表进行<code>等值连接</code>,当主表与副表的连接字段<code>不匹配时</code>，主表的记录也显示</p><h3 id="左外连接"><a href="#左外连接" class="headerlink" title="左外连接"></a>左外连接</h3><p>[例47]查询没有选课记录的学生信息</p><figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">SELECT</span> S.<span class="operator">*</span></span><br><span class="line"><span class="keyword">FROM</span> S <span class="keyword">LEFT</span> <span class="keyword">JOIN</span> SC <span class="keyword">ON</span> S.Sno<span class="operator">=</span>SC.Sno</span><br><span class="line"><span class="keyword">WHERE</span> SC.Sno <span class="keyword">IS</span> <span class="keyword">NULL</span>;</span><br></pre></td></tr></table></figure><p>S是主表，SC是副表，S表全显示，SC表中SNO没有和S表中一样的就显示空</p><h3 id="右外连接"><a href="#右外连接" class="headerlink" title="右外连接"></a>右外连接</h3><p>[例47]查询没有被学生选修的课程信息</p><figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">SELECT</span> C.<span class="operator">*</span></span><br><span class="line"><span class="keyword">FROM</span> SC <span class="keyword">RIGHT</span> <span class="keyword">JOIN</span> C <span class="keyword">ON</span> SC.Cno<span class="operator">=</span>C.Cno</span><br><span class="line"><span class="keyword">WHERE</span> SC.Sno <span class="keyword">IS</span> <span class="keyword">NULL</span>;</span><br><span class="line"></span><br></pre></td></tr></table></figure><h2 id="WHERE"><a href="#WHERE" class="headerlink" title="WHERE"></a>WHERE</h2><p>使用WHERE子句进行连接查询</p><figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">SELECT</span><span class="operator">&lt;</span>列名<span class="operator">&gt;</span>[,<span class="operator">&lt;</span>列名<span class="operator">&gt;</span>]...</span><br><span class="line"><span class="keyword">FROM</span><span class="operator">&lt;</span>表名<span class="number">1</span><span class="operator">&gt;</span>,<span class="operator">&lt;</span>表名<span class="number">2</span><span class="operator">&gt;</span>[,表名<span class="number">3.</span>..]</span><br><span class="line"><span class="keyword">WHERE</span><span class="operator">&lt;</span>连接条件<span class="number">1</span><span class="operator">&gt;</span></span><br><span class="line">[<span class="keyword">and</span> 连接条件<span class="number">2.</span>..]</span><br><span class="line"><span class="keyword">and</span><span class="operator">&lt;</span>查询条件<span class="operator">&gt;</span></span><br></pre></td></tr></table></figure><p>提示:①WHERE子句中两种条件<br>②连接条件的顺序无关</p><p>[例]查询选修“数学”这门课程的选课信息。</p><figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">SELECT</span> <span class="operator">*</span></span><br><span class="line"><span class="keyword">FROM</span> sC,c</span><br><span class="line"><span class="keyword">WHERE</span> SC.Cno <span class="operator">=</span> C.Cno</span><br><span class="line"><span class="keyword">AND</span> Cname<span class="operator">=</span><span class="string">&#x27;数学’;</span></span><br></pre></td></tr></table></figure><p>[练习]查询选课学生的学号、姓名、课名和成绩</p><figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">SELECT</span> S.Sno,Sname, Cname,Grade</span><br><span class="line"><span class="keyword">FROM</span> s,SC,c</span><br><span class="line"><span class="keyword">WHERE</span> S.Sno<span class="operator">=</span>SC.Sno</span><br><span class="line"><span class="keyword">and</span> SC.Cno<span class="operator">=</span>C.Cno;</span><br></pre></td></tr></table></figure><figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">SELECT</span> S.Sno,Sname, Cname,Grade</span><br><span class="line"><span class="keyword">FROM</span> S </span><br><span class="line"><span class="keyword">JOIN</span> SC <span class="keyword">ON</span> S.Sno<span class="operator">=</span>sC.SnR</span><br><span class="line"><span class="keyword">JOIN</span> C <span class="keyword">ON</span> SC.Cno<span class="operator">=</span>C.Cno;</span><br></pre></td></tr></table></figure><figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">SELECT</span> S.Sno,Sname, Cname,Grade </span><br><span class="line"><span class="keyword">FROM</span> S </span><br><span class="line"><span class="keyword">NATURAL</span> <span class="keyword">JOIN</span> Sc</span><br><span class="line"><span class="keyword">NATURAL</span> <span class="keyword">JOIN</span> C;</span><br></pre></td></tr></table></figure>]]></content>
+      
+      
+      <categories>
+          
+          <category> MySQL数据库 </category>
+          
+          <category> MYSQL数据操作管理 </category>
+          
+      </categories>
+      
+      
+        <tags>
+            
+            <tag> 数据库笔记 </tag>
+            
+        </tags>
+      
+    </entry>
+    
+    
+    
+    <entry>
+      <title>JAVA类的继承</title>
+      <link href="/post/12eecc8d.html"/>
+      <url>/post/12eecc8d.html</url>
+      
+        <content type="html"><![CDATA[<h1 id="什么是类的继承"><a href="#什么是类的继承" class="headerlink" title="什么是类的继承"></a>什么是类的继承</h1><p>多个类中<code>存在相同属性和行为</code>时，将这些内容抽取到<code>单独一个类</code>中，那么<code>多个类</code>无需再定义这些属性和行为，只要继承那个<code>单独一个类</code>即可。<br>多个类可以称为<code>子类</code>，单独这个类称为<code>父类</code>、超类或者基类。<br>子类可以直接访问父类中的<code>非私有的</code><strong>属性和行为</strong>。<br>通过 extends 关键字让类与类之间产生继承关系。</p><figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">class</span> <span class="title class_">SubDemo</span> <span class="keyword">extends</span> <span class="title class_">Demo</span>&#123;&#125;    <span class="comment">//SubDemo是子类，Demo是父类</span></span><br></pre></td></tr></table></figure><h1 id="继承有什么好处？"><a href="#继承有什么好处？" class="headerlink" title="继承有什么好处？"></a>继承有什么好处？</h1><ul><li>提高代码的复用性。</li><li>让类与类之间产生了关系，是多态的前提。<h1 id="继承的特点"><a href="#继承的特点" class="headerlink" title="继承的特点"></a>继承的特点</h1></li></ul><p>1.Java只支持<code>单继承</code>，不支持多继承。</p><figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">//一个类只能有一个父类，不可以有多个父类。</span></span><br><span class="line"><span class="keyword">class</span> <span class="title class_">SubDemo</span> <span class="keyword">extends</span> <span class="title class_">Demo</span>&#123;&#125; <span class="comment">//语法正确</span></span><br><span class="line"><span class="keyword">class</span> <span class="title class_">SubDemo</span> <span class="keyword">extends</span> <span class="title class_">Demo1</span>,Demo2...<span class="comment">//语法错误</span></span><br></pre></td></tr></table></figure><p>2.Java支持<code>多层（重）继承</code>(继承体系)。<br>C继承B，B继承A</p><figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">class</span> <span class="title class_">A</span>&#123;&#125;</span><br><span class="line"><span class="keyword">class</span> <span class="title class_">B</span> <span class="keyword">extends</span> <span class="title class_">A</span>&#123;&#125;</span><br><span class="line"><span class="keyword">class</span> <span class="title class_">C</span> <span class="keyword">extends</span> <span class="title class_">B</span>&#123;&#125;</span><br></pre></td></tr></table></figure><h1 id="使用继承时的注意事项"><a href="#使用继承时的注意事项" class="headerlink" title="使用继承时的注意事项"></a>使用继承时的注意事项</h1><ul><li>如果类之间存在着：is a 的关系，就可以考虑使用继承。<br>  例如：定义一个学生类，学生is a 人，所以可以让学生类，继承person类</li><li>不要为了继承部分功能，而去使用继承。<br>  因为子类会继承父类的所有<code>非私有的</code><strong>属性和行为</strong>，如果为了继承部分方法，而去继承，其他部分有的方法可能会和原本的子类冲突<h1 id="super和this有什么区别"><a href="#super和this有什么区别" class="headerlink" title="super和this有什么区别?"></a>super和this有什么区别?</h1>super是一个关键字，代表父类的存储空间标识。(可以理解为父亲的引用)<br>super和this的用法相似。<br>this代表对象的引用(谁调用就代表谁)；<br>super代表当前子类对父类的引用。<h2 id="使用场景"><a href="#使用场景" class="headerlink" title="使用场景"></a>使用场景</h2></li><li>当子父类出现同名成员时，可以用super进行区分；</li><li>子类要调用父类构造函数时，可以使用super语句。<h1 id="区别"><a href="#区别" class="headerlink" title="区别"></a>区别</h1></li></ul><p>1.成员变量</p><figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="built_in">this</span>.变量    --    本类的</span><br><span class="line"><span class="built_in">super</span>.变量    --    父类的</span><br></pre></td></tr></table></figure><p>2.构造方法</p><figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="built_in">this</span>(...)    --    本类的</span><br><span class="line"><span class="built_in">super</span>(...)    --    父类的</span><br></pre></td></tr></table></figure><p>3.成员方法</p><figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="built_in">this</span>.方法名()    --    本类的    </span><br><span class="line"><span class="built_in">super</span>.方法名()    --    父类的</span><br></pre></td></tr></table></figure><p>要注意，如果在子类使用构造方法时，既需要继承父类的构造方法，又需要引用子类已有的构造方法时，<code>super();和this();都是在构造函数的第一行，不能同时出现。</code><br>例如,Worker类的构造方法，Worker继承了Person，Person有name,age属性，Worker类有salary,level属性，此构造方法需要构造这四个属性时，super(name, age);要写在第一行，并且不能使用this();去调用Worker中的已有的构造方法，只能用this.salary&#x3D;salary去赋值</p><figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="title function_">Worker</span><span class="params">(String name, <span class="type">int</span> age,<span class="type">int</span> salary,String level)</span> &#123;</span><br><span class="line">      <span class="built_in">super</span>(name, age);</span><br><span class="line">      <span class="built_in">this</span>.salary=salary;</span><br><span class="line">      <span class="built_in">this</span>.level=level;</span><br><span class="line">   &#125;</span><br></pre></td></tr></table></figure><p>原本我们可以使用this(salary, level);去调用Worker类中的两个参数的构造方法</p><figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="title function_">Worker</span><span class="params">(<span class="type">int</span> salary, String level)</span> &#123;</span><br><span class="line">       <span class="built_in">this</span>.salary = salary;</span><br><span class="line">       <span class="built_in">this</span>.level = level;</span><br><span class="line">   &#125;</span><br></pre></td></tr></table></figure><p>但是super();和this();都需要在构造函数的第一行，所以我们只能仅使用super();然后重新赋值 this.salary&#x3D;salary;this.level&#x3D;level;<img src="https://img-blog.csdnimg.cn/4e96fbee3b43413e88c2a3e8c766de34.png?x-oss-process=image/watermark,type_d3F5LXplbmhlaQ,shadow_50,text_Q1NETiBA5aSP5L2z5oCh,size_20,color_FFFFFF,t_70,g_se,x_16" alt="在这里插入图片描述"></p><p>练习在</p><p><a href="http://t.csdn.cn/5G8Wh">JAVA第十一次作业《类的继承》1</a><br><a href="http://t.csdn.cn/iQO0v">JAVA第十一次作业《类的继承》2</a></p>]]></content>
+      
+      
+      <categories>
+          
+          <category> JAVA </category>
+          
+      </categories>
+      
+      
+        <tags>
+            
+            <tag> JAVA学习 </tag>
+            
+        </tags>
+      
+    </entry>
+    
+    
+    
+    <entry>
+      <title>方法重载、静态属性、静态方法</title>
+      <link href="/post/1dd1a0bd.html"/>
+      <url>/post/1dd1a0bd.html</url>
+      
+        <content type="html"><![CDATA[<h1 id="方法重载"><a href="#方法重载" class="headerlink" title="方法重载"></a>方法重载</h1><p>先来看下方法重载（Overloading）的定义：如果有<code>两个方法的方法名相同</code>，但<code>参数不一致</code>，哪么可以说一个方法是另一个方法的重载。 具体说明如下：</p><ul><li>方法名相同</li><li>方法的参数类型，参数个数，参数类型的顺序不同</li><li>方法的返回类型可以不相同</li><li>方法的修饰符可以不相同</li><li>main 方法也可以被重载</li></ul><h2 id="例子"><a href="#例子" class="headerlink" title="例子"></a>例子</h2><figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title function_">display</span><span class="params">()</span>&#123;</span><br><span class="line"><span class="comment">//...</span></span><br><span class="line">&#125;</span><br><span class="line"><span class="keyword">public</span> <span class="type">int</span> <span class="title function_">display</span><span class="params">(<span class="type">int</span> deadLine)</span>&#123;</span><br><span class="line">    <span class="comment">//...</span></span><br><span class="line"><span class="keyword">return</span> <span class="number">0</span>;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure><p>这两个方法，<code>方法名相同</code>，但是<code>参数不一致</code>，一个无参，一个有一个参数，返回类型可以不相同，所以符合方法的重载</p><figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title function_">display1</span><span class="params">()</span>&#123;</span><br><span class="line"><span class="comment">//...</span></span><br><span class="line">&#125;</span><br><span class="line"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title function_">display2</span><span class="params">(<span class="type">int</span> deadLine)</span>&#123;</span><br><span class="line">    <span class="comment">//...</span></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure><p>注意，这两个方法的方法名不同，完全是两个方法，所以不符合方法重载</p><figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title function_">display</span><span class="params">(<span class="type">int</span> passLine)</span>&#123;</span><br><span class="line"><span class="comment">//...</span></span><br><span class="line">&#125;</span><br><span class="line"><span class="keyword">public</span> <span class="type">int</span> <span class="title function_">display</span><span class="params">(<span class="type">int</span> deadLine)</span>&#123;</span><br><span class="line">    <span class="comment">//...</span></span><br><span class="line"><span class="keyword">return</span> <span class="number">0</span>;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure><p>两个方法的<code>方法名相同</code>，但是不符合<code>参数不同</code>这一条件，因为这两个方法的参数都是int型，也都只有一个参数，所以不符合方法重载</p><blockquote><p>注意：参数的名可以不同，参数名不同，不叫<code>参数不同</code>，因为方法的形参名只在此方法中的调用，<code>参数不同</code>只包括，参数类型不同，参数个数不同，参数类型的顺序不同</p></blockquote><figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title function_">display</span><span class="params">(<span class="type">int</span> passLine,String str)</span>&#123;</span><br><span class="line">    <span class="comment">//...</span></span><br><span class="line">&#125;</span><br><span class="line"><span class="keyword">public</span> <span class="type">int</span> <span class="title function_">display</span><span class="params">(String str,<span class="type">int</span> deadLine)</span>&#123;</span><br><span class="line"><span class="comment">//....</span></span><br><span class="line"><span class="keyword">return</span> <span class="number">0</span>;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure><p><code>参数类型的顺序不同</code>，也满足参数不同，也符合方法重载</p><h1 id="静态属性"><a href="#静态属性" class="headerlink" title="静态属性"></a>静态属性</h1><p>static 关键字用来声明独立于对象的静态变量，无论一个类实例化多少对象，它的静态变量只有一份拷贝，所有对象共用。 静态变量也被称为类变量。局部变量不能被声明为 static 变量。</p><p><img src="https://tuchuang-1309886987.cos.ap-beijing.myqcloud.com/image-20220413143457426.png" alt="image-20220413143457426"></p><p>总结来说static</p><p>1：为某特定数据类型或对象分配单一的存储空间，而与创建对象的个数无关。</p><p>2：静态变量被所有的对象所共享，在内存中只有一个副本，它当且仅当在类初次加载时会被初始化。 </p><p>3：简单来说就是被static修饰后的值可以直接 类名.值 进行引用，而无需new一个对象进行调用</p><p>静态变量在类加载时创建，实例属性是在对象创建之后才创建</p><p>静态属性时类的属性，是所有对象共享的属性，实例属性时属于对象的属性</p><p>例如</p><p>定义静态属性num</p><figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">private</span> <span class="keyword">static</span> <span class="type">int</span> <span class="variable">num</span> <span class="operator">=</span> <span class="number">0</span>;</span><br></pre></td></tr></table></figure><h1 id="静态方法"><a href="#静态方法" class="headerlink" title="静态方法"></a>静态方法</h1><p>static 关键字用来声明独立于对象的静态方法。静态方法不能使用类的非静态变量。静态方法从参数列表得到数据，然后计算这些数据。</p><p>静态方法中不可以直接访问实例属性或实例方法</p><p>例如</p><p>定义静态方法add，让静态属性num自增</p><figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">private</span> <span class="keyword">static</span> <span class="keyword">void</span> <span class="title function_">add</span><span class="params">()</span> &#123;</span><br><span class="line">     num++;</span><br><span class="line">  &#125;</span><br></pre></td></tr></table></figure><p>静态属性和方法可以直接<code>类名.方法</code>或<code>类名.属性</code>调用，如下<code>代码默认不展开，可手动点代码底部展开</code></p><figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="keyword">class</span> <span class="title class_">test</span> &#123;</span><br><span class="line">   <span class="keyword">private</span> <span class="keyword">static</span> <span class="type">int</span> <span class="variable">num</span> <span class="operator">=</span> <span class="number">0</span>;<span class="comment">//定义静态变量，初始值0</span></span><br><span class="line">    </span><br><span class="line">    <span class="comment">//定义静态方法，返回静态变量num</span></span><br><span class="line">   <span class="keyword">protected</span> <span class="keyword">static</span> <span class="type">int</span> <span class="title function_">getCount</span><span class="params">()</span> &#123;</span><br><span class="line">      <span class="keyword">return</span> num;</span><br><span class="line">   &#125;</span><br><span class="line">    </span><br><span class="line"> <span class="comment">//定义静态方法，使静态变量num自增</span></span><br><span class="line">   <span class="keyword">private</span> <span class="keyword">static</span> <span class="keyword">void</span> <span class="title function_">add</span><span class="params">()</span> &#123;</span><br><span class="line">      num++;</span><br><span class="line">   &#125;</span><br><span class="line">    </span><br><span class="line"> <span class="comment">//构造方法，每调用一次就执行一次test类的add静态方法</span></span><br><span class="line">   test() &#123;</span><br><span class="line">      test.add();<span class="comment">//因为add是静态方法所以可以直接 类名.add() 调用</span></span><br><span class="line">   &#125;</span><br><span class="line"> </span><br><span class="line">   <span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">void</span> <span class="title function_">main</span><span class="params">(String[] arguments)</span> &#123;</span><br><span class="line">      System.out.println(<span class="string">&quot;Starting with &quot;</span> +test.getCount() + <span class="string">&quot; instances&quot;</span>);</span><br><span class="line">       <span class="comment">//因为getCount是静态方法所以可以直接 类名.getCount() 调用</span></span><br><span class="line">       </span><br><span class="line">      <span class="keyword">for</span> (<span class="type">int</span> <span class="variable">i</span> <span class="operator">=</span> <span class="number">0</span>; i &lt; <span class="number">500</span>; ++i)&#123;</span><br><span class="line">         <span class="keyword">new</span> <span class="title class_">test</span>();<span class="comment">//构造500个实例对象</span></span><br><span class="line">          &#125;</span><br><span class="line">       </span><br><span class="line">      System.out.println(<span class="string">&quot;Created &quot;</span> +test.getCount() + <span class="string">&quot; instances&quot;</span>);</span><br><span class="line">   &#125;</span><br><span class="line">&#125;</span><br><span class="line"></span><br></pre></td></tr></table></figure><p>输出结果为</p><figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">Starting with 0 instances</span><br><span class="line">Created 500 instances</span><br></pre></td></tr></table></figure><p>因为创造实例对象时会调用构造方法，构造方法中又调用了add方法，所以每构造一个实例对象就会使num+1</p>]]></content>
+      
+      
+      <categories>
+          
+          <category> JAVA </category>
+          
+      </categories>
+      
+      
+        <tags>
+            
+            <tag> JAVA学习 </tag>
+            
+        </tags>
+      
+    </entry>
+    
+    
+    
+    <entry>
+      <title>JetBrains全家桶安装、学生认证以及IDE中文设置</title>
+      <link href="/post/4e214453.html"/>
+      <url>/post/4e214453.html</url>
+      
+        <content type="html"><![CDATA[<h1 id="一、账号申请"><a href="#一、账号申请" class="headerlink" title="一、账号申请"></a>一、账号申请</h1><h2 id="1-进入账号登陆网页"><a href="#1-进入账号登陆网页" class="headerlink" title="1.进入账号登陆网页"></a>1.进入账号登陆网页</h2><p><a href="https://account.jetbrains.com/login">JetBrains账号登陆及申请</a><br><img src="https://img-blog.csdnimg.cn/2c2498f4b12146518588a623d99dea43.png?x-oss-process=image/watermark,type_d3F5LXplbmhlaQ,shadow_50,text_Q1NETiBA5aSP5L2z5oCh,size_20,color_FFFFFF,t_70,g_se,x_16" alt="在这里插入图片描述">此处输入你的邮箱地址后，点击<code>Sign up</code></p><h2 id="2-然后他会给你的这个邮箱发一封电子邮件"><a href="#2-然后他会给你的这个邮箱发一封电子邮件" class="headerlink" title="2.然后他会给你的这个邮箱发一封电子邮件"></a>2.然后他会给你的这个邮箱发一封电子邮件</h2><p>如下图所示<br><img src="https://img-blog.csdnimg.cn/f1adcd29f6a1493ca8e646dcc86d3003.png?x-oss-process=image/watermark,type_d3F5LXplbmhlaQ,shadow_50,text_Q1NETiBA5aSP5L2z5oCh,size_20,color_FFFFFF,t_70,g_se,x_16" alt="在这里插入图片描述"></p><h2 id="3-进入邮箱，查找一封JetBrains发的邮件，点击蓝字，确认你的账户"><a href="#3-进入邮箱，查找一封JetBrains发的邮件，点击蓝字，确认你的账户" class="headerlink" title="3.进入邮箱，查找一封JetBrains发的邮件，点击蓝字，确认你的账户"></a>3.进入邮箱，查找一封JetBrains发的邮件，点击蓝字，确认你的账户</h2><p><img src="https://img-blog.csdnimg.cn/8a96aa810e6f46e98e3d5ad588cc1fce.png?x-oss-process=image/watermark,type_d3F5LXplbmhlaQ,shadow_50,text_Q1NETiBA5aSP5L2z5oCh,size_20,color_FFFFFF,t_70,g_se,x_16" alt="在这里插入图片描述"></p><h2 id="4-填写你的姓名，用户名-username-，再设定一个密码"><a href="#4-填写你的姓名，用户名-username-，再设定一个密码" class="headerlink" title="4.填写你的姓名，用户名(username)，再设定一个密码"></a>4.填写你的姓名，用户名(username)，再设定一个密码</h2><p>Username可以直接使用你的邮箱地址，也可以自定义<br>记得勾选<code>I have read and I accept the JetBrains Account Agreement</code><br>另一个可以不勾选<br><img src="https://img-blog.csdnimg.cn/d7597bce5fa640c79549a84aed15d214.png?x-oss-process=image/watermark,type_d3F5LXplbmhlaQ,shadow_50,text_Q1NETiBA5aSP5L2z5oCh,size_20,color_FFFFFF,t_70,g_se,x_16" alt="在这里插入图片描述"></p><p>更改一下收到的邮件的语言<img src="https://img-blog.csdnimg.cn/23cd5f0c4106407fb95b0e2a80006256.png?x-oss-process=image/watermark,type_d3F5LXplbmhlaQ,shadow_50,text_Q1NETiBA5aSP5L2z5oCh,size_20,color_FFFFFF,t_70,g_se,x_16" alt="在这里插入图片描述"></p><h2 id="5-显示这样就注册完成"><a href="#5-显示这样就注册完成" class="headerlink" title="5.显示这样就注册完成"></a>5.显示这样就注册完成</h2><p><img src="https://img-blog.csdnimg.cn/db260bd1c4554a5f9c1a49ef8539dc01.png?x-oss-process=image/watermark,type_d3F5LXplbmhlaQ,shadow_50,text_Q1NETiBA5aSP5L2z5oCh,size_20,color_FFFFFF,t_70,g_se,x_16"></p><h1 id="二、学生认证"><a href="#二、学生认证" class="headerlink" title="二、学生认证"></a>二、学生认证</h1><p><a href="https://www.jetbrains.com/shop/eform/students">学生认证网址</a></p><p>有四种认证方式<br><code>大学邮箱认证</code>适用于大学支持学生开通属于自己的教育邮箱的<br>没有教育邮箱的，也可以使用学信网官方文件认证<br>本篇讲解使用学信网官方文件认证的步骤</p><h2 id="1-填写基本信息"><a href="#1-填写基本信息" class="headerlink" title="1.填写基本信息"></a>1.填写基本信息</h2><p><img src="https://img-blog.csdnimg.cn/6d7ba3c2187d4b1bad2f4ebb3fca1351.png?x-oss-process=image/watermark,type_d3F5LXplbmhlaQ,shadow_50,text_Q1NETiBA5aSP5L2z5oCh,size_20,color_FFFFFF,t_70,g_se,x_16" alt="在这里插入图片描述"><br>学术机构名称，填你大学的名字<br>学术机构的网站，也就是你大学的官网<br>记得两个都勾选上<br><img src="https://img-blog.csdnimg.cn/a0f245dcf2724dcab982f48a1b972790.png?x-oss-process=image/watermark,type_d3F5LXplbmhlaQ,shadow_50,text_Q1NETiBA5aSP5L2z5oCh,size_20,color_FFFFFF,t_70,g_se,x_16" alt="在这里插入图片描述"></p><h2 id="2-官方文件的下载和提交"><a href="#2-官方文件的下载和提交" class="headerlink" title="2.官方文件的下载和提交"></a>2.官方文件的下载和提交</h2><p>我们转到<a href="https://my.chsi.com.cn/archive/index.action">学信网登陆界面</a></p><p>登陆后会弹出来一个文件，向下翻可以跳过</p><p>选择，<code>在线验证报告-申请</code><br><img src="https://img-blog.csdnimg.cn/4caf03a976e54e838b47904843d4d596.png?x-oss-process=image/watermark,type_d3F5LXplbmhlaQ,shadow_50,text_Q1NETiBA5aSP5L2z5oCh,size_20,color_FFFFFF,t_70,g_se,x_16" alt="在这里插入图片描述"></p><p>选择第一个<code>教育部学籍在线验证报告</code><br><img src="https://img-blog.csdnimg.cn/4cf90c2503b4474384eabff4a048cf63.png?x-oss-process=image/watermark,type_d3F5LXplbmhlaQ,shadow_50,text_Q1NETiBA5aSP5L2z5oCh,size_20,color_FFFFFF,t_70,g_se,x_16" alt="在这里插入图片描述"></p><p>选择<code>申请</code><br><img src="https://img-blog.csdnimg.cn/6c757f8c1ea34d228e2c88b110bb3c93.png?x-oss-process=image/watermark,type_d3F5LXplbmhlaQ,shadow_50,text_Q1NETiBA5aSP5L2z5oCh,size_20,color_FFFFFF,t_70,g_se,x_16" alt="在这里插入图片描述"></p><p>有效期，看个人喜好，过期可以续<br><img src="https://img-blog.csdnimg.cn/f19f9b97961041b185f8c21e8828c775.png?x-oss-process=image/watermark,type_d3F5LXplbmhlaQ,shadow_50,text_Q1NETiBA5aSP5L2z5oCh,size_20,color_FFFFFF,t_70,g_se,x_16" alt="在这里插入图片描述"></p><p>然后点<code>查看</code><br><img src="https://img-blog.csdnimg.cn/0de3513f506544e7b780354b490a451f.png?x-oss-process=image/watermark,type_d3F5LXplbmhlaQ,shadow_50,text_Q1NETiBA5aSP5L2z5oCh,size_20,color_FFFFFF,t_70,g_se,x_16" alt="在这里插入图片描述"></p><p>然后<code>下载PDF</code><br><img src="https://img-blog.csdnimg.cn/4a0b9e860de546eb9b8c03800c2ed8c4.png?x-oss-process=image/watermark,type_d3F5LXplbmhlaQ,shadow_50,text_Q1NETiBA5aSP5L2z5oCh,size_20,color_FFFFFF,t_70,g_se,x_16" alt="在这里插入图片描述"></p><p><code>学信网报告在线验证码</code>在下面<br><img src="https://img-blog.csdnimg.cn/f994cb04d6584a4d83999be1d93ace53.png?x-oss-process=image/watermark,type_d3F5LXplbmhlaQ,shadow_50,text_Q1NETiBA5aSP5L2z5oCh,size_20,color_FFFFFF,t_70,g_se,x_16" alt="在这里插入图片描述"></p><p>然后上传文件，填写在线验证码</p><p><img src="https://img-blog.csdnimg.cn/327a30e6189b4f62a2ac3097d9a054b1.png?x-oss-process=image/watermark,type_d3F5LXplbmhlaQ,shadow_50,text_Q1NETiBA5aSP5L2z5oCh,size_20,color_FFFFFF,t_70,g_se,x_16" alt="在这里插入图片描述"></p><p>勾选这一个，剩下两个都不勾<br><img src="https://img-blog.csdnimg.cn/1c6381788948496e86734237a7d0680e.png?x-oss-process=image/watermark,type_d3F5LXplbmhlaQ,shadow_50,text_Q1NETiBA5aSP5L2z5oCh,size_20,color_FFFFFF,t_70,g_se,x_16" alt="在这里插入图片描述"><br>然后就完成官方文件的提交，<code>等待人工审核通过后</code>，你的邮箱就会有一个邮件，点邮件里面的链接，然后登陆自己的JetBrains账户后就意味着学生证书已经绑定到你的账户了，然后你的账户就完成了学生认证，就可以免费使用Ultimate旗舰版的IDE了<br><img src="https://img-blog.csdnimg.cn/a595de837f5841d0bf79eb2a94f16a34.png?x-oss-process=image/watermark,type_d3F5LXplbmhlaQ,shadow_50,text_Q1NETiBA5aSP5L2z5oCh,size_20,color_FFFFFF,t_70,g_se,x_16" alt="在这里插入图片描述"></p><blockquote><p>学生认证有效期是1年，快过期时，会发邮件提醒你，重新上传学信网的<code>教育部学籍在线验证报告 </code>，根据提示重新上传即可</p></blockquote><p>人工审核通过后，你会收到一份内容如下的邮件</p><p><img src="https://tuchuang-1309886987.cos.ap-beijing.myqcloud.com/image-20220412180911408.png" alt="image-20220412180911408"></p><p>选择<code>link your free license</code>跳转到jetbrains登陆页面，登陆自己的jetbrains账号，然后你的账户就成功链接了这个学生证书</p><p>还没完</p><p><a href="https://account.jetbrains.com/licenses">点击这里查看你的证书</a>，然后你需要同意一份协议，如下图</p><p><img src="https://tuchuang-1309886987.cos.ap-beijing.myqcloud.com/image-20220412181226558.png" alt="image-20220412181226558"></p><p>点击<code>Please review License Agreement</code>，阅读协议，翻到最底下以后才能点<code>Agree</code></p><p><img src="https://tuchuang-1309886987.cos.ap-beijing.myqcloud.com/image-20220412181319033.png" alt="image-20220412181319033"></p><p>然后你的账户就完成了学生认证，去toolbox登陆的你账户使用IDE吧</p><h1 id="三、JetBrains全家桶"><a href="#三、JetBrains全家桶" class="headerlink" title="三、JetBrains全家桶"></a>三、JetBrains全家桶</h1><h2 id="1-下载安装"><a href="#1-下载安装" class="headerlink" title="1.下载安装"></a>1.下载安装</h2><p>我们可以使用<a href="https://www.jetbrains.com.cn/toolbox-app/">ToolBox</a>来下载我们需要的IDE(集成开发环境)</p><blockquote><p>点击蓝字即可转到ToolBox下载页面</p></blockquote><p>点击下载<br><img src="https://img-blog.csdnimg.cn/e560fa811f9b4863a874d42fe44beb7d.png?x-oss-process=image/watermark,type_d3F5LXplbmhlaQ,shadow_50,text_Q1NETiBA5aSP5L2z5oCh,size_20,color_FFFFFF,t_70,g_se,x_16" alt="在这里插入图片描述"></p><p>继续安装即可<br><img src="https://img-blog.csdnimg.cn/2fd6513ebd75440d84f8f7470b1703c1.png?x-oss-process=image/watermark,type_d3F5LXplbmhlaQ,shadow_50,text_Q1NETiBA5aSP5L2z5oCh,size_20,color_FFFFFF,t_70,g_se,x_16" alt="在这里插入图片描述"></p><h2 id="2-设置"><a href="#2-设置" class="headerlink" title="2.设置"></a>2.设置</h2><p>Toolbox位于右下角托盘，<br><img src="https://img-blog.csdnimg.cn/bf86e3c7577b43aa9fe55e9ff5fba658.png" alt="在这里插入图片描述"><br>我们点击图标，在展开的界面，点击右上角的<code>齿轮图标</code>进入设置<br><img src="https://img-blog.csdnimg.cn/31d8d9cd069f4b70b7ba8fbd6df8bf30.png?x-oss-process=image/watermark,type_d3F5LXplbmhlaQ,shadow_50,text_Q1NETiBA5aSP5L2z5oCh,size_17,color_FFFFFF,t_70,g_se,x_16" alt="在这里插入图片描述"></p><h2 id="3-登陆账号"><a href="#3-登陆账号" class="headerlink" title="3.登陆账号"></a>3.登陆账号</h2><p>可以在此处登陆JetBrains账号<br><img src="https://img-blog.csdnimg.cn/759c700909a948b8b81b2aa52b1f5459.png?x-oss-process=image/watermark,type_d3F5LXplbmhlaQ,shadow_50,text_Q1NETiBA5aSP5L2z5oCh,size_17,color_FFFFFF,t_70,g_se,x_16" alt="在这里插入图片描述"></p><h2 id="4-更改IDE安装的位置"><a href="#4-更改IDE安装的位置" class="headerlink" title="4.更改IDE安装的位置"></a>4.更改IDE安装的位置</h2><p>我们展开下面的<code>工具</code>栏，更改工具的安装位置，默认是在C盘，所以我们需要手动更改一下</p><blockquote><p>如果已经安装了IDE，也可以更改工具安装位置，会自动搬移IDE的位置</p></blockquote><p><img src="https://img-blog.csdnimg.cn/62dea1a0bf32413a9478dfa7e3b01169.png?x-oss-process=image/watermark,type_d3F5LXplbmhlaQ,shadow_50,text_Q1NETiBA5aSP5L2z5oCh,size_17,color_FFFFFF,t_70,g_se,x_16" alt="在这里插入图片描述"></p><h2 id="5-安装IDE"><a href="#5-安装IDE" class="headerlink" title="5.安装IDE"></a>5.安装IDE</h2><p>然后你就可以点击右上角的<code>工具</code>返回主界面，安装自己需要的IDE了</p><p>这种方的图标的IDE是社区免费版<br><img src="https://img-blog.csdnimg.cn/1b75ac9695d347cc9b4188d1090d9728.png" alt="在这里插入图片描述"></p><p>这种图标不是方的，是付费旗舰版<br><img src="https://img-blog.csdnimg.cn/536820fa0ac4463095a1c27af97f51b9.png" alt="在这里插入图片描述"></p><p>我们的账户在完成<code>学生认证</code>后，即可免费使用旗舰版</p><blockquote><p>完成<code>学生认证</code>后，指的是提交完官方文件申请几日后，邮箱收到JetBrains发来的邮件，将学生证书链接登陆自己的JetBrains账户后<br>不并不是你提交完官方文件，就是完成学生认证了</p></blockquote><p>在提交完<code>学信网教育部学籍在线验证报告</code>后，需要等待一周左右，此时你的账号还没有学生认证，但你仍然可以试用30天，Ultimate旗舰版的IDE，这30天足够你接受到邮件完成<code>学生认证</code></p><h1 id="四、IDE中文设置"><a href="#四、IDE中文设置" class="headerlink" title="四、IDE中文设置"></a>四、IDE中文设置</h1><p>此方法适用大部分IDE<br>IDE进入后都是英文的，我们可以通过安装插件来汉化<br>点击File<br><img src="https://img-blog.csdnimg.cn/492c839f7d0a4d0ea6d7698de25f2bce.png" alt="在这里插入图片描述"></p><p>选择Plugins<br><img src="https://img-blog.csdnimg.cn/14048dc3cf134d13b9597ae06812d123.png?x-oss-process=image/watermark,type_d3F5LXplbmhlaQ,shadow_50,text_Q1NETiBA5aSP5L2z5oCh,size_20,color_FFFFFF,t_70,g_se,x_16" alt="在这里插入图片描述"></p><p>输入<code>Chinese</code>然后Install第二个<br><img src="https://img-blog.csdnimg.cn/78d4d1f32e044da89b94328494ec75ca.png?x-oss-process=image/watermark,type_d3F5LXplbmhlaQ,shadow_50,text_Q1NETiBA5aSP5L2z5oCh,size_20,color_FFFFFF,t_70,g_se,x_16" alt="在这里插入图片描述"></p><p>安装完成后重启IDE<br><img src="https://img-blog.csdnimg.cn/d452cb65509d4a4e85805ee26304f17e.png?x-oss-process=image/watermark,type_d3F5LXplbmhlaQ,shadow_50,text_Q1NETiBA5aSP5L2z5oCh,size_20,color_FFFFFF,t_70,g_se,x_16" alt="在这里插入图片描述"></p>]]></content>
+      
+      
+      <categories>
+          
+          <category> 笔记 </category>
+          
+      </categories>
+      
+      
+        <tags>
+            
+            <tag> JetBrains </tag>
+            
+        </tags>
+      
+    </entry>
+    
+    
+    
+    <entry>
+      <title>8.4.4 高级查询</title>
+      <link href="/post/3c8aa586.html"/>
+      <url>/post/3c8aa586.html</url>
+      
+        <content type="html"><![CDATA[<h1 id="1-对查询结果排序-order-by"><a href="#1-对查询结果排序-order-by" class="headerlink" title="1.对查询结果排序(order by)"></a>1.对查询结果排序(order by)</h1><p>使用order by子句<br>可以按一个或多个属性进行排序<br>升序：ASC(缺省值) 降序：DESC<br><code>当排序列含有NULL时，认为NULL最小</code><br>ASC:排序列为空值的元组最先显示<br>DESC:排序列为空值的元组最后显示<br>[例]查询选修了C3号课程的学生的学号及成绩，查询结果按分数降序排列。</p><figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">SELECT</span> Sno,Grade</span><br><span class="line"><span class="keyword">FROM</span> sc</span><br><span class="line"><span class="keyword">WHERE</span> Cno<span class="operator">=</span><span class="string">&#x27;C3&#x27;</span></span><br><span class="line"><span class="keyword">ORDER</span> <span class="keyword">BY</span> Grade <span class="keyword">DESC</span>;</span><br></pre></td></tr></table></figure><p>[例]查询全体学生情况，结果按班级升序排列，同班级学生按生日降序排列。</p><figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">SELECT</span> <span class="operator">*</span></span><br><span class="line"><span class="keyword">FROM</span> Stu</span><br><span class="line"><span class="keyword">ORDER</span> <span class="keyword">BY</span> Sclass <span class="keyword">ASC</span>, Sbirth <span class="keyword">DESC</span>;</span><br></pre></td></tr></table></figure><h1 id="2-限制查询结果显示数量-LIMIT"><a href="#2-限制查询结果显示数量-LIMIT" class="headerlink" title="2.限制查询结果显示数量(LIMIT)"></a>2.限制查询结果显示数量(LIMIT)</h1><p>在SELECT子句中使用LIMIT m,n短语。<br>格式:<br>LIMIT [m,]n | n OFFSET m<br>说明:m表示偏移量，即从第m条记录取，默认第一行为0<br>n表示要获取的行数</p><ul><li>limit N : 返回 N 条记录</li><li>offset M : 跳过 M 条记录, 默认 M&#x3D;0, 单独使用似乎不起作用</li><li>limit N,M : 相当于 <strong>limit M offset N</strong> , 从第 N 条记录开始, 返回 M 条记录<br>[例]查询Stu表中的前3条记录的学生姓名<figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">SELECT</span> Sname </span><br><span class="line"><span class="keyword">FROM</span> Stu</span><br><span class="line">LIMIT O,<span class="number">3</span>;</span><br><span class="line">或:LIMIT <span class="number">3</span> <span class="keyword">OFFSET</span> <span class="number">0</span></span><br></pre></td></tr></table></figure></li></ul><h1 id="3-集合查询-COUNT"><a href="#3-集合查询-COUNT" class="headerlink" title="3.集合查询(COUNT)"></a>3.集合查询(COUNT)</h1><table><thead><tr><th>常用集合函数</th><th>功能</th></tr></thead><tbody><tr><td>AVG()</td><td>返回平均值</td></tr><tr><td>COUNT()</td><td>返回行数</td></tr><tr><td>FIRST()</td><td>返回第一个记录的值</td></tr><tr><td>LAST()</td><td>返回最后一个记录的值</td></tr><tr><td>MAX()</td><td>返回最大值</td></tr><tr><td>MIN()</td><td>返回最小值</td></tr><tr><td>SUM()</td><td>返回总和</td></tr><tr><td>[例]查询选修C2号课程的学生最高分数。</td><td></td></tr></tbody></table><figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">SELECT</span>  Cno, <span class="built_in">max</span>(Grade)</span><br><span class="line"><span class="keyword">FROM</span> SC</span><br><span class="line"><span class="keyword">WHERE</span> Cno<span class="operator">=</span> <span class="string">&#x27;C2&#x27;</span>;</span><br></pre></td></tr></table></figure><p>查询计算1401班的学生总人数</p><figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">SELECT</span> <span class="built_in">COUNT</span>(<span class="operator">*</span>)</span><br><span class="line"><span class="keyword">FROM</span> Stu</span><br><span class="line"><span class="keyword">WHERE</span> Sclass<span class="operator">=</span><span class="string">&#x27;计算1401&#x27;</span>;</span><br></pre></td></tr></table></figure><h1 id="4-分组查询-group-by"><a href="#4-分组查询-group-by" class="headerlink" title="4.分组查询(group by)"></a>4.分组查询(group by)</h1><p>语法格式：</p><figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">GROUP</span> <span class="keyword">BY</span> 字段名 [<span class="keyword">HAVING</span> 条件表达式] </span><br><span class="line">[<span class="keyword">WITH</span> <span class="keyword">ROLLUP</span>]</span><br></pre></td></tr></table></figure><p>WITH ROLLUP 可以实现在分组统计数据基础上再进行相同的统计，添加一个总计行<br><code>在 SQL 中增加 HAVING 子句原因是，WHERE 关键字无法与聚合函数一起使用。HAVING 子句可以让我们筛选分组后的各组数据。</code></p><p>[例29]按学生表的性别进行分组查询。</p><figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">SELECT</span> <span class="operator">*</span></span><br><span class="line"><span class="keyword">FROM</span> Stu</span><br><span class="line"><span class="keyword">GROUP</span> <span class="keyword">BY</span> Ssex;</span><br></pre></td></tr></table></figure><p>[例]查询各门课程的选课人数。</p><figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">SELECT</span> <span class="built_in">COUNT</span>(<span class="operator">*</span>)</span><br><span class="line"><span class="keyword">FROM</span> sc</span><br><span class="line"><span class="keyword">GROUP</span> <span class="keyword">BY</span> Cno;</span><br></pre></td></tr></table></figure><p>[例]查询选修不少于3门课程的学生</p><figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">SELECT</span> Sno, <span class="built_in">COUNT</span>(<span class="operator">*</span>)</span><br><span class="line"><span class="keyword">FROM</span> sc</span><br><span class="line"><span class="keyword">GROUP</span> <span class="keyword">BY</span> Sno <span class="keyword">HAVING</span> <span class="built_in">COUNT</span>(<span class="operator">*</span>)<span class="operator">&gt;=</span><span class="number">3</span>;</span><br></pre></td></tr></table></figure><h2 id="HAVING短语与WHERE子句的区别"><a href="#HAVING短语与WHERE子句的区别" class="headerlink" title="HAVING短语与WHERE子句的区别:"></a>HAVING短语与WHERE子句的区别:</h2><ol><li>WHERE子句作用于基本表或视图，从中选择满足条件的元组;</li><li>HAVING短语作用于组，从中选择满足条件的组。</li></ol>]]></content>
+      
+      
+      <categories>
+          
+          <category> MySQL数据库 </category>
+          
+          <category> MYSQL数据操作管理 </category>
+          
+      </categories>
+      
+      
+        <tags>
+            
+            <tag> 数据库笔记 </tag>
+            
+        </tags>
+      
+    </entry>
+    
+    
+    
+    <entry>
+      <title>8.4.3 条件查询</title>
+      <link href="/post/4b6413bb.html"/>
+      <url>/post/4b6413bb.html</url>
+      
+        <content type="html"><![CDATA[<h1 id="一、where"><a href="#一、where" class="headerlink" title="一、where"></a>一、where</h1><figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">WHERE</span> 列名 <span class="operator">&lt;</span>比较运算符<span class="operator">&gt;</span> 常量或列名</span><br></pre></td></tr></table></figure><p>常用的比较运算符:</p><table><thead><tr><th>运算符</th><th>含义</th></tr></thead><tbody><tr><td>&#x3D;, &gt;,&lt;,&gt;&#x3D;,&lt;&#x3D;, !&#x3D;,&gt;</td><td>比较大小</td></tr><tr><td>AND, OR, NOT</td><td>多重条件</td></tr><tr><td>IN</td><td>确定集合</td></tr><tr><td>BETWEEN AND</td><td>确定范围</td></tr><tr><td>IS NULL</td><td>空值</td></tr><tr><td>LIKE</td><td>字符匹配</td></tr></tbody></table><h2 id="1-比较大小"><a href="#1-比较大小" class="headerlink" title="1.比较大小"></a>1.比较大小</h2><p>优先级:NOT、AND、OR<br>可以用括号改变优先级</p><p>[例8-18]查询成绩高于90分的学生学号、课号和成绩。</p><figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">SELECT</span><span class="operator">*</span></span><br><span class="line"><span class="keyword">FROM</span> sC</span><br><span class="line"><span class="keyword">WHERE</span> Grade<span class="operator">&gt;</span><span class="number">90</span>;</span><br></pre></td></tr></table></figure><p>[例8-19]查询成绩在[70.80]的学生的学号和成绩。</p><figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">SELECT</span> Sno,Grade</span><br><span class="line"><span class="keyword">FROM</span> sC</span><br><span class="line"><span class="keyword">WHERE</span> Grade<span class="operator">&gt;=</span><span class="number">70</span> <span class="keyword">and</span> Grade<span class="operator">&lt;=</span><span class="number">80</span>;</span><br></pre></td></tr></table></figure><p>[例]查询选修C1或C2号且成绩大于等于80分的学号、课号和成绩。</p><figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">SELECT</span> Sno,Cno,gradeFROM sc</span><br><span class="line"><span class="keyword">WHERE</span> (Cno<span class="operator">=</span><span class="string">&#x27;C1&#x27;</span> <span class="keyword">OR</span> Cno<span class="operator">=</span><span class="string">&#x27;C2&#x27;</span>) <span class="keyword">AND</span> grade<span class="operator">&gt;=</span><span class="number">80</span>;</span><br><span class="line">#或者</span><br><span class="line"><span class="keyword">WHERE</span> Cno<span class="operator">=</span><span class="string">&#x27;C1&#x27;</span> <span class="keyword">AND</span> grade<span class="operator">&gt;=</span><span class="number">80</span></span><br><span class="line"><span class="keyword">OR</span> Cno<span class="operator">=</span><span class="string">&#x27;C2&#x27;</span><span class="keyword">AND</span> grade<span class="operator">&gt;=</span><span class="number">80</span></span><br></pre></td></tr></table></figure><h2 id="2-用IN查询"><a href="#2-用IN查询" class="headerlink" title="2.用IN查询"></a>2.用IN查询</h2><p>IN和NOT IN<br>[例8-20]查询选C1、C2或C3课的学号、课号。</p><figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">SELECT</span> Sno,Cno</span><br><span class="line"><span class="keyword">FROM</span> sc</span><br><span class="line"><span class="keyword">WHERE</span> Cno <span class="keyword">IN</span>(<span class="string">&#x27;C1, &#x27;</span>C2<span class="string">&#x27;, &#x27;</span>C3<span class="string">&#x27;) ;</span></span><br></pre></td></tr></table></figure><h2 id="3-确定范围-between-and"><a href="#3-确定范围-between-and" class="headerlink" title="3.确定范围 (between and)"></a>3.确定范围 (between and)</h2><p>[例8-21]查询成绩在75~80分间<code>(包括75和80)</code>的学生学号、课号和成绩。</p><figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">SELECT</span> Sno,Cno,Grade</span><br><span class="line"><span class="keyword">FROM</span> Sc</span><br><span class="line"><span class="keyword">WHERE</span> Grade <span class="keyword">BETWEEN</span> <span class="number">75</span> <span class="keyword">AND</span> <span class="number">80</span>;</span><br><span class="line">或者不在此范围 <span class="keyword">NOT</span> <span class="keyword">BETWEEN</span> <span class="number">75</span> <span class="keyword">AND</span> <span class="number">80</span></span><br></pre></td></tr></table></figure><h2 id="4-空值的查询-IS-NULL-或-IS-NOT-NULL"><a href="#4-空值的查询-IS-NULL-或-IS-NOT-NULL" class="headerlink" title="4.空值的查询(IS NULL 或 IS NOT NULL)"></a>4.空值的查询(IS NULL 或 IS NOT NULL)</h2><p>使用谓词 IS NULL 或 IS NOT NULL<br><code>注意“IS NULL”不能用“= NULL”代替。</code><br>[例8-24]查询选课后没参加考试学生的学号和程号。</p><figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">SELECT</span> Sno，Cno</span><br><span class="line"><span class="keyword">FROM</span> sc</span><br><span class="line"><span class="keyword">WHERE</span> Grade <span class="keyword">IS</span> <span class="keyword">NULL</span>;</span><br></pre></td></tr></table></figure><h2 id="5-字符串匹配"><a href="#5-字符串匹配" class="headerlink" title="5.字符串匹配"></a>5.字符串匹配</h2><p>格式:<br>属性名 LIKE ‘&lt;匹配串&gt;’<br>属性名 NOT LIKE ‘&lt;匹配串&gt;‘</p><blockquote><p>&lt;匹配串&gt; &#x3D; 字符常量 + 通配符两种通配符:<br>%:代表<code>任意长度</code>（长度可以为0）的字符串<br>_ ∶代表任意<code>单个</code>字符</p></blockquote><p>[例]查询S表中姓李且姓名是三个字的学生信息。</p><figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">SELECT</span> <span class="operator">*</span></span><br><span class="line"><span class="keyword">FROM</span> Stu</span><br><span class="line"><span class="keyword">WHERE</span> Sname <span class="keyword">LIKE</span> <span class="string">&#x27;李__&#x27;</span>;</span><br></pre></td></tr></table></figure><p>[例8-26]查询学生表Stu所有姓李学生的信息。</p><figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">SELECT</span> <span class="operator">*</span></span><br><span class="line"><span class="keyword">FROM</span> Stu</span><br><span class="line">WHERESname <span class="keyword">LIKE</span> <span class="string">&#x27;李%&#x27;</span>;</span><br></pre></td></tr></table></figure><p>[补充]查询姓名中有“梅”字的学生学号和姓名。</p><figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">SELECT</span> Sno,Sname</span><br><span class="line"><span class="keyword">FROM</span> Stu</span><br><span class="line"><span class="keyword">WHERE</span> Sname <span class="keyword">LIKE</span> <span class="string">&#x27;%梅%&#x27;</span>;</span><br></pre></td></tr></table></figure><p>[补充]查询姓名中第2个字是“梅”的学生学号和姓名</p><figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">SELECT</span> Sno,Sname</span><br><span class="line"><span class="keyword">FROM</span> Stu</span><br><span class="line"><span class="keyword">WHERE</span> Sname <span class="keyword">LIKE</span> <span class="string">&#x27;_梅%&#x27;</span>;</span><br></pre></td></tr></table></figure><h2 id="6-定义换码字符"><a href="#6-定义换码字符" class="headerlink" title="6.定义换码字符"></a>6.定义换码字符</h2><p>ESCAPE’&lt;换码字符&gt;’<br>如:ESCAPE ‘&#x2F;‘<br>[补充]查询课程名以’DB_’开头的课号、课名和学分。</p><figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">SELECT</span> Cno, Cname, Ccredit</span><br><span class="line"><span class="keyword">FROM</span> C</span><br><span class="line"><span class="keyword">WHERE</span> Cname <span class="keyword">LIKE</span> <span class="string">&#x27;DB/_%&#x27;</span></span><br><span class="line"><span class="keyword">ESCAPE</span> <span class="string">&#x27;/&#x27;</span>;</span><br></pre></td></tr></table></figure>]]></content>
+      
+      
+      <categories>
+          
+          <category> MySQL数据库 </category>
+          
+          <category> MYSQL数据操作管理 </category>
+          
+      </categories>
+      
+      
+        <tags>
+            
+            <tag> 数据库笔记 </tag>
+            
+        </tags>
+      
+    </entry>
+    
+    
+    
+    <entry>
+      <title>8.4.1 SELECT和简单查询</title>
+      <link href="/post/8b00d14c.html"/>
+      <url>/post/8b00d14c.html</url>
+      
+        <content type="html"><![CDATA[<h1 id="一、SELET语法"><a href="#一、SELET语法" class="headerlink" title="一、SELET语法"></a>一、SELET语法</h1><figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">SELECT</span>  [ <span class="keyword">ALL</span> <span class="operator">|</span> <span class="keyword">DISTINCT</span> ] 列名[<span class="keyword">AS</span> 别名<span class="number">1</span>] [&#123;,列名[<span class="keyword">AS</span>别名<span class="number">2</span>]&#125;]</span><br><span class="line"><span class="keyword">FROM</span> 表名<span class="number">1</span>或视图名<span class="number">1</span>[,表名<span class="number">2</span>或视图<span class="number">2</span>]</span><br><span class="line">[<span class="keyword">WHERE</span>条件表达式<span class="number">1</span>]</span><br><span class="line">[<span class="keyword">GROUP</span> <span class="keyword">BY</span> 列名<span class="number">1</span> [<span class="keyword">HAVING</span>条件表达式<span class="number">21</span>]</span><br><span class="line">[<span class="keyword">ORDER</span> <span class="keyword">BY</span> 列名<span class="number">2</span> [<span class="keyword">ASC</span><span class="operator">|</span><span class="keyword">DESC</span>]</span><br><span class="line">[LIMIT 子句]</span><br></pre></td></tr></table></figure><p>ALL返回所有行，DISTINCT返回所有不重复行<br><code>GROUP BY</code>语句用于结合聚合函数，根据一个或多个列对结果集进行分组。<br><code>ORDER BY</code>关键字用于对结果集按照一个列或者多个列进行排序。DESC降序<br><code>LIMIT</code>用于规定要返回的记录的数目<br>在 SQL 中增加 <code>HAVING </code>子句原因是，<code>WHERE </code>关键字无法与聚合函数一起使用。<br>HAVING 子句可以让我们筛选分组后的各组数据。</p><h1 id="二、简单查询"><a href="#二、简单查询" class="headerlink" title="二、简单查询"></a>二、简单查询</h1><h2 id="1-查询全部列"><a href="#1-查询全部列" class="headerlink" title="1.查询全部列"></a>1.查询全部列</h2><p>查询全体学生的详细记录</p><figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">SELECT</span> <span class="operator">*</span></span><br><span class="line"><span class="keyword">FROM</span> Stu;</span><br></pre></td></tr></table></figure><p>“ * ”表示将所有的字段都显示出来</p><h2 id="2-查询指定列"><a href="#2-查询指定列" class="headerlink" title="2.查询指定列"></a>2.查询指定列</h2><p>相当于投影运算</p><figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">SELECT</span> Sno,Sname</span><br><span class="line"><span class="keyword">FROM</span> Stu;</span><br></pre></td></tr></table></figure><h2 id="3-消除取值重复的行"><a href="#3-消除取值重复的行" class="headerlink" title="3.消除取值重复的行"></a>3.消除取值重复的行</h2><p>在SELECT子句中使用<code>DISTINCT</code>短语<br>不写默认是<code>ALL</code></p><figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">SELECT</span> [<span class="keyword">ALL</span><span class="operator">|</span><span class="keyword">DISTINCT</span>] Sclass</span><br><span class="line"><span class="keyword">FROM</span> Stu;</span><br></pre></td></tr></table></figure><h2 id="4-为表、列起别名"><a href="#4-为表、列起别名" class="headerlink" title="4.为表、列起别名"></a>4.为表、列起别名</h2><figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">SELECT</span> Sclass <span class="keyword">AS</span> 别名<span class="number">1</span>，Sname <span class="keyword">AS</span> 别名<span class="number">2</span></span><br><span class="line"><span class="keyword">FROM</span> Stu <span class="keyword">AS</span> 别名<span class="number">3</span>;</span><br></pre></td></tr></table></figure><p>查询全体学生，学号，姓名，年龄。</p><figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">SELECT</span> Sno,Sname,<span class="keyword">YEAR</span>(NOW())<span class="operator">-</span><span class="keyword">YEAR</span>(Sbirth) <span class="keyword">AS</span> 年龄</span><br><span class="line"><span class="keyword">FROM</span> Stu;</span><br></pre></td></tr></table></figure><p>CURRENT_DATA：获取系统日期，返回的是当前日期，是年-月-日的数据形式。<br>NOW() 返回的是当前的日期和时间,既有年月日还有<code>时分秒</code></p>]]></content>
+      
+      
+      <categories>
+          
+          <category> MySQL数据库 </category>
+          
+          <category> MYSQL数据操作管理 </category>
+          
+      </categories>
+      
+      
+        <tags>
+            
+            <tag> 数据库笔记 </tag>
+            
+        </tags>
+      
+    </entry>
+    
+    
+    
+    <entry>
+      <title>8.1、8.2、8.3 插入数据、修改数据、删除数据</title>
+      <link href="/post/7d63e68c.html"/>
+      <url>/post/7d63e68c.html</url>
+      
+        <content type="html"><![CDATA[<h1 id="一、插入数据"><a href="#一、插入数据" class="headerlink" title="一、插入数据"></a>一、插入数据</h1><h2 id="1-插入单个元组"><a href="#1-插入单个元组" class="headerlink" title="1.插入单个元组"></a>1.插入单个元组</h2><h3 id="1-语句格式"><a href="#1-语句格式" class="headerlink" title="(1)语句格式"></a>(1)语句格式</h3><figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">INSERT</span> <span class="keyword">INTO</span> 表名[(属性<span class="number">1</span>[,属性<span class="number">2</span>])]  #指定插入哪些属性</span><br><span class="line"><span class="keyword">VALUES</span> (常量<span class="number">1</span> [,常量<span class="number">2</span>])</span><br><span class="line">[,(常量<span class="number">1</span> [,常量<span class="number">2</span>]) #插入多行数据</span><br><span class="line">];</span><br></pre></td></tr></table></figure><h3 id="2-注意事项"><a href="#2-注意事项" class="headerlink" title="(2)注意事项"></a>(2)注意事项</h3><h4 id="①INTO子句"><a href="#①INTO子句" class="headerlink" title="①INTO子句"></a>①INTO子句</h4><ul><li>指定要插入数据的表名及属性列</li><li>属性列的顺序与表定义中的顺序可以不一致</li><li>省略所有属性列:表示要插入的是一条完整的元组，且列属性与表中的顺序一致</li><li>指定部分属性列:插入的元组在其余属性列上取空值【省略属性时要注意!】</li><li>没有值得时候可以写NULL，但要注意是否有NOT NULL约束</li></ul><h4 id="②VALUES子句"><a href="#②VALUES子句" class="headerlink" title="②VALUES子句"></a>②VALUES子句</h4><ul><li>提供的<code>值的个数</code>和<code>类型</code>必须与INTO子句中的属性匹配</li></ul><h3 id="3-实例："><a href="#3-实例：" class="headerlink" title="3)实例："></a>3)实例：</h3><figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">INSERT</span> <span class="keyword">INTO</span> <span class="keyword">table</span> (Sno,Sname)</span><br><span class="line"><span class="keyword">VALUES</span> (<span class="number">1</span>,王伟)，</span><br><span class="line">(<span class="number">2</span>,赵启凯);</span><br></pre></td></tr></table></figure><p><code>VALUES括号中的值要和属性顺序对应</code></p><h1 id="二、修改数据"><a href="#二、修改数据" class="headerlink" title="二、修改数据"></a>二、修改数据</h1><figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">UPDATE</span> 表名</span><br><span class="line"><span class="keyword">SET</span> 列名<span class="number">1</span><span class="operator">=</span>表达式<span class="number">1</span> [,列名<span class="number">2</span><span class="operator">=</span>表达式<span class="number">2</span>,...]</span><br><span class="line">[<span class="keyword">WHERE</span><span class="operator">&lt;</span>条件<span class="operator">&gt;</span>]</span><br></pre></td></tr></table></figure><h2 id="1-修改一行"><a href="#1-修改一行" class="headerlink" title="1.修改一行"></a>1.修改一行</h2><p>把学号为00109的姓名改为王艺，性别改为女</p><figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">UPDATE</span> Stu</span><br><span class="line"><span class="keyword">SET</span> Sname<span class="operator">=</span>‘王艺<span class="string">&#x27;,Ssex= &#x27;</span>女<span class="string">&#x27;</span></span><br><span class="line"><span class="string">WHERE Sno= &#x27;</span><span class="number">00109</span><span class="string">&#x27;;</span></span><br></pre></td></tr></table></figure><p><code>若不写WHERE条件，则整列都被修改</code></p><h2 id="2-修改多行"><a href="#2-修改多行" class="headerlink" title="2.修改多行"></a>2.修改多行</h2><p>将SC表中成绩&lt;90的成绩提高5分</p><figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">UPDATE</span> SC</span><br><span class="line"><span class="keyword">SET</span> grade<span class="operator">=</span>grade<span class="operator">+</span><span class="number">5</span></span><br><span class="line"><span class="keyword">WHERE</span> grade<span class="operator">&lt;</span><span class="number">90</span>;</span><br></pre></td></tr></table></figure><h1 id="三、删除数据"><a href="#三、删除数据" class="headerlink" title="三、删除数据"></a>三、删除数据</h1><h2 id="1-使用Delete语句删除数据"><a href="#1-使用Delete语句删除数据" class="headerlink" title="1.使用Delete语句删除数据"></a>1.使用Delete语句删除数据</h2><p>语句格式:</p><figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">DELETE</span> <span class="keyword">FROM</span><span class="operator">&lt;</span>表名<span class="operator">&gt;</span></span><br><span class="line">[<span class="keyword">WHERE</span><span class="operator">&lt;</span>条件<span class="operator">&gt;</span>];</span><br></pre></td></tr></table></figure><p>功能:<br>将满足条件的记录从指定表中删除<br><code>条件缺省表示删除表中的全部记录，得到空表，但是速度慢是一条一条删除</code></p><h3 id="1-删除一行记录"><a href="#1-删除一行记录" class="headerlink" title="(1)删除一行记录"></a>(1)删除一行记录</h3><p>删除S表中学号为00109的记录。</p><figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">DELETE</span> <span class="keyword">FROM</span> Stu</span><br><span class="line"><span class="keyword">WHERE</span> Sno<span class="operator">=</span> <span class="string">&#x27;00109&#x27;</span>;</span><br></pre></td></tr></table></figure><h3 id="2-删除多行记录"><a href="#2-删除多行记录" class="headerlink" title="(2)删除多行记录"></a>(2)删除多行记录</h3><p>删除商务1401班的学生</p><figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">DELETE</span> <span class="keyword">FROM</span> Stu</span><br><span class="line"><span class="keyword">WHERE</span> Sclass<span class="operator">=</span><span class="string">&#x27;商务1401&#x27;</span>;</span><br></pre></td></tr></table></figure><h2 id="2-使用truncate语句清空表"><a href="#2-使用truncate语句清空表" class="headerlink" title="2.使用truncate语句清空表"></a>2.使用truncate语句清空表</h2><p>语句格式:</p><figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">TRUNCATE</span> [<span class="keyword">TABLE</span>] 表名;</span><br></pre></td></tr></table></figure><p>功能:<br>清空指定的数据表;<br>与不带WHERE条件的DELETE语句功能相同，但比DELETE快。</p>]]></content>
+      
+      
+      <categories>
+          
+          <category> MySQL数据库 </category>
+          
+          <category> MYSQL数据操作管理 </category>
+          
+      </categories>
+      
+      
+        <tags>
+            
+            <tag> 数据库笔记 </tag>
+            
+        </tags>
+      
+    </entry>
+    
+    
+    
+    <entry>
+      <title>7.5MySQL的约束控制</title>
+      <link href="/post/6b10c50b.html"/>
+      <url>/post/6b10c50b.html</url>
+      
+        <content type="html"><![CDATA[<h1 id="数据库的完整性约束"><a href="#数据库的完整性约束" class="headerlink" title="数据库的完整性约束"></a>数据库的完整性约束</h1><h2 id="1-实体完整性"><a href="#1-实体完整性" class="headerlink" title="(1)实体完整性"></a>(1)实体完整性</h2><p>强制表中标识符列或主键的完整性<br>例如：主键约束、惟一约束</p><h2 id="2-参照完整性-引用完整性"><a href="#2-参照完整性-引用完整性" class="headerlink" title="(2)参照完整性(引用完整性)"></a>(2)参照完整性(引用完整性)</h2><p>在删除和输入记录时，引用完整性保持表之间已定义的关系，引用完整性确保键值在所有表中一致。</p><h2 id="3-用户自定义完整性"><a href="#3-用户自定义完整性" class="headerlink" title="(3)用户自定义完整性"></a>(3)用户自定义完整性</h2><p>用户自己定义的业务规则,包含域完整性。包括类型、格式、取值范围等</p><hr><h1 id="MySQL中常用约束"><a href="#MySQL中常用约束" class="headerlink" title="MySQL中常用约束"></a>MySQL中常用约束</h1><h2 id="1-主键约束-PRIMARY-KEY"><a href="#1-主键约束-PRIMARY-KEY" class="headerlink" title="1.主键约束(PRIMARY KEY)"></a>1.主键约束(PRIMARY KEY)</h2><p>用于定义基本表的主键，起唯一标识作用<code>(不能为NULL，不能重复)</code></p><ul><li><p>用于列约束的定义(单个列作为主键)</p><figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">字段名 数据类型 [其它约束] <span class="keyword">PRIMARY</span> KEY</span><br></pre></td></tr></table></figure></li><li><p>用于表约束的定义(多个列组合为主键)</p><figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">PRIMARY</span> KEY (列名[,列名])</span><br></pre></td></tr></table></figure></li></ul><h3 id="1-单个主键"><a href="#1-单个主键" class="headerlink" title="(1)单个主键"></a>(1)单个主键</h3><p>[例7-18]建立一个Stu表，定义Sno为Stu的主键。</p><figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">CREATE</span> <span class="keyword">TABLE</span> Stu</span><br><span class="line">Sno <span class="type">char</span>(<span class="number">6</span>) <span class="keyword">PRIMARY</span> KEY,</span><br><span class="line">Sname <span class="type">char</span>(<span class="number">8</span>),</span><br><span class="line">Ssex <span class="type">char</span>(<span class="number">2</span>),</span><br><span class="line">Zno <span class="type">varchar</span>(<span class="number">20</span>));</span><br></pre></td></tr></table></figure><p>or</p><figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">CREATE</span> <span class="keyword">TABLE</span> Stu</span><br><span class="line">Sno <span class="type">char</span>(<span class="number">6</span>) <span class="keyword">NOT</span> <span class="keyword">NULL</span>,</span><br><span class="line">Sname <span class="type">char</span>(<span class="number">8</span>),</span><br><span class="line">Ssex <span class="type">char</span>(<span class="number">2</span>),</span><br><span class="line">Zno <span class="type">varchar</span>(<span class="number">20</span>),</span><br><span class="line"><span class="keyword">PRIMARY</span> KEY(Sno)</span><br><span class="line">);</span><br></pre></td></tr></table></figure><h3 id="2-多个主键"><a href="#2-多个主键" class="headerlink" title="(2)多个主键"></a>(2)多个主键</h3><p>[例7-20]建立一个SC表，主键由Sno和Cno共同构成。</p><figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">create</span> <span class="keyword">table</span> sc</span><br><span class="line">sno <span class="type">char</span>(<span class="number">12</span>),</span><br><span class="line">cno <span class="type">char</span>(<span class="number">10</span>) , </span><br><span class="line">score <span class="type">int</span>,</span><br><span class="line"><span class="keyword">primary</span> key(sno,cno)</span><br><span class="line">);</span><br></pre></td></tr></table></figure><h3 id="3-给已有表添加主键约束"><a href="#3-给已有表添加主键约束" class="headerlink" title="(3)给已有表添加主键约束"></a>(3)给已有表添加主键约束</h3><figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">ALTER</span> <span class="keyword">TABLE</span> Stu</span><br><span class="line"><span class="keyword">ADD</span> <span class="keyword">PRIMARY</span> KEY (Sno);</span><br></pre></td></tr></table></figure><h3 id="4-删除已有主键约束"><a href="#4-删除已有主键约束" class="headerlink" title="(4)删除已有主键约束"></a>(4)删除已有主键约束</h3><figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">ALTER</span> <span class="keyword">TABLE</span> Stu</span><br><span class="line"><span class="keyword">DROP</span> <span class="keyword">PRIMARY</span> KEY;</span><br></pre></td></tr></table></figure><hr><h2 id="2-外键约束-FOREIGN-KEY"><a href="#2-外键约束-FOREIGN-KEY" class="headerlink" title="2.外键约束(FOREIGN KEY)"></a>2.外键约束(FOREIGN KEY)</h2><p>子表的外键引用父表的主键</p><figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">[<span class="keyword">FOREIGN</span> KEY (子表列名表)] <span class="keyword">REFERENCES</span> 父表名(列名表)</span><br><span class="line">[ <span class="keyword">on</span> <span class="keyword">delete</span> [ cascade <span class="operator">|</span> restrict <span class="operator">|</span> <span class="keyword">set</span> <span class="keyword">null</span> <span class="operator">|</span> <span class="keyword">no</span> action ]]</span><br><span class="line">[ <span class="keyword">on</span> <span class="keyword">update</span> [ cascade <span class="operator">|</span> restrict <span class="operator">|</span> <span class="keyword">set</span> <span class="keyword">null</span> <span class="operator">|</span> <span class="keyword">no</span> action ]]</span><br></pre></td></tr></table></figure><p>cascade：级联删除，就是删除主键表的同时，外键表同时删除。</p><blockquote><p>假如院系表中的某个院系被删除了，那么在学生表中要想查询这个被删除的院系号所对应的院信息就会报错，因为已经不存在这个系了，所以，删除院系表（主键表）时必须删除其他与之关联的表，这里就说明了外键的作用，保持数据的一致性、完整性。当然反过来讲，你删除学生表中的记录，并不影响院系表中的数据，你查询院系号也能正确查询。所以删除外键表中的数据并不影响主键表。</p></blockquote><p>set null：当取值为Set Null时，则当在主键表中删除对应记录时，首先检查该记录是否有对应外键，如果有则设置子表中该外键值为null</p><p>no action、restrict：默认的；意思为拒绝操作，如果父表中的主键被子表引用时，删除父表主键时，会拒绝操作</p><blockquote><p>NO ACTION和RESTRICT的区别：只有在及个别的情况下会导致区别，前者是在其他约束的动作之后执行，后者具有最高的优先权执行。</p></blockquote><p>例题：建立SC表，定义Sno为外键，参照S表的sno</p><figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">CREATE</span> <span class="keyword">TABLE</span> SC</span><br><span class="line">(Sno <span class="type">char</span>(<span class="number">6</span>)，</span><br><span class="line"> Cno <span class="type">char</span>(<span class="number">3</span>),</span><br><span class="line"> Score <span class="type">Int</span>,</span><br><span class="line"><span class="keyword">PRIMARY</span> KEY (Sno, Cno),</span><br><span class="line"><span class="keyword">FOREIGN</span> key (Sno) <span class="keyword">REFERENCES</span> S(Sno)</span><br><span class="line"> )ENGINE<span class="operator">=</span>InnoDB;</span><br><span class="line"></span><br></pre></td></tr></table></figure><p>要注意：MyISAM存储引擎不支持外键</p><hr><h2 id="3-非空约束-not-null"><a href="#3-非空约束-not-null" class="headerlink" title="3.非空约束(not null)"></a>3.非空约束(not null)</h2><p><code>注意：NULL不同于0、&quot;&quot;、空格、&#39;NULL&#39;</code></p><h3 id="1-语法"><a href="#1-语法" class="headerlink" title="(1)语法"></a>(1)语法</h3><figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">属性名 数据类型 [<span class="keyword">NULL</span> <span class="operator">|</span> <span class="keyword">NOT</span> <span class="keyword">NULL</span>]</span><br></pre></td></tr></table></figure><h3 id="2-例题"><a href="#2-例题" class="headerlink" title="(2)例题"></a>(2)例题</h3><p>建立一个S表，对Sname字段设置为非空</p><figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">CREATE</span> <span class="keyword">TABLE</span> S</span><br><span class="line">(Sno <span class="type">char</span>(<span class="number">6</span>),</span><br><span class="line">Sname <span class="type">char</span>(<span class="number">8</span>) <span class="keyword">NOT</span> <span class="keyword">NULL</span>,</span><br><span class="line">Ssex <span class="type">char</span>(<span class="number">2</span>),</span><br><span class="line">Sbirth <span class="type">date</span>);</span><br></pre></td></tr></table></figure><h3 id="3-给已存在表的某个属性添加非空约束"><a href="#3-给已存在表的某个属性添加非空约束" class="headerlink" title="(3)给已存在表的某个属性添加非空约束"></a>(3)给已存在表的某个属性添加非空约束</h3><p>如果在一个已经创建的Stu表中对Sname字段设置非空约束<br>使用<code>modify</code>修改，不能使用ADD增加</p><figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">ALTER</span> <span class="keyword">TABLE</span> S</span><br><span class="line">MODIFY Sname <span class="type">char</span>(<span class="number">8</span>) <span class="keyword">not</span> <span class="keyword">null</span>;</span><br></pre></td></tr></table></figure><hr><h2 id="4-惟一约束-UNIQUE"><a href="#4-惟一约束-UNIQUE" class="headerlink" title="4.惟一约束(UNIQUE)"></a>4.惟一约束(UNIQUE)</h2><p>指明基本表在某一列或多个列组合的取值必须惟一<br>在建立UNIQUE约束时，需要考虑以下几个因素:</p><ul><li>一个表中可以允许有<code>多个UNIQUE约束</code>。</li><li>满足UNIQUE约束的字段<code>允许取NULL值</code>。</li><li>可以把UNIQUE约束定义在多个字段上。</li><li>UNIQUE约束自动在指定字段上创建唯一索引,如果删除唯一约束，可直接删除该索引</li></ul><h3 id="1-单个属性"><a href="#1-单个属性" class="headerlink" title="(1)单个属性"></a>(1)单个属性</h3><p>[例7-26]建立一个Dept表，定义Dname为惟一约束</p><figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">CREATE</span> <span class="keyword">TABLE</span> Dept</span><br><span class="line">(Dno <span class="type">char</span>(<span class="number">6</span>)<span class="keyword">PRIMARY</span> KEY,</span><br><span class="line"> Dname,<span class="type">varchar</span>(<span class="number">20</span>) <span class="keyword">UNIQUE</span>,</span><br><span class="line"> Tel <span class="type">char</span>(<span class="number">13</span>),</span><br><span class="line"> Address <span class="type">varchar</span> (<span class="number">20</span>)</span><br><span class="line"> );</span><br></pre></td></tr></table></figure><h3 id="2-多个属性"><a href="#2-多个属性" class="headerlink" title="(2)多个属性"></a>(2)多个属性</h3><p>[例]建立一个SC表，定义Sno+Cno为惟一键。</p><figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">CREATE</span> <span class="keyword">TABLE</span> SC</span><br><span class="line">(Sno <span class="type">char</span>(<span class="number">6</span>),</span><br><span class="line">Cno <span class="type">char</span>(<span class="number">8</span>),</span><br><span class="line">Score <span class="type">int</span>,</span><br><span class="line"><span class="keyword">UNIQUE</span> (Sno,Cno)</span><br><span class="line">);</span><br></pre></td></tr></table></figure><h3 id="3-表已存在修改"><a href="#3-表已存在修改" class="headerlink" title="(3)表已存在修改"></a>(3)表已存在修改</h3><figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">ALTER</span> TABEL S</span><br><span class="line">MODIFY SNO <span class="type">char</span>(<span class="number">20</span>) <span class="keyword">NOT</span> <span class="keyword">NULL</span> <span class="keyword">UNIQUE</span>;</span><br></pre></td></tr></table></figure><h3 id="4-PRIMARY-KEY与UNIQUE的区别"><a href="#4-PRIMARY-KEY与UNIQUE的区别" class="headerlink" title="(4)PRIMARY KEY与UNIQUE的区别"></a>(4)PRIMARY KEY与UNIQUE的区别</h3><ul><li>一个基本表中只能有一个PRIMARY KEY，但可以有多个UNIQUE</li><li>对于指定为PRIMARY KEY的一个列或多个列的组合，其中任何一个列都不能出现NULL值，而对于UNIQUE所约束的惟一键，则允许为NULL</li></ul><hr><h2 id="5-默认约束-DEFAULT"><a href="#5-默认约束-DEFAULT" class="headerlink" title="5.默认约束(DEFAULT)"></a>5.默认约束(DEFAULT)</h2><p>为某个字段添加默认值</p><h3 id="1-语法格式："><a href="#1-语法格式：" class="headerlink" title="(1)语法格式："></a>(1)语法格式：</h3><figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">字段名 数据类型 [其它约束] <span class="keyword">DEFAULT</span> 默认值</span><br></pre></td></tr></table></figure><h3 id="2-例题-1"><a href="#2-例题-1" class="headerlink" title="(2)例题"></a>(2)例题</h3><p>创建课程C表，其选课人数上限up_limit字段设置默认值约束,且默认值为整数100人。</p><figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">CREATE</span> <span class="keyword">TABLE</span> C</span><br><span class="line">(Cno <span class="type">char</span>(<span class="number">8</span>),</span><br><span class="line"> Cname <span class="type">varchar</span>(<span class="number">20</span>),</span><br><span class="line"> up_limit <span class="type">int</span> <span class="keyword">default</span> <span class="number">100</span></span><br><span class="line">);</span><br></pre></td></tr></table></figure><hr><h2 id="6-自增约束-AUTO-INCREMENT"><a href="#6-自增约束-AUTO-INCREMENT" class="headerlink" title="6.自增约束(AUTO_INCREMENT)"></a>6.自增约束(AUTO_INCREMENT)</h2><ul><li>是自动扩展的完整性约束，向表中插入新纪录时，字段的值会自动生成唯一的ID。</li><li>一个表只能建一个该约束，必须为<code>整型</code>。<h3 id="1-语法格式"><a href="#1-语法格式" class="headerlink" title="(1)语法格式"></a>(1)语法格式</h3><figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">列名 数据类型 AUTO_INCREMENT</span><br></pre></td></tr></table></figure></li></ul><h3 id="2-例题-2"><a href="#2-例题-2" class="headerlink" title="(2)例题"></a>(2)例题</h3><p>创建系部表Dept表，要求系部编号自动增加。</p><figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">CREATE</span> <span class="keyword">TABLE</span> Dept1</span><br><span class="line">(Dno <span class="type">INT</span> <span class="keyword">PRIMARY</span> KEY AUTO_INCREMENT,</span><br><span class="line"> Dname <span class="type">varchar</span>(<span class="number">20</span>) <span class="keyword">UNIQUE</span>,</span><br><span class="line"> Tel <span class="type">char</span>(<span class="number">13</span>),</span><br><span class="line"> Address <span class="type">varchar</span> (<span class="number">20</span>)</span><br><span class="line">);</span><br></pre></td></tr></table></figure><p><code>这种递增的列必须为主键，AUTO_INCREMENT必须配合PRIMARY KEY</code></p><hr><h2 id="7-可以给约束命名-constraint"><a href="#7-可以给约束命名-constraint" class="headerlink" title="7.可以给约束命名(constraint)"></a>7.可以给约束命名(constraint)</h2><h3 id="1-默认命名"><a href="#1-默认命名" class="headerlink" title="(1)默认命名"></a>(1)默认命名</h3><p>若未命名，创建约束时，系统会自动给约束命名<br>可以用语句查看创建表时所用的所用命令包括约束</p><figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">show</span> <span class="keyword">create</span> <span class="keyword">table</span> <span class="operator">&lt;</span>表名<span class="operator">&gt;</span></span><br></pre></td></tr></table></figure><h3 id="2-自定义命名"><a href="#2-自定义命名" class="headerlink" title="(2)自定义命名"></a>(2)自定义命名</h3><p>[例3-12]建立含有给约束命名SC表。</p><figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">CREATE</span> <span class="keyword">TABLE</span> SC1</span><br><span class="line">(Sno <span class="type">char</span>(<span class="number">8</span>),</span><br><span class="line"> Cno <span class="type">char</span>(<span class="number">4</span>),</span><br><span class="line"> Grade <span class="type">INT</span> <span class="keyword">default</span> <span class="number">100</span> <span class="keyword">null</span>,</span><br><span class="line"> <span class="keyword">Primary</span> key(sno,cno),</span><br><span class="line"> <span class="keyword">constraint</span> s_sc_fk</span><br><span class="line"> <span class="keyword">Foreign</span> key (sno) <span class="keyword">references</span> Stu(sno)</span><br><span class="line"> ) ;</span><br></pre></td></tr></table></figure><hr><h2 id="7-删除约束"><a href="#7-删除约束" class="headerlink" title="7.删除约束"></a>7.删除约束</h2><h3 id="1-删除主键"><a href="#1-删除主键" class="headerlink" title="(1)删除主键"></a>(1)删除主键</h3><figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">alter</span> <span class="keyword">table</span> test </span><br><span class="line"><span class="keyword">drop</span> <span class="keyword">primary</span> key;</span><br></pre></td></tr></table></figure><h3 id="2-删除外键约束"><a href="#2-删除外键约束" class="headerlink" title="(2)删除外键约束"></a>(2)删除外键约束</h3><p>删除名为test_ibfk_1的外键约束</p><figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">alter</span> <span class="keyword">table</span> test </span><br><span class="line"><span class="keyword">drop</span> <span class="keyword">foreign</span> key test_ibfk_1;</span><br></pre></td></tr></table></figure><h3 id="3-删除惟一约束"><a href="#3-删除惟一约束" class="headerlink" title="(3)删除惟一约束"></a>(3)删除惟一约束</h3><figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">alter</span> <span class="keyword">table</span> tableName </span><br><span class="line"><span class="keyword">drop</span> index key_name;</span><br></pre></td></tr></table></figure><h3 id="4-删除默认约束"><a href="#4-删除默认约束" class="headerlink" title="(4)删除默认约束"></a>(4)删除默认约束</h3><figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">ALTER</span> <span class="keyword">TABLE</span> <span class="operator">&lt;</span>数据表名<span class="operator">&gt;</span> </span><br><span class="line">CHANGE <span class="keyword">COLUMN</span> <span class="operator">&lt;</span>字段名<span class="operator">&gt;</span> <span class="operator">&lt;</span>字段名<span class="operator">&gt;</span> <span class="operator">&lt;</span>数据类型<span class="operator">&gt;</span> <span class="keyword">DEFAULT</span> <span class="keyword">NULL</span>;</span><br></pre></td></tr></table></figure>]]></content>
+      
+      
+      <categories>
+          
+          <category> MySQL数据库 </category>
+          
+          <category> MySQL表的定义与完整性约束 </category>
+          
+      </categories>
+      
+      
+        <tags>
+            
+            <tag> 数据库笔记 </tag>
+            
+        </tags>
+      
+    </entry>
+    
+    
+    
+    <entry>
+      <title>7.4数据表的操作</title>
+      <link href="/post/7c0d5b72.html"/>
+      <url>/post/7c0d5b72.html</url>
+      
+        <content type="html"><![CDATA[<h1 id="一-创建表"><a href="#一-创建表" class="headerlink" title="一.创建表"></a>一.创建表</h1><h2 id="语法格式"><a href="#语法格式" class="headerlink" title="语法格式"></a>语法格式</h2><figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">CREATE</span> [TEMPORARY] <span class="keyword">TABLE</span> <span class="operator">&lt;</span>表名<span class="operator">&gt;</span></span><br><span class="line">(<span class="operator">&lt;</span>列名<span class="number">1</span><span class="operator">&gt;</span> <span class="operator">&lt;</span>数据类型<span class="operator">&gt;</span> [ <span class="keyword">DEFAULT</span>‘默认值’]</span><br><span class="line"> [ATUO_INCREMENT] [列级完整性约束]</span><br><span class="line"> <span class="operator">&lt;</span>列名<span class="number">2</span><span class="operator">&gt;</span><span class="operator">&lt;</span>数据类型<span class="operator">&gt;</span> </span><br><span class="line">.......</span><br><span class="line"><span class="operator">|</span>[index_definition]</span><br><span class="line">)[表设置];</span><br></pre></td></tr></table></figure><p>[TEMPORARY] 创建临时表<br>[index_definition] 为字段指定索引</p><h2 id="简化语法"><a href="#简化语法" class="headerlink" title="简化语法"></a>简化语法</h2><figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">CREATE</span> <span class="keyword">TABLE</span><span class="operator">&lt;</span>表名<span class="operator">&gt;</span></span><br><span class="line">(<span class="operator">&lt;</span>列名<span class="number">1</span><span class="operator">&gt;</span><span class="operator">&lt;</span>数据类型<span class="operator">&gt;</span></span><br><span class="line"> <span class="operator">&lt;</span>列名<span class="number">2</span><span class="operator">&gt;</span><span class="operator">&lt;</span>数据类型<span class="operator">&gt;</span> </span><br><span class="line"> .......</span><br><span class="line">)[表设置];</span><br></pre></td></tr></table></figure><p>[例7-1]用命令在stuInfo数据库中建立一个学生表Stu，有学号、姓名、性别、出生日期和专业号。</p><figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line">USE stuInfo;</span><br><span class="line"><span class="keyword">CREATE</span> <span class="keyword">TABLE</span> Stu</span><br><span class="line">(Sno <span class="type">char</span>(<span class="number">6</span>) <span class="keyword">NOT</span> <span class="keyword">NULL</span>,</span><br><span class="line"> Sname <span class="type">varchar</span>(<span class="number">4</span>),</span><br><span class="line"> Ssex Enum(<span class="string">&#x27;男&#x27;</span>,<span class="string">&#x27;女&#x27;</span>)，</span><br><span class="line"> Sbirth <span class="type">date</span>,</span><br><span class="line"> Zno <span class="type">varchar</span>(<span class="number">4</span>)</span><br><span class="line">);</span><br></pre></td></tr></table></figure><hr><h1 id="二-查看表"><a href="#二-查看表" class="headerlink" title="二.查看表"></a>二.查看表</h1><h2 id="显示当前数据库中的表名称"><a href="#显示当前数据库中的表名称" class="headerlink" title="显示当前数据库中的表名称"></a>显示当前数据库中的表名称</h2><p>SHOW TABLES;</p><h2 id="显示指定表的结构"><a href="#显示指定表的结构" class="headerlink" title="显示指定表的结构"></a>显示指定表的结构</h2><p>DESC [RIBE] 表名;<br>SHOW CREATE TABLE 表名;</p><hr><h1 id="三-修改表"><a href="#三-修改表" class="headerlink" title="三.修改表"></a>三.修改表</h1><p>ALTER TABLE &lt;表名&gt;语句用于在已有的表中添加、修改或删除列。</p><figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">ALTER</span> <span class="keyword">TABLE</span> <span class="operator">&lt;</span>表名<span class="operator">&gt;</span></span><br><span class="line">[<span class="keyword">ADD</span> <span class="operator">&lt;</span>列定义<span class="operator">&gt;</span> [<span class="keyword">first</span><span class="operator">|</span>after列名] </span><br><span class="line"> <span class="operator">|</span>[MODIFY <span class="operator">&lt;</span>列定义<span class="operator">&gt;</span> [<span class="keyword">first</span> <span class="operator">|</span> after 列名]]</span><br><span class="line"> <span class="operator">|</span>[<span class="keyword">DROP</span> <span class="operator">&lt;</span>列名<span class="operator">&gt;</span>]</span><br><span class="line"> <span class="operator">|</span>[CHANGE <span class="operator">&lt;</span>旧列名<span class="operator">&gt;</span> <span class="operator">&lt;</span>新列名<span class="operator">&gt;</span> <span class="operator">&lt;</span>新数据类型<span class="operator">&gt;</span>]</span><br><span class="line"> <span class="operator">|</span>[RENAME <span class="operator">&lt;</span>新表名<span class="operator">&gt;</span>]</span><br><span class="line"> <span class="operator">|</span>[<span class="keyword">ORDER</span> <span class="keyword">BY</span> <span class="operator">&lt;</span>列名<span class="operator">&gt;</span>]</span><br><span class="line"></span><br></pre></td></tr></table></figure><hr><p>[例7-9]在stu数据表的Sbrith后插入一个属性scollege，长度为20，允许为空。<br>添加列</p><figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">ALTER</span> <span class="keyword">TABLE</span> stu</span><br><span class="line"><span class="keyword">ADD</span> scollege <span class="type">char</span>(<span class="number">20</span>);</span><br></pre></td></tr></table></figure><p>不允许为空</p><figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">ALTER</span> <span class="keyword">TABLE</span> stu</span><br><span class="line"><span class="keyword">ADD</span> scollege <span class="type">char</span>(<span class="number">20</span>) <span class="keyword">not</span> <span class="keyword">null</span>;</span><br></pre></td></tr></table></figure><p>在sbirth列之后</p><figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">ALTER</span> <span class="keyword">TABLE</span> stu</span><br><span class="line"><span class="keyword">ADD</span> scollege <span class="type">char</span>(<span class="number">20</span>) <span class="keyword">not</span> <span class="keyword">null</span> after sbirth;</span><br></pre></td></tr></table></figure><hr><p>[例7-6]将属性scollege改为长度为10，放在第一列</p><figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">ALTER</span> <span class="keyword">TABLE</span> stu</span><br><span class="line">MODIFY scollege <span class="type">char</span>(<span class="number">10</span>) <span class="keyword">first</span>;</span><br></pre></td></tr></table></figure><hr><p>[例7-10]删除scollege列。</p><figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">ALTER</span> <span class="keyword">TABLE</span> stu</span><br><span class="line"><span class="keyword">drop</span> scollege;</span><br></pre></td></tr></table></figure><h1 id="四、复制表"><a href="#四、复制表" class="headerlink" title="四、复制表"></a>四、复制表</h1><p>语法格式</p><figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">CREATE</span> [temporary] <span class="keyword">TABLE</span> <span class="operator">&lt;</span>表名<span class="operator">&gt;</span></span><br><span class="line">[<span class="keyword">like</span> 源表名] <span class="operator">|</span> [<span class="keyword">as</span> (<span class="keyword">select</span> 语句)];</span><br><span class="line"></span><br></pre></td></tr></table></figure><p>[例7-15]复制stu表到stu1中。不复制数据只复制结构</p><figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">CREATE</span> <span class="keyword">TABLE</span> stu1</span><br><span class="line"><span class="keyword">LIKE</span> stu;</span><br></pre></td></tr></table></figure><hr><p>[例7-16]复制stu表中的sno,sname到stu2中。复制数据</p><figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">CREATE</span> <span class="keyword">TABLE</span> stu2</span><br><span class="line"><span class="keyword">AS</span></span><br><span class="line"><span class="keyword">SELECT</span> sno,sname <span class="keyword">FROM</span> stu;</span><br></pre></td></tr></table></figure><h1 id="五、删除表"><a href="#五、删除表" class="headerlink" title="五、删除表"></a>五、删除表</h1><p>语法格式</p><figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">DROP</span> <span class="keyword">TABLE</span> [IF <span class="keyword">EXISTS</span>]<span class="operator">&lt;</span>表名<span class="operator">&gt;</span></span><br></pre></td></tr></table></figure><h1 id="六、表管理中的注意事项"><a href="#六、表管理中的注意事项" class="headerlink" title="六、表管理中的注意事项"></a>六、表管理中的注意事项</h1><h2 id="1-空值NULL"><a href="#1-空值NULL" class="headerlink" title="1.空值NULL"></a>1.空值NULL</h2><p>表示未知、不可用或将在以后添加的数据，它与数字0或空字符不同。</p><h2 id="2-列的标志-IDENTITY-属性"><a href="#2-列的标志-IDENTITY-属性" class="headerlink" title="2.列的标志(IDENTITY)属性"></a>2.列的标志(IDENTITY)属性</h2><p>任何表都可创建一个标志列，由系统生成序号值。该序号值唯一标志表中的一行，可以作为键值。</p><h2 id="3-关于列类型的隐含改变"><a href="#3-关于列类型的隐含改变" class="headerlink" title="3.关于列类型的隐含改变"></a>3.关于列类型的隐含改变</h2><p>MySQL中，系统会隐含改变在表中已指定的列类型。长度小于4的VARCHAR类型会被改变为CHAR类型。</p>]]></content>
+      
+      
+      <categories>
+          
+          <category> MySQL数据库 </category>
+          
+          <category> MySQL表的定义与完整性约束 </category>
+          
+      </categories>
+      
+      
+        <tags>
+            
+            <tag> 数据库笔记 </tag>
+            
+        </tags>
+      
+    </entry>
+    
+    
+    
+    <entry>
+      <title>7.1 表的基本概念、数据类型和运算符</title>
+      <link href="/post/f8120ca3.html"/>
+      <url>/post/f8120ca3.html</url>
+      
+        <content type="html"><![CDATA[<h1 id="表的基本概念"><a href="#表的基本概念" class="headerlink" title="表的基本概念"></a>表的基本概念</h1><ol><li>确保表结构设计的合理性，高效、分类合理</li><li>一个表只涉及一个主题</li><li>表中不应该包括重复信息</li></ol><hr><h1 id="数据类型"><a href="#数据类型" class="headerlink" title="数据类型"></a>数据类型</h1><p>为每张表的每个字段选择合适的数据类型是数据库设计过程中一个重要的步骤<br>MySQL数据类型：</p><ol><li>数值类型：整数类型、浮点类型、定点数类</li><li>日期时间型</li><li>字符串类型</li><li>复合类型</li><li>二进制类型</li></ol><hr><h2 id="1-数值类型"><a href="#1-数值类型" class="headerlink" title="1.数值类型"></a>1.数值类型</h2><h3 id="1-整型"><a href="#1-整型" class="headerlink" title="(1)整型"></a>(1)整型</h3><table><thead><tr><th>thinyint</th><th>smallint</th><th>mediumint</th><th>int</th><th>bigint</th></tr></thead><tbody><tr><td>1字节</td><td>2</td><td>3</td><td>4</td><td>8</td></tr></tbody></table><h3 id="2-浮点型与定型"><a href="#2-浮点型与定型" class="headerlink" title="(2)浮点型与定型"></a>(2)浮点型与定型</h3><p>m：总位数，d：小数位数</p><table><thead><tr><th>float(m,d)</th><th>double(m,d)</th><th>dec[imal](m,d)</th></tr></thead><tbody><tr><td>4字节，7个有效位</td><td>8字节，15个有效位</td><td>多用于表示金额数据，m+2字节，28个有效位</td></tr></tbody></table><hr><h2 id="比较float和decimal的区别"><a href="#比较float和decimal的区别" class="headerlink" title="比较float和decimal的区别"></a>比较float和decimal的区别</h2><blockquote><p><strong>decimal</strong> 数据类型最多可存储 38 个数字，所有数字都能够放到小数点的右边。<strong>decimal</strong> 数据类型存储了一个准确（精确）的数字表达法；不存储值的近似值。<br><strong>float</strong> 和 <strong>real</strong> 数据类型被称为近似的数据类型。在近似数字数据类型方面，<strong>float</strong> 和 <strong>real</strong> 数据的使用遵循 IEEE 754 标准。<br>近似数字数据类型并不存储为多数数字指定的精确值，它们只储存这些值的最近似值。在很多应用程序中，指定值与存储值之间的微小差异并不明显。但有时这些差异也值得引起注意。由于 <strong>float</strong> 和 <strong>real</strong> 数据类型的这种近似性，当要求精确的数字状态时，<strong>比如在财务应用程序中，在那些需要舍入的操作中，或在等值核对的操作中，就不使用这些数据类型。这时就要用integer、decimal、money或smallmone数据类型。</strong></p></blockquote><p>例如，创建两个列c1，c3，其中c1是float类型，c3是decimal类型，都添加数据9876543.21，显示其结果</p><figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">create</span> <span class="keyword">table</span> t1</span><br><span class="line">(</span><br><span class="line">c1 <span class="type">float</span>(<span class="number">10.2</span>),</span><br><span class="line">c3 <span class="type">decimal</span>(<span class="number">10</span>,<span class="number">2</span>)</span><br><span class="line">);</span><br><span class="line"><span class="keyword">insert</span> <span class="keyword">into</span> t1</span><br><span class="line"><span class="keyword">values</span>(<span class="number">9876543.21</span>,<span class="number">9876543.21</span>)</span><br></pre></td></tr></table></figure><p>结果显示</p><table><thead><tr><th>c1</th><th>c3</th></tr></thead><tbody><tr><td>9876543.00</td><td>9876543.21</td></tr></tbody></table><hr><h2 id="2-日期时间型"><a href="#2-日期时间型" class="headerlink" title="2.日期时间型"></a>2.日期时间型</h2><table><thead><tr><th>data</th><th>time</th><th>year</th><th>datetime</th><th>timestamp</th></tr></thead><tbody><tr><td>4字节</td><td>3</td><td>1</td><td>8</td><td>4</td></tr></tbody></table><p>注意<br>时间戳(timestamp)：<br>(1)该常量用单引号括起来<br>(2)分隔符：年月日为“-”，时分秒为“：” </p><hr><h2 id="3-字符串类型"><a href="#3-字符串类型" class="headerlink" title="3.字符串类型"></a>3.字符串类型</h2><h3 id="1-普通字符串："><a href="#1-普通字符串：" class="headerlink" title="(1)普通字符串："></a>(1)普通字符串：</h3><blockquote><p>Char(n)<br>varchar(n)</p></blockquote><p>其中n指的是字符个数，不同的字符集，能表示的字符个数不同，GBK可以表示4000个字符<br>区别：<br>char快<br>varchar节约空间</p><h3 id="2-可变类型"><a href="#2-可变类型" class="headerlink" title="(2)可变类型"></a>(2)可变类型</h3><blockquote><p>tinyblob<br>blob<br>mediumblob<br>longblob<br>blob二进制大对象，大小写敏感</p></blockquote><blockquote><p>tinytext<br>text<br>mediumtext<br>longtext<br>text类型大小写不敏感</p></blockquote><hr><h2 id="4-复合类型"><a href="#4-复合类型" class="headerlink" title="4.复合类型"></a>4.复合类型</h2><p>该类型本质上是字符型<br>ENUM：只允许从一个集合中去取一个值，类似于单选按钮<br>SET：允许从一个集合取多个值，类似于复选框</p><hr><h2 id="5-二进制类型"><a href="#5-二进制类型" class="headerlink" title="5.二进制类型"></a>5.二进制类型</h2><p>储存区分大小写类型的符号时</p><h3 id="1-7种类型"><a href="#1-7种类型" class="headerlink" title="(1)7种类型"></a>(1)7种类型</h3><p>binary, varbinary, bit, tinyblob, blob, mediumblob, olngblob<br>bit：只占一位，适合用来存储是或否</p><p>注意：</p><ol><li>text和blob都可以用来存储长字符串<br> text主要储存文本字符串，如新闻、博客<br> blob以二进制形式存放<br> 可以是：二进制文本、图片、音视频</li><li>在项目中，通常将图片、音频、视频等二进制数据，以文件的形式直接存储在操作系统中。存在磁盘中</li></ol><hr><h2 id="6-选择数据类型"><a href="#6-选择数据类型" class="headerlink" title="6.选择数据类型"></a>6.选择数据类型</h2><ol><li>尽量使用<code>“短”</code>数据类型。</li><li>数据类型越<code>简单</code>  越好。</li><li>要求精度高的选用decimal.</li><li>字符型:考虑速度选char，节省空间选varchar。</li><li>在MySQL中，应该用<code>内置</code>的日期和时间数据类型，而不是用字符串来存储日期和时间。</li><li>尽量避免<strong>NULL</strong>字段，建议使用NOT NULL约束。</li></ol><hr><h1 id="运算符"><a href="#运算符" class="headerlink" title="运算符"></a>运算符</h1><h2 id="1-算术运算符"><a href="#1-算术运算符" class="headerlink" title="1.算术运算符"></a>1.算术运算符</h2><table><thead><tr><th>运算符</th><th>作用</th></tr></thead><tbody><tr><td>+</td><td>加法，返回相加后的值</td></tr><tr><td>-</td><td>减法，返回相减后的值</td></tr><tr><td>*</td><td>乘法，返回相乘后的值</td></tr><tr><td>&#x2F;,DIV</td><td>取整，返回相除后的商</td></tr><tr><td>%，MOD</td><td>取余，返回相除后的余数</td></tr><tr><td>例如：</td><td></td></tr></tbody></table><figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">select</span> <span class="number">1</span><span class="operator">/</span><span class="number">2</span>,<span class="number">1</span> div <span class="number">2</span>,<span class="number">1</span><span class="operator">%</span><span class="number">2</span>,<span class="number">1</span> mod <span class="number">2</span>;</span><br></pre></td></tr></table></figure><p>1&#x2F;2是0.5<br>1 div 2 是0<br>1%2,1 mod 2都是1</p><hr><h2 id="2-比较运算符"><a href="#2-比较运算符" class="headerlink" title="2.比较运算符"></a>2.比较运算符</h2><p>(1)运算符：<br>&#x3D;、&lt;&gt;或!&#x3D;、&lt;&#x3D;&gt;、&lt;、&lt;&#x3D;、&gt;、&gt;&#x3D;、BETWEEN (min) AND (max)、IN、IS [NOT] NULL，LIKE，REGEXP</p><blockquote><p>&lt;&#x3D;&gt;可以对NULL判断，用的较少，常用IS [NOT] NULL</p></blockquote><p>(2)作用：<br>对左、右两边操作数进行比较，比较结果为真返回1,为假返回0，不确定返回NULL。</p><hr><h2 id="3-逻辑运算符"><a href="#3-逻辑运算符" class="headerlink" title="3.逻辑运算符"></a>3.逻辑运算符</h2><p>也称为布尔运算符，<code>判断表达式的真假</code></p><table><thead><tr><th>运算符</th><th>作用</th></tr></thead><tbody><tr><td>NOT或!</td><td>逻辑非</td></tr><tr><td>AND或&amp;</td><td>逻辑与</td></tr><tr><td>OR或||</td><td>逻辑或</td></tr><tr><td>XOR</td><td>逻辑异或</td></tr></tbody></table><h2 id="4-位运算符"><a href="#4-位运算符" class="headerlink" title="4.位运算符"></a>4.位运算符</h2><p>数据库用的不多<br>位运算符是将给定的操作数转化为二进制后，对各个操作数的每一位都进行指定的逻辑运算，得到的二进制结果转化为十进制数后就是位运算的结果。</p>]]></content>
+      
+      
+      <categories>
+          
+          <category> MySQL数据库 </category>
+          
+          <category> MySQL表的定义与完整性约束 </category>
+          
+      </categories>
+      
+      
+        <tags>
+            
+            <tag> 数据库笔记 </tag>
+            
+        </tags>
+      
+    </entry>
+    
+    
+    
+    <entry>
+      <title>6.3 MySQL数据库的操作</title>
+      <link href="/post/540f6517.html"/>
+      <url>/post/540f6517.html</url>
+      
+        <content type="html"><![CDATA[<h1 id="创建数据库"><a href="#创建数据库" class="headerlink" title="创建数据库"></a>创建数据库</h1><figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">CREATE</span> &#123;DATABASE <span class="operator">|</span> SCHEMA&#125;[IF <span class="keyword">NOT</span> <span class="keyword">EXISTS</span>] 数据库名</span><br><span class="line">[[<span class="keyword">DEFAULT</span>] <span class="type">CHARACTER</span> <span class="keyword">SET</span> 字符集名]</span><br><span class="line">[[DEFALUT] <span class="keyword">COLLATE</span> 校验规则名]</span><br><span class="line"></span><br></pre></td></tr></table></figure><p>MySQL不区分大小写<br>例如：创建一个名为StudentInfo的数据库的两种语法</p><figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">CREATE</span> DATABASE StudentInfo;</span><br><span class="line"><span class="keyword">CREATE</span> DATABASE IF <span class="keyword">NOT</span> <span class="keyword">EXISTS</span> StudentInfo;</span><br></pre></td></tr></table></figure><h1 id="设置数据库字符集为GBK"><a href="#设置数据库字符集为GBK" class="headerlink" title="设置数据库字符集为GBK"></a>设置数据库字符集为GBK</h1><figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">DEFAULT CHARACTER SET gbk;</span><br></pre></td></tr></table></figure><h1 id="设置校验规则为-gbk-chinese-ci"><a href="#设置校验规则为-gbk-chinese-ci" class="headerlink" title="设置校验规则为 gbk_chinese_ci"></a>设置校验规则为 gbk_chinese_ci</h1><figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">COLLATE gbk_chinese_ci;</span><br></pre></td></tr></table></figure><h1 id="修改数据库"><a href="#修改数据库" class="headerlink" title="修改数据库"></a>修改数据库</h1><h2 id="判断是否存在数据库"><a href="#判断是否存在数据库" class="headerlink" title="判断是否存在数据库"></a>判断是否存在数据库</h2><p>IF NOT EXISTS</p><h2 id="查看所有数据库"><a href="#查看所有数据库" class="headerlink" title="查看所有数据库"></a>查看所有数据库</h2><figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">show databases;</span><br></pre></td></tr></table></figure><h1 id="删除数据库"><a href="#删除数据库" class="headerlink" title="删除数据库"></a>删除数据库</h1><figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">DROP DATABASE [IF EXISTS] db_name</span><br></pre></td></tr></table></figure><h1 id="选择数据库"><a href="#选择数据库" class="headerlink" title="选择数据库"></a>选择数据库</h1><figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">use &lt;数据库名&gt;</span><br></pre></td></tr></table></figure><p>执行以上命令后，你就已经成功选择了 RUNOOB 数据库，在后续的操作中都会在 RUNOOB 数据库中执行。</p>]]></content>
+      
+      
+      <categories>
+          
+          <category> MySQL数据库 </category>
+          
+          <category> MySQL储存引擎与数据库操作管理 </category>
+          
+      </categories>
+      
+      
+        <tags>
+            
+            <tag> 数据库笔记 </tag>
+            
+        </tags>
+      
+    </entry>
+    
+    
+    
+    <entry>
+      <title>6.2 字符集</title>
+      <link href="/post/ebfe724f.html"/>
+      <url>/post/ebfe724f.html</url>
+      
+        <content type="html"><![CDATA[<h1 id="字符集"><a href="#字符集" class="headerlink" title="字符集"></a>字符集</h1><p>是一套文字符号及其编码、比较规则的集合</p><h1 id="MySQL支持的字符集"><a href="#MySQL支持的字符集" class="headerlink" title="MySQL支持的字符集"></a>MySQL支持的字符集</h1><p>支持多种字符集，在同一台服务器、同一个数据库甚至同一个表的不同字段都可以使用相同的字符集</p><figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">show</span> <span class="type">character</span> <span class="keyword">set</span></span><br></pre></td></tr></table></figure><p>MySQL字符集包括 <code>字符集</code> 和 <code>校对规则</code> 两个概念。</p><h1 id="字符集-1"><a href="#字符集-1" class="headerlink" title="字符集"></a>字符集</h1><p>用来定义MySQL储存字符串的方式，</p><h1 id="校对规则"><a href="#校对规则" class="headerlink" title="校对规则"></a>校对规则</h1><p>定义比较字符串的方式</p><p>MySQL支持30多种字符集的70多种校对规则</p>]]></content>
+      
+      
+      <categories>
+          
+          <category> MySQL数据库 </category>
+          
+          <category> MySQL储存引擎与数据库操作管理 </category>
+          
+      </categories>
+      
+      
+        <tags>
+            
+            <tag> 数据库笔记 </tag>
+            
+        </tags>
+      
+    </entry>
+    
+    
+    
+    <entry>
+      <title>6.1 存储引擎</title>
+      <link href="/post/67589a70.html"/>
+      <url>/post/67589a70.html</url>
+      
+        <content type="html"><![CDATA[<h1 id="查看当前数据库支持的存储引擎"><a href="#查看当前数据库支持的存储引擎" class="headerlink" title="查看当前数据库支持的存储引擎"></a>查看当前数据库支持的存储引擎</h1><figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">show</span> engines;</span><br></pre></td></tr></table></figure><h1 id="InnoDB存储引擎"><a href="#InnoDB存储引擎" class="headerlink" title="InnoDB存储引擎"></a>InnoDB存储引擎</h1><p>是事务（Transaction）安全的，并且支持外键（foreign key）。<br><em>MySQL的默认存储引擎</em></p><h1 id="MyISAM存储引擎"><a href="#MyISAM存储引擎" class="headerlink" title="MyISAM存储引擎"></a>MyISAM存储引擎</h1><p>具有检查和修复表的大多数工具<br>不是事务安全的，也不支持外键<br>如果某张表需要大量select</p><h1 id="MEMORY存储引擎"><a href="#MEMORY存储引擎" class="headerlink" title="MEMORY存储引擎"></a>MEMORY存储引擎</h1><p>将表中的数据存放在内存中，如果数据库重启或者发生崩溃，表中的数据也都将小时</p><h1 id="MERGE储存引擎"><a href="#MERGE储存引擎" class="headerlink" title="MERGE储存引擎"></a>MERGE储存引擎</h1><h1 id="习题"><a href="#习题" class="headerlink" title="习题"></a>习题</h1><p>MySQL中支持的存储引擎有InnoDB、MyISAM、MEMORY、MERGE</p>]]></content>
+      
+      
+      <categories>
+          
+          <category> MySQL数据库 </category>
+          
+          <category> MySQL储存引擎与数据库操作管理 </category>
+          
+      </categories>
+      
+      
+        <tags>
+            
+            <tag> 数据库笔记 </tag>
+            
+        </tags>
+      
+    </entry>
+    
+    
+    
+    <entry>
+      <title>无损连接性</title>
+      <link href="/post/1a1a8fc5.html"/>
+      <url>/post/1a1a8fc5.html</url>
+      
+        <content type="html"><![CDATA[<h1 id="无损连接性"><a href="#无损连接性" class="headerlink" title="无损连接性"></a>无损连接性</h1><p>有一个关系模式R(U, F),其上的函数依赖集:<br>U&#x3D;{A,B,C}， F&#x3D; {A→B，C→B} ,<br>判断下列分解是否具有无损连接性。<br>p1&#x3D; {R1(AB), R2(AC)}   p1&#x3D; {R1(AB), R2(BC)}</p><p>分成两个关系，有两行<br>三个元素，三列<br><img src="https://tuchuang-1309886987.cos.ap-beijing.myqcloud.com/%E6%97%A0%E6%8D%9F%E8%BF%9E%E6%8E%A5%E6%80%A71.png" alt="[无损连接性1.png]"></p><p>A能确定B，A列中值相等，所以可以把B列中相等都是a2，有一行都是a了所以有无损连接性</p>]]></content>
+      
+      
+      <categories>
+          
+          <category> MySQL数据库 </category>
+          
+          <category> 关系模型与关系数据库理论 </category>
+          
+      </categories>
+      
+      
+        <tags>
+            
+            <tag> 数据库笔记 </tag>
+            
+        </tags>
+      
+    </entry>
+    
+    
+    
+    <entry>
+      <title>模式分解的算法</title>
+      <link href="/post/c96f14c2.html"/>
+      <url>/post/c96f14c2.html</url>
+      
+        <content type="html"><![CDATA[<h1 id="模式分解的算法"><a href="#模式分解的算法" class="headerlink" title="模式分解的算法"></a>模式分解的算法</h1><ol><li>写出符合3NF的函数依赖</li><li>根据函数依赖分解关系，保持函数依赖性</li><li>删除重复的分解关系，例如子集关系</li><li>合并主键相同的关系<br> <img src="https://tuchuang-1309886987.cos.ap-beijing.myqcloud.com/%E6%A8%A1%E5%BC%8F%E5%88%86%E8%A7%A3%E7%9A%84%E7%AE%97%E6%B3%95.png" alt="[模式分解的算法.png]"></li></ol><h1 id="R转换为3NF既有无损连接性又保持函数依赖性的分解算法"><a href="#R转换为3NF既有无损连接性又保持函数依赖性的分解算法" class="headerlink" title="R转换为3NF既有无损连接性又保持函数依赖性的分解算法"></a>R转换为3NF既有无损连接性又保持函数依赖性的分解算法</h1><ol><li>求出R保持函数依赖的一个分解p&#x3D;{R1,R2…，Rk]</li><li>判断p是否具有无损连接性，若是，转4</li><li>令p&#x3D;p U {X}，其中X是R的候选码。</li><li>分解结束，输出p。</li></ol>]]></content>
+      
+      
+      <categories>
+          
+          <category> MySQL数据库 </category>
+          
+          <category> 关系模型与关系数据库理论 </category>
+          
+      </categories>
+      
+      
+        <tags>
+            
+            <tag> 数据库笔记 </tag>
+            
+        </tags>
+      
+    </entry>
+    
+    
+    
+    <entry>
+      <title>保持函数依赖</title>
+      <link href="/post/98bc75d1.html"/>
+      <url>/post/98bc75d1.html</url>
+      
+        <content type="html"><![CDATA[<h1 id="保持函数依赖"><a href="#保持函数依赖" class="headerlink" title="保持函数依赖"></a>保持函数依赖</h1><p>看分解后的所有关系中，能否包含每个函数依赖的属性<br><img src="https://tuchuang-1309886987.cos.ap-beijing.myqcloud.com/%E4%BF%9D%E6%8C%81%E5%87%BD%E6%95%B0%E4%BE%9D%E8%B5%96.png" alt="[保持函数依赖.png]"></p><p>p1中没有把C→B保持，保持了A→B</p><h1 id="用最小函数依赖集"><a href="#用最小函数依赖集" class="headerlink" title="用最小函数依赖集"></a>用最小函数依赖集</h1>]]></content>
+      
+      
+      <categories>
+          
+          <category> MySQL数据库 </category>
+          
+          <category> 关系模型与关系数据库理论 </category>
+          
+      </categories>
+      
+      
+        <tags>
+            
+            <tag> 数据库笔记 </tag>
+            
+        </tags>
+      
+    </entry>
+    
+    
+    
+    <entry>
+      <title>3.4.3 范式</title>
+      <link href="/post/c8ef20dc.html"/>
+      <url>/post/c8ef20dc.html</url>
+      
+        <content type="html"><![CDATA[<h1 id="范式"><a href="#范式" class="headerlink" title="范式"></a>范式</h1><h2 id="1NF"><a href="#1NF" class="headerlink" title="1NF"></a>1NF</h2><p>不能以集合、序列等作为属性。</p><h2 id="2NF"><a href="#2NF" class="headerlink" title="2NF"></a>2NF</h2><p>非主属性和候选码不能有部分依赖<br><code>候选码是单属性的话，一定能达到2NF，只需要考虑是否达到3NF等</code></p><h2 id="3NF（通常）"><a href="#3NF（通常）" class="headerlink" title="3NF（通常）"></a>3NF（通常）</h2><p>非主属性和候选码不能有传递依赖</p><h1 id="BCNF"><a href="#BCNF" class="headerlink" title="BCNF"></a>BCNF</h1><p>所有函数依赖的左端如果都是候选码，则是BCNF</p>]]></content>
+      
+      
+      <categories>
+          
+          <category> MySQL数据库 </category>
+          
+          <category> 关系模型与关系数据库理论 </category>
+          
+      </categories>
+      
+      
+        <tags>
+            
+            <tag> 数据库笔记 </tag>
+            
+        </tags>
+      
+    </entry>
+    
+    
+    
+    <entry>
+      <title>3.4.2 求候选码</title>
+      <link href="/post/22d8befd.html"/>
+      <url>/post/22d8befd.html</url>
+      
+        <content type="html"><![CDATA[<h1 id="求候选码"><a href="#求候选码" class="headerlink" title="求候选码"></a>求候选码</h1><h2 id="四类属性"><a href="#四类属性" class="headerlink" title="四类属性"></a>四类属性</h2><p>对于给定的关系模式R(U,F)，其中属性集U&#x3D;(A…A)和函数依赖集F，<br>可将其属性分为以下四类:</p><ol><li>L类  仅出现在F中函数依赖左侧的属性</li><li>R类  仅出现在F中函数依赖右侧的属性</li><li>N类  在F的函数依赖中未出现的属性</li><li>LR类  在F的函数依赖两侧均出现的属性</li></ol><p>先判断L类和N类的并集属性的闭包能否包含全部属性，若能，则L类和N类的并集属性则为候选码，若不能，则添加其它属性尝试，一定要所有属性全试完<br><img src="https://tuchuang-1309886987.cos.ap-beijing.myqcloud.com/%E6%B1%82%E5%80%99%E9%80%89%E7%A0%81.png" alt="1"></p>]]></content>
+      
+      
+      <categories>
+          
+          <category> MySQL数据库 </category>
+          
+          <category> 关系模型与关系数据库理论 </category>
+          
+      </categories>
+      
+      
+        <tags>
+            
+            <tag> 数据库笔记 </tag>
+            
+        </tags>
+      
+    </entry>
+    
+    
+    
+    <entry>
+      <title>3.4.2 函数依赖</title>
+      <link href="/post/995cba3d.html"/>
+      <url>/post/995cba3d.html</url>
+      
+        <content type="html"><![CDATA[<h1 id="函数依赖"><a href="#函数依赖" class="headerlink" title="函数依赖"></a>函数依赖</h1><p>那个属性能确定哪个属性</p><h2 id="好的模式"><a href="#好的模式" class="headerlink" title="好的模式"></a><u>好的模式</u></h2><p>不会发生插入异常、删除异常、更新异常,数据冗余应尽可能少。</p><h1 id="平凡函数依赖和非平凡函数依赖"><a href="#平凡函数依赖和非平凡函数依赖" class="headerlink" title="平凡函数依赖和非平凡函数依赖"></a>平凡函数依赖和非平凡函数依赖</h1><p>X→Y，但Y⊄X，则称X→Y是非平凡函数依赖<br>X→Y，但Y⊆X，则称X→Y是平凡函数依赖</p><blockquote><p>例如：<br>在关系SC(Sno, Sdept,Mname,Cno,Grade)中,<br>存在：<br>(Sno, Cno)→Grade:非平凡函数依赖<br>Sdept→Mname:非平凡函数依赖<br>(Sno, Cno)→Sno :平凡函数依赖<br>(Sno, Cno)→Cno :平凡函数依赖</p></blockquote><h1 id="完全函数依赖（F-："><a href="#完全函数依赖（F-：" class="headerlink" title="完全函数依赖（F)："></a>完全函数依赖（F)：</h1><p>X→Y，中X的任意一个真子集都不能确定Y，必须要所有子集一起才能确定Y</p><h1 id="部分函数依赖-P-："><a href="#部分函数依赖-P-：" class="headerlink" title="部分函数依赖(P)："></a>部分函数依赖(P)：</h1><p>不是完全函数依赖</p><h1 id="传递函数依赖-T"><a href="#传递函数依赖-T" class="headerlink" title="传递函数依赖(T):"></a>传递函数依赖(T):</h1><p>X→Y，Y→Z，则X→Z</p><h1 id="FD公理"><a href="#FD公理" class="headerlink" title="FD公理"></a>FD公理</h1><h2 id="Armstrong公理系统"><a href="#Armstrong公理系统" class="headerlink" title="Armstrong公理系统"></a>Armstrong公理系统</h2><p>对于关系模式R&lt;U,F&gt;</p><h3 id="A1-自反律：若Y⊆X⊆U，则X→Y"><a href="#A1-自反律：若Y⊆X⊆U，则X→Y" class="headerlink" title="A1.自反律：若Y⊆X⊆U，则X→Y"></a>A1.自反律：若Y⊆X⊆U，则X→Y</h3><h3 id="A2-增广律：若X→Y，且Z⊆U，则XZ→YZ"><a href="#A2-增广律：若X→Y，且Z⊆U，则XZ→YZ" class="headerlink" title="A2.增广律：若X→Y，且Z⊆U，则XZ→YZ"></a>A2.增广律：若X→Y，且Z⊆U，则XZ→YZ</h3><h3 id="A3-传递律：X→Y，Y→Z，则X→Z"><a href="#A3-传递律：X→Y，Y→Z，则X→Z" class="headerlink" title="A3.传递律：X→Y，Y→Z，则X→Z"></a>A3.传递律：X→Y，Y→Z，则X→Z</h3><h3 id="合并规则：X→Y，X→Z，则X→YZ"><a href="#合并规则：X→Y，X→Z，则X→YZ" class="headerlink" title="合并规则：X→Y，X→Z，则X→YZ"></a>合并规则：X→Y，X→Z，则X→YZ</h3><h3 id="伪传递规则：X→Y，WY→Z，则XW→Z"><a href="#伪传递规则：X→Y，WY→Z，则XW→Z" class="headerlink" title="伪传递规则：X→Y，WY→Z，则XW→Z"></a>伪传递规则：X→Y，WY→Z，则XW→Z</h3><h3 id="分解规则：X→Y，Z⊆Y，则X→Z"><a href="#分解规则：X→Y，Z⊆Y，则X→Z" class="headerlink" title="分解规则：X→Y，Z⊆Y，则X→Z"></a>分解规则：X→Y，Z⊆Y，则X→Z</h3><h1 id="函数依赖的闭包"><a href="#函数依赖的闭包" class="headerlink" title="函数依赖的闭包"></a>函数依赖的闭包</h1><p>在关系模式R&lt;U，F&gt;中，为F所逻辑蕴含的函数依赖的全体叫作F的闭包，记为F+<br><img src="https://tuchuang-1309886987.cos.ap-beijing.myqcloud.com/%E9%97%AD%E5%8C%85.png" alt="[闭包.png]"></p><h1 id="属性集的闭包"><a href="#属性集的闭包" class="headerlink" title="属性集的闭包"></a>属性集的闭包</h1><p>求A的闭包，则是找出A能确定的所有属性<br><img src="https://tuchuang-1309886987.cos.ap-beijing.myqcloud.com/%E5%B1%9E%E6%80%A7%E9%9B%86%E7%9A%84%E9%97%AD%E5%8C%85.png" alt="[属性集的闭包.png]"></p><h1 id="最小函数集"><a href="#最小函数集" class="headerlink" title="最小函数集"></a>最小函数集</h1><p>函数依赖右侧为单属性：F中任一函数依赖的右部仅含有一个属性。<br>无导出函数依赖：F中不存在这样的函数依赖X→A，使得F与F一{X→A}等价。<br>无部分函数依赖：F中不存在这样的函数依赖X→A，X有真子集Z使得F一{X→A}U{Z→A}与F等价。</p>]]></content>
+      
+      
+      <categories>
+          
+          <category> MySQL数据库 </category>
+          
+          <category> 关系模型与关系数据库理论 </category>
+          
+      </categories>
+      
+      
+        <tags>
+            
+            <tag> 数据库笔记 </tag>
+            
+        </tags>
+      
+    </entry>
+    
+    
+    
+    <entry>
+      <title>3.3 关系代数表达式的优化</title>
+      <link href="/post/687e2be7.html"/>
+      <url>/post/687e2be7.html</url>
+      
+        <content type="html"><![CDATA[<h1 id="1．选择运算应尽可能先做"><a href="#1．选择运算应尽可能先做" class="headerlink" title="1．选择运算应尽可能先做"></a>1．选择运算应尽可能先做</h1><p>目的:减小中间结果</p><h1 id="2．投影运算和选择运算同时做"><a href="#2．投影运算和选择运算同时做" class="headerlink" title="2．投影运算和选择运算同时做"></a>2．投影运算和选择运算同时做</h1><p>目的:避免重复扫描关系</p><h1 id="3．将投影运算与其前面或后面的双目运算结合"><a href="#3．将投影运算与其前面或后面的双目运算结合" class="headerlink" title="3．将投影运算与其前面或后面的双目运算结合"></a>3．将投影运算与其前面或后面的双目运算结合</h1><p>目的:减少扫描关系的遍数</p><h1 id="4．避免直接做笛卡尔积"><a href="#4．避免直接做笛卡尔积" class="headerlink" title="4．避免直接做笛卡尔积"></a>4．避免直接做笛卡尔积</h1><p>把笛卡尔积操作之前和之后的一连串选择和投影合并起来一起做。&#x3D;&#x3D;&gt;连接运算</p>]]></content>
+      
+      
+      <categories>
+          
+          <category> MySQL数据库 </category>
+          
+          <category> 关系模型与关系数据库理论 </category>
+          
+      </categories>
+      
+      
+        <tags>
+            
+            <tag> 数据库笔记 </tag>
+            
+        </tags>
+      
+    </entry>
+    
+    
+    
+    <entry>
+      <title>3.1.4 专门关系运算</title>
+      <link href="/post/c2dbb682.html"/>
+      <url>/post/c2dbb682.html</url>
+      
+        <content type="html"><![CDATA[<h1 id="选择"><a href="#选择" class="headerlink" title="选择"></a>选择</h1><p>又称为限制<br>在关系R中选择满足给定条件的各元组<br>从行的角度进行运算<br><img src="https://tuchuang-1309886987.cos.ap-beijing.myqcloud.com/%E9%80%89%E6%8B%A9.png" alt="[选择.png]"></p><h1 id="投影"><a href="#投影" class="headerlink" title="投影"></a>投影</h1><p>从R中取出若干属性列组成新的关系<br>从列的角度进行运算<br>投影后不仅取消了原关系中的某些列，而且还可能&#x3D;&#x3D;取消结果中的重复行&#x3D;&#x3D;<br><img src="https://tuchuang-1309886987.cos.ap-beijing.myqcloud.com/%E6%8A%95%E5%BD%B1.png" alt="[投影.png]"></p><h1 id="连接"><a href="#连接" class="headerlink" title="连接"></a>连接</h1><p>从行的角度进行运算<br>从两个关系的笛卡尔积中选取属性满足指定条件的元组<br>&#x3D;&#x3D;条件也可以是R.B&#x3D;S.B&#x3D;&#x3D;<br><img src="https://tuchuang-1309886987.cos.ap-beijing.myqcloud.com/%E8%BF%9E%E6%8E%A5.png" alt="[连接.png]"></p><h2 id="自然连接"><a href="#自然连接" class="headerlink" title="自然连接"></a>自然连接</h2><p>自然连接是一种特殊的等值连接<br>两个关系中进行比较的分量必须是相同属性组<br>在结果中去掉重复的属性列<br><img src="https://tuchuang-1309886987.cos.ap-beijing.myqcloud.com/%E8%87%AA%E7%84%B6%E8%BF%9E%E6%8E%A5.png" alt="[自然连接.png]"></p><h1 id="除"><a href="#除" class="headerlink" title="除"></a>除</h1><p>太难了不会<br><img src="https://tuchuang-1309886987.cos.ap-beijing.myqcloud.com/%E9%99%A4.png" alt="[除.png]"></p>]]></content>
+      
+      
+      <categories>
+          
+          <category> MySQL数据库 </category>
+          
+          <category> 关系模型与关系数据库理论 </category>
+          
+      </categories>
+      
+      
+        <tags>
+            
+            <tag> 数据库笔记 </tag>
+            
+        </tags>
+      
+    </entry>
+    
+    
+    
+    <entry>
+      <title>3.1.2 3.1.3 关系代数运算</title>
+      <link href="/post/dd335644.html"/>
+      <url>/post/dd335644.html</url>
+      
+        <content type="html"><![CDATA[<h1 id="常用的关系代数运算符"><a href="#常用的关系代数运算符" class="headerlink" title="常用的关系代数运算符"></a>常用的关系代数运算符</h1><p><img src="https://tuchuang-1309886987.cos.ap-beijing.myqcloud.com/%E5%85%B3%E7%B3%BB%E4%BB%A3%E6%95%B0%E8%BF%90%E7%AE%97%E7%AC%A6.png" alt="[关系代数运算符.png]"></p><h1 id="1-并"><a href="#1-并" class="headerlink" title="1.并"></a>1.并</h1><p><img src="https://tuchuang-1309886987.cos.ap-beijing.myqcloud.com/%E5%85%B3%E7%B3%BB%E4%BB%A3%E6%95%B0%E8%BF%90%E7%AE%97%E2%80%94%E2%80%94%E5%B9%B6.png" alt="[关系代数运算——并.png]"></p><h1 id="2-差"><a href="#2-差" class="headerlink" title="2.差"></a>2.差</h1><p>属于R而不属于S<br><img src="https://tuchuang-1309886987.cos.ap-beijing.myqcloud.com/%E5%85%B3%E7%B3%BB%E4%BB%A3%E6%95%B0%E8%BF%90%E7%AE%97%E2%80%94%E2%80%94%E5%B7%AE.png" alt="[关系代数运算——差.png]"></p><h1 id="3-交"><a href="#3-交" class="headerlink" title="3.交"></a>3.交</h1><p>既属于R又属于S<br><img src="https://tuchuang-1309886987.cos.ap-beijing.myqcloud.com/%E5%85%B3%E7%B3%BB%E4%BB%A3%E6%95%B0%E8%BF%90%E7%AE%97%E2%80%94%E2%80%94%E4%BA%A4.png" alt="[关系代数运算——交.png]"></p><h1 id="4-广义笛卡尔积"><a href="#4-广义笛卡尔积" class="headerlink" title="4.广义笛卡尔积"></a>4.广义笛卡尔积</h1><p><img src="https://tuchuang-1309886987.cos.ap-beijing.myqcloud.com/%E5%85%B3%E7%B3%BB%E4%BB%A3%E6%95%B0%E8%BF%90%E7%AE%97%E2%80%94%E2%80%94%E5%B9%BF%E4%B9%89%E7%AC%9B%E5%8D%A1%E5%B0%94%E7%A7%AF.png" alt="[关系代数运算——广义笛卡尔积.png]"></p>]]></content>
+      
+      
+      <categories>
+          
+          <category> MySQL数据库 </category>
+          
+          <category> 关系模型与关系数据库理论 </category>
+          
+      </categories>
+      
+      
+        <tags>
+            
+            <tag> 数据库笔记 </tag>
+            
+        </tags>
+      
+    </entry>
+    
+    
+    
+    <entry>
+      <title>3.1.1关系代数</title>
+      <link href="/post/754fa33b.html"/>
+      <url>/post/754fa33b.html</url>
+      
+        <content type="html"><![CDATA[<h1 id="1-域"><a href="#1-域" class="headerlink" title="1.域"></a>1.域</h1><p>是一组具有相同数据类型的值的集合<br>例如：整数 、实属 、{男，女}</p><h1 id="2-笛卡尔积"><a href="#2-笛卡尔积" class="headerlink" title="2.笛卡尔积"></a>2.笛卡尔积</h1><p>笛卡尔积可以表示为一个二维表<br>例如：有D1（a，b，c）和D2（1,2）两个域<br>则D1、D2的笛卡尔积为：<br>D1XD2&#x3D;{(a,1)，(a,2)，(b,1)，(b, 2)，(c,1)，(c,2)}<br>![[笛卡尔积二维表.png]]</p><h2 id="元组"><a href="#元组" class="headerlink" title="元组"></a>元组</h2><p>笛卡尔积中的每一个元素（d1,d2,d3….dn）</p><h2 id="分量"><a href="#分量" class="headerlink" title="分量"></a>分量</h2><p>笛卡尔积元素中的每个值di</p><h1 id="3-关系"><a href="#3-关系" class="headerlink" title="3.关系"></a>3.关系</h1><p>表示为R(D1,D2….. Dn),</p><ul><li>R为关系名;</li><li>n是关系的目或度(Degree);</li><li>当n&#x3D;1时为单元关系;n&#x3D;2时为二元关系。</li><li>关系中的每个元素是关系中的元组，用t表示.</li><li>关系是笛卡尔积的有限子集。</li></ul>]]></content>
+      
+      
+      <categories>
+          
+          <category> MySQL数据库 </category>
+          
+          <category> 关系模型与关系数据库理论 </category>
+          
+      </categories>
+      
+      
+        <tags>
+            
+            <tag> 数据库笔记 </tag>
+            
+        </tags>
+      
+    </entry>
+    
+    
+    
+    <entry>
+      <title>2.6 关系模式</title>
+      <link href="/post/67018d0c.html"/>
+      <url>/post/67018d0c.html</url>
+      
+        <content type="html"><![CDATA[<p><img src="https://tuchuang-1309886987.cos.ap-beijing.myqcloud.com/%E5%85%B3%E7%B3%BB%E6%A8%A1%E5%BC%8F%E6%95%B0%E6%8D%AE%E7%BB%93%E6%9E%84.png" alt="[关系模式数据结构.png]"></p><h1 id="关系模型的数据结构"><a href="#关系模型的数据结构" class="headerlink" title="关系模型的数据结构"></a>关系模型的数据结构</h1><p><strong>（1）单一的数据结构——关系</strong><br>实体和联系均使用关系表示<br><strong>（2）数据的逻辑结构——二维表</strong><br>从用户角度，关系模型中的数据的逻辑结构是一张二维表</p><h1 id="元组"><a href="#元组" class="headerlink" title="元组"></a>元组</h1><p>也称记录， 关系表中的每一行对应一个元组</p><h1 id="分量"><a href="#分量" class="headerlink" title="分量"></a>分量</h1><p>组成元组的各元素值</p><h1 id="属性"><a href="#属性" class="headerlink" title="属性"></a>属性</h1><p>关系中的列称为属性，且必须为每列起名。<br>n目关系必有n个属性</p><h1 id="候选码"><a href="#候选码" class="headerlink" title="候选码"></a>候选码</h1><p>若关系中某一属性或某一组属性的值能唯一的标识一个元组，则称其为候选码</p><h2 id="全码"><a href="#全码" class="headerlink" title="全码"></a>全码</h2><p>候选码包含了关系模式的所有属性</p><h1 id="主码"><a href="#主码" class="headerlink" title="主码"></a>主码</h1><p>若一个关系有多个候选码，则选定其中一个称为主码</p><h2 id="主属性"><a href="#主属性" class="headerlink" title="主属性"></a>主属性</h2><p>包含在候选码中的属性</p><h2 id="非主属性"><a href="#非主属性" class="headerlink" title="非主属性"></a>非主属性</h2><p>没包含在任何候选码中的属性</p><h1 id="代理键"><a href="#代理键" class="headerlink" title="代理键"></a>代理键</h1><p>代理键是具有 DBMS 分配的唯一标识符，该标识符已经作为主键添加到表中。添加行时自动添加</p><h1 id="主码的作用"><a href="#主码的作用" class="headerlink" title="主码的作用"></a>主码的作用</h1><ul><li>唯一标识关系的每行</li><li>作为关键表的外码，连接两个表</li><li>使用主码值来组织关系的存储</li><li>使用主码索引快速检索数据</li></ul><h1 id="关系的性质"><a href="#关系的性质" class="headerlink" title="关系的性质"></a>关系的性质</h1><h1 id="关系模型中三类完整性约束"><a href="#关系模型中三类完整性约束" class="headerlink" title="关系模型中三类完整性约束"></a>关系模型中三类完整性约束</h1><h2 id="1-实体完整性：主属性不能为空值"><a href="#1-实体完整性：主属性不能为空值" class="headerlink" title="1.实体完整性：主属性不能为空值"></a>1.实体完整性：主属性不能为空值</h2><h2 id="2-参照完整性：关系与关系间的引用必须成立"><a href="#2-参照完整性：关系与关系间的引用必须成立" class="headerlink" title="2.参照完整性：关系与关系间的引用必须成立"></a>2.参照完整性：关系与关系间的引用必须成立</h2><p>例如：<strong>学生（学号，姓名，专业号）专业（专业号，专业名）</strong>，学生关系引用专业关系中的专业号，则学生关系中的专业号不能出现专业关系中不存在的专业号<br>外码：设:是F关系的一个属性(组）,但不是关系R的码如果:F与关系S的<em><strong>主码</strong></em>K相对应,<br>则:称F是关系R的外码；学生关系中的专业号被称为外码<br><strong>外码只能取 空值 或者等于原关系中已有的值</strong></p><h2 id="3-用户定义完整性"><a href="#3-用户定义完整性" class="headerlink" title="3.用户定义完整性"></a>3.用户定义完整性</h2><p>数据必须满足语义要求</p>]]></content>
+      
+      
+      <categories>
+          
+          <category> MySQL数据库 </category>
+          
+          <category> 信息与数据模型 </category>
+          
+      </categories>
+      
+      
+        <tags>
+            
+            <tag> 数据库笔记 </tag>
+            
+        </tags>
+      
+    </entry>
+    
+    
+    
+    <entry>
+      <title>2.5 转换原则</title>
+      <link href="/post/23a6342a.html"/>
+      <url>/post/23a6342a.html</url>
+      
+        <content type="html"><![CDATA[<h1 id="转换内容"><a href="#转换内容" class="headerlink" title="转换内容"></a>转换内容</h1><p>将ER模型中的实体、实体的属性和实体之间的联系转化为关系模式<br>关系模式例如：职工(工号,姓名,出生日期,性别,职称,工资等级)</p><h1 id="1-实体的转换原则"><a href="#1-实体的转换原则" class="headerlink" title="1.实体的转换原则"></a>1.实体的转换原则</h1><p>一个实体型转换为一个关系模式<br>关系模式的属性：实体的属性<br>关系模式的码：实体的码</p><h1 id="2-联系的转换原则"><a href="#2-联系的转换原则" class="headerlink" title="2.联系的转换原则"></a>2.联系的转换原则</h1><h3 id="（1）1-1联系的转换"><a href="#（1）1-1联系的转换" class="headerlink" title="（1）1:1联系的转换"></a>（1）1:1联系的转换</h3><p>①可以转换为一个独立的关系模式 <em>（最后会被<code>合并原则</code>合并，不适用）</em></p><ul><li>关系的属性：与该联系相连的各个实体的码以及联系自身的属性</li><li>关系的候选码：每个实体的码都是该关系的候选码<br><img src="https://tuchuang-1309886987.cos.ap-beijing.myqcloud.com/1%E5%AF%B91%E5%85%B3%E7%B3%BB%E8%BD%AC%E6%8D%A2%E7%8B%AC%E7%AB%8B%E5%85%B3%E7%B3%BB.png" alt="[1对1关系转换独立关系.png]"><br>②可以与某一端对应的关系模式</li><li>合并后关系的属性:加入对应端实体型的码和联系本身的属性</li><li>合并后关系的码:不变<br><img src="https://tuchuang-1309886987.cos.ap-beijing.myqcloud.com/1%E5%AF%B91%E5%85%B3%E7%B3%BB%E8%BD%AC%E6%8D%A2%E5%90%88%E5%B9%B6%E5%85%B3%E7%B3%BB.png" alt="[1对1关系转换合并关系.png]"><h3 id="（2）1-n联系的转换"><a href="#（2）1-n联系的转换" class="headerlink" title="（2）1:n联系的转换"></a>（2）1:n联系的转换</h3>①独立关系模式<br>②与n端关系模式合并<br>合并后关系的属性：在n端关系模式中加入1端实体型的码和联系本身的属性<h3 id="（3）m-n联系的转换"><a href="#（3）m-n联系的转换" class="headerlink" title="（3）m:n联系的转换"></a>（3）m:n联系的转换</h3>①独立关系模式</li></ul><h1 id="3-合并原则"><a href="#3-合并原则" class="headerlink" title="3.合并原则"></a>3.合并原则</h1><p>具有相同码的关系模式可合并<br>目的：减少系统中关系的个数</p><p><strong>关系模式:</strong><br>职工:{职工号.….]<br>项目:{产品号.…}<br>负责:{职工号，产品号}<br><strong>合并后:</strong><br>职工:{职工号.….]<br>项目:{产品号…职工号}</p><h1 id="习题"><a href="#习题" class="headerlink" title="习题"></a>习题</h1><p>某医院数据库的部分关系模式为：科室(科室号，科室名，负责人，电话）、病患（病历号，姓名，住址，联系电话）和职工（职工号，职工姓名，科宝号，住址，联系电话）。假设每个科室有一位负责人和一部电话，每个科室有若干名职工，一名职工只属于一个科室，一个医生可以为多个病患看病；一个病惠可以由多个医生多次诊治。<br>对于就诊联系转换为关系模式的最合理的设计是<br>就诊(病历号，职工号，就诊时间，就诊情况)</p>]]></content>
+      
+      
+      <categories>
+          
+          <category> MySQL数据库 </category>
+          
+          <category> 信息与数据模型 </category>
+          
+      </categories>
+      
+      
+        <tags>
+            
+            <tag> 数据库笔记 </tag>
+            
+        </tags>
+      
+    </entry>
+    
+    
+    
+    <entry>
+      <title>2.4 逻辑模型</title>
+      <link href="/post/6e4bd67d.html"/>
+      <url>/post/6e4bd67d.html</url>
+      
+        <content type="html"><![CDATA[<h1 id="关系模型"><a href="#关系模型" class="headerlink" title="关系模型"></a>关系模型</h1><p>最重要的一种数据模型。主要采用的数据模型<br>（1）数据结构：<br>逻辑结构是二维表，他由行和列组成<br><img src="https://tuchuang-1309886987.cos.ap-beijing.myqcloud.com/202204071220423.png" alt="[关系模型.png]"><br><code>关系的每一个分量必须是一个不可再分的数据项 </code></p><p>优点:</p><ul><li>有严格的数掌概念基础;</li><li>用关系表示，概念单一</li><li>存取路径对用户透明<br>缺点:</li><li>查询效率较低</li><li>为提高性能，需对查询请求优化</li></ul><h1 id="层次模型"><a href="#层次模型" class="headerlink" title="层次模型"></a>层次模型</h1><p>用树型结构来表示各类实体以及实体间的联系<br><img src="https://tuchuang-1309886987.cos.ap-beijing.myqcloud.com/%E5%B1%82%E6%AC%A1%E6%A8%A1%E5%9E%8B.png" alt="[层次模型.png]"><br>⑴特点</p><ul><li>只能按其路径查看</li><li>查询效率高。</li><li>层次数据模型简单，对部门描述直观。</li><li>插入和删除不便</li></ul><p>⑵多对多联系在层次模型中的表示<br>用多个（1: n)表示</p><h1 id="网状模型"><a href="#网状模型" class="headerlink" title="网状模型"></a>网状模型</h1><p>网状模型满足下面两个条件:</p><ol><li>允许一个以上的结点无双亲。</li><li>一个结点可以有多于一个的双亲。</li></ol><h2 id="特点"><a href="#特点" class="headerlink" title="特点"></a>特点</h2><ul><li>只能直接处理一对多的实体联系;</li><li>任何记录值只有按其路径查看时，才能显出它全部意义.</li><li>多对多联系的表示:直接分解成一对多联系</li></ul><h2 id="网状模型与层次模型的关系"><a href="#网状模型与层次模型的关系" class="headerlink" title="网状模型与层次模型的关系"></a>网状模型与层次模型的关系</h2><p>层次模型实际上是网状模型的一个特例</p><h2 id="优点"><a href="#优点" class="headerlink" title="优点"></a>优点</h2><ul><li>能够更为直接地描述现实世界</li><li>存取效率较高<br>缺点</li><li>结构比较复杂<br>随着应用环境的扩大，数据库的结构就变得越来越复杂，不利于最终用户掌握</li><li>数据独立性差<br>DDL、DML语言复杂，用户不容易使用尔</li></ul>]]></content>
+      
+      
+      <categories>
+          
+          <category> MySQL数据库 </category>
+          
+          <category> 信息与数据模型 </category>
+          
+      </categories>
+      
+      
+        <tags>
+            
+            <tag> 数据库笔记 </tag>
+            
+        </tags>
+      
+    </entry>
+    
+    
+    
+    <entry>
+      <title>2.3.2 ER模型</title>
+      <link href="/post/111aa7d0.html"/>
+      <url>/post/111aa7d0.html</url>
+      
+        <content type="html"><![CDATA[<p><img src="https://tuchuang-1309886987.cos.ap-beijing.myqcloud.com/ER%E6%A8%A1%E5%9E%8B%E5%AE%9E%E4%BE%8B.png" alt="[ER模型实例.png]"></p><h1 id="1-实体"><a href="#1-实体" class="headerlink" title="1.实体"></a>1.实体</h1><p>定义:用于表示现实世界具有相同属性描述的集合，它表示某一种类所有事物的集合。<br>表示形状:<code>矩形</code><br>说明:（1）一个E-R图中通常包括多个实体<br>（2）每个实体→一张表<br>每个实例→一条记录</p><h1 id="2-属性"><a href="#2-属性" class="headerlink" title="2.属性"></a>2.属性</h1><p>定义:表示实体或实体间联系的某种特征。<br>表示形状：<code>椭圆或圆角矩形</code><br>说明:（1）属性是最小的单元，不可再分<br>（2）一个属性→表中的一个字段(列)</p><h1 id="3-联系"><a href="#3-联系" class="headerlink" title="3.联系"></a>3.联系</h1><p>定义：表示实体之间关联的集合<br>表示形状：<code>菱形</code><br>类型：1:1、1:n、m:n<br>1:1例如，一个班长对应一个班，一个班只有一个班长<br>1:n例如，一个班级有多个学生，多个学生属于一个班<br>m:n例如，课程和学生之间</p><h1 id="ER模型设计原则"><a href="#ER模型设计原则" class="headerlink" title="ER模型设计原则"></a>ER模型设计原则</h1><ul><li>属性应该存在于且只存在于某一个地方（实体或者联系上）</li><li>实体是一个单独的个体，不能存在于另一个实体中成为其属性</li><li>同一个实体在同一个ER图内仅出现一次</li></ul><h1 id="E一R模型设计步骤"><a href="#E一R模型设计步骤" class="headerlink" title="E一R模型设计步骤"></a>E一R模型设计步骤</h1><p>①划分和确定实体。②划分和确定联系。③确定属性。<br>④画出E-R模型。⑤优化E-R模型。</p>]]></content>
+      
+      
+      <categories>
+          
+          <category> MySQL数据库 </category>
+          
+          <category> 信息与数据模型 </category>
+          
+      </categories>
+      
+      
+        <tags>
+            
+            <tag> 数据库笔记 </tag>
+            
+        </tags>
+      
+    </entry>
+    
+    
+    
+    <entry>
+      <title>2.3.1概念模型-基本概念</title>
+      <link href="/post/bf6816e1.html"/>
+      <url>/post/bf6816e1.html</url>
+      
+        <content type="html"><![CDATA[<h1 id="1-实体"><a href="#1-实体" class="headerlink" title="1.实体"></a>1.实体</h1><p>客观存在并可相互区别的事物</p><h1 id="2-属性"><a href="#2-属性" class="headerlink" title="2.属性"></a>2.属性</h1><p>实体所具有的的某一特性称为<em>属性</em><br>一个实体有若干个属性来描述<br>例如：学生（<em>学号，姓名，性别</em>）</p><h1 id="3-码"><a href="#3-码" class="headerlink" title="3.码"></a>3.码</h1><p>能<em><strong>唯一标识实体</strong></em>的属性称为码<br><em>可由一个或多个其值能唯—标识该关系模式中任意元组的属性组成</em></p><h1 id="4-实体型"><a href="#4-实体型" class="headerlink" title="4.实体型"></a>4.实体型</h1><p>用实体名和属性名的集合来抽象的同类实体<br>例如：<em>学生（学号，姓名，性别）</em></p><h1 id="5-实体集"><a href="#5-实体集" class="headerlink" title="5.实体集"></a>5.实体集</h1><p>同类型实体的集合<br>例如：<em>全体学生</em></p><h1 id="6-域"><a href="#6-域" class="headerlink" title="6.域"></a>6.域</h1><p>指实体中属性的取值范围<br>例如：考试成绩的取值通常为0-100</p><h1 id="7-联系"><a href="#7-联系" class="headerlink" title="7.联系"></a>7.联系</h1><p>现实世界中事物内部及事物间的联系，在信息世界中反映为实体内部的联系和实体间的联系<br>三种类型:1:1、1:n、m:n</p><p><img src="https://tuchuang-1309886987.cos.ap-beijing.myqcloud.com/%E5%AE%9E%E4%BD%93%E5%9E%8B%E5%AE%9E%E4%BD%93%E9%9B%86.png" alt="[实体型实体集.png]"></p>]]></content>
+      
+      
+      <categories>
+          
+          <category> MySQL数据库 </category>
+          
+          <category> 信息与数据模型 </category>
+          
+      </categories>
+      
+      
+        <tags>
+            
+            <tag> 数据库笔记 </tag>
+            
+        </tags>
+      
+    </entry>
+    
+    
+    
+    <entry>
+      <title>2.2数据模型</title>
+      <link href="/post/8aac6b3a.html"/>
+      <url>/post/8aac6b3a.html</url>
+      
+        <content type="html"><![CDATA[<h1 id="数据模型的概念"><a href="#数据模型的概念" class="headerlink" title="数据模型的概念"></a>数据模型的概念</h1><p>数据模型主要用来抽象、表示和处理现实世界中的数据和信息，以便于采用数据库技术对数据进行集中管理和应用，是对客观事物及其联系的数学描述<br><strong>数据模型决定数据库系统的结构</strong></p><h1 id="数据处理三层抽象描述"><a href="#数据处理三层抽象描述" class="headerlink" title="数据处理三层抽象描述"></a>数据处理三层抽象描述</h1><p>在不同层次采用不同的数据模型，一般分为3种</p><h3 id="（1）概念层"><a href="#（1）概念层" class="headerlink" title="（1）概念层"></a>（1）概念层</h3><p>概念层是按照用户的观点来实现对现实世界的建模，是数据抽象级别的最高层<br><strong>概念层的数据模型，简称概念模型</strong><br>常用的有：实体-联系模型（简称E-R模型）</p><h3 id="（2）逻辑层"><a href="#（2）逻辑层" class="headerlink" title="（2）逻辑层"></a>（2）逻辑层</h3><p>是数据抽象的中间层，描述数据库数据整体的逻辑结构<br><strong>逻辑数据模型简称数据模型</strong><br>常见模型：</p><blockquote><p>层次模型<br>网状模型<br>关系模型<br>面向对象模型</p></blockquote><h3 id="（3）物理层"><a href="#（3）物理层" class="headerlink" title="（3）物理层"></a>（3）物理层</h3><p>是数据抽象的最底层，用来描述数据物理存储结构和存储方法。<br>物理数据结构一般都向用户屏蔽，用户<strong>不必了解其细节</strong>。</p><hr><h1 id="数据模型的组成要素："><a href="#数据模型的组成要素：" class="headerlink" title="数据模型的组成要素："></a>数据模型的组成要素：</h1><p><strong>数据结构<br>数据操作<br>数据的完整性约束</strong></p><h2 id="1-数据结构"><a href="#1-数据结构" class="headerlink" title="1.数据结构"></a>1.数据结构</h2><p><strong>定义：</strong> 描述数据库的组成对象以及对象之间的关系<br><strong>描述内容：</strong></p><ul><li>与对象的类型、内容、性质有关的;</li><li>与数据之间联系有关的对象。</li></ul><p><em>数据结构是对系统静态特征的描述</em></p><h2 id="2-数据操作"><a href="#2-数据操作" class="headerlink" title="2.数据操作"></a>2.数据操作</h2><p>对数据库中各种对象的实例允许执行的操作及有关的操作规则。<br><strong>常用操作:</strong><br>检索、插入、删除、修改。更新<br>数据模型必须定义各操作的确切含义、操作符、操作规则(如优先级)、实现操作的语言。<br><em>数据操作是对系统动态特性的描述。</em></p><h2 id="3-数据的完整性约束"><a href="#3-数据的完整性约束" class="headerlink" title="3.数据的完整性约束"></a>3.数据的完整性约束</h2><p>是一组完整性规则的集合。<br><strong>完整性规则:</strong><br>是给定数据模型中数据及其联系所具有的制约和储存规则，用以限定符合数据模型的数据库状态以及状态变化.<br><em>保证数据的正确性、有效性、相容性。</em><br>数据约束条件:<br>反映和规定本数据模型必须遵守的基本和通用的完整性约束条件。</p><p>必须满足:</p><blockquote><p>实体完整性<br>参照完整性</p></blockquote><p>根据需求定义的</p><blockquote><p>用户定义完整性</p></blockquote><h1 id="习题"><a href="#习题" class="headerlink" title="习题"></a>习题</h1><p>1.<em>概念模型</em>属于信息世界的模型,实际上是现实世界到机器世界的一个中间层次。<br>2.在数据模型的三要素中,数据的约束条件规定数据及其联系的<em>制约和依存规则</em></p>]]></content>
+      
+      
+      <categories>
+          
+          <category> MySQL数据库 </category>
+          
+          <category> 信息与数据模型 </category>
+          
+      </categories>
+      
+      
+        <tags>
+            
+            <tag> 数据库笔记 </tag>
+            
+        </tags>
+      
+    </entry>
+    
+    
+    
+    <entry>
+      <title>BS和CS</title>
+      <link href="/post/f2865e9b.html"/>
+      <url>/post/f2865e9b.html</url>
+      
+        <content type="html"><![CDATA[<h1 id="B-x2F-S"><a href="#B-x2F-S" class="headerlink" title="B&#x2F;S"></a>B&#x2F;S</h1><p>浏览器&#x2F;服务器结构（Browser&#x2F;Server）<br>例如在线音乐播放器</p><p><strong>是一种三层结构</strong><br>数据库服务器–WEB应用服务器–浏览器</p><hr><h1 id="C-x2F-S"><a href="#C-x2F-S" class="headerlink" title="C&#x2F;S"></a>C&#x2F;S</h1><p>客户端&#x2F;服务器结构（Client&#x2F;Server）<br>例如QQ音乐客户端</p><p><strong>是一种两层结构</strong><br>数据库服务器–客户端<br>优点：</p><ul><li>运行效率高</li><li>通信量小，减轻服务器负载<br>缺点：</li><li>升级、维护不便</li></ul>]]></content>
+      
+      
+      <categories>
+          
+          <category> MySQL数据库 </category>
+          
+          <category> 数据库系统概述 </category>
+          
+      </categories>
+      
+      
+        <tags>
+            
+            <tag> 数据库笔记 </tag>
+            
+        </tags>
+      
+    </entry>
+    
+    
+    
+    <entry>
+      <title>1.3.1三级模式</title>
+      <link href="/post/81a9bf24.html"/>
+      <url>/post/81a9bf24.html</url>
+      
+        <content type="html"><![CDATA[<p><img src="https://tuchuang-1309886987.cos.ap-beijing.myqcloud.com/%E4%B8%89%E7%BA%A7%E6%A8%A1%E5%BC%8F.png" alt="三级模式"></p><h1 id="1-模式："><a href="#1-模式：" class="headerlink" title="1.模式："></a>1.模式：</h1><p>也称逻辑模式、概念模式<br>是数据库中全体数据的逻辑结构和特征的描述<br>综合了所有用户的需求<br><code>数据库只有一个模式</code></p><h1 id="2-外模式"><a href="#2-外模式" class="headerlink" title="2.外模式"></a>2.外模式</h1><p>称为<strong>子模式</strong>或<strong>用户模式</strong><br><code>数据库可以有多个外模式</code></p><h1 id="3-内模式"><a href="#3-内模式" class="headerlink" title="3.内模式"></a>3.内模式</h1><p>也称<strong>储存模式</strong><br><code>数据库只有一个内模式</code><br>内模式:是开发DBMS的数据库供应商应该研究的问题，对于数据库设计人员屏蔽了许多底层的存储细节，能做的工作很少。</p><h1 id="三者关系："><a href="#三者关系：" class="headerlink" title="三者关系："></a>三者关系：</h1><ul><li>模式是<em>内模式</em>的逻辑表示</li><li>内模式是<em>模式</em>的物理实现</li><li>外模式是<em>模式</em>的部分抽取</li></ul><hr><h1 id="二级映射"><a href="#二级映射" class="headerlink" title="二级映射"></a>二级映射</h1><p>在DBMS内部实现三个抽象层次的联系和转换</p><h2 id="1-外模式-x2F-模式映像"><a href="#1-外模式-x2F-模式映像" class="headerlink" title="1.外模式&#x2F;模式映像"></a>1.外模式&#x2F;模式映像</h2><ul><li>定义外模式和模式之间的对应关系</li><li>每一个外模式都对应一个外模式&#x2F;模式映射</li><li>映射定义通常包含在各自外模式的描述中<h4 id="用途：保证数据的逻辑独立性"><a href="#用途：保证数据的逻辑独立性" class="headerlink" title="用途：保证数据的逻辑独立性"></a>用途：保证数据的逻辑独立性</h4>当模式改变时，DBA只需修改有关的外模式&#x2F;模式映射，使外模式保持不变</li></ul><h2 id="2-模式-x2F-内模式映射"><a href="#2-模式-x2F-内模式映射" class="headerlink" title="2.模式&#x2F;内模式映射"></a>2.模式&#x2F;内模式映射</h2><ul><li>定义了数据全局逻辑结构与储存结构的对应关系</li><li>DB中模式&#x2F;内模式映射是唯一的</li><li>该映射定义通常包含在模式中<h4 id="用途：保证了数据的物理独立性"><a href="#用途：保证了数据的物理独立性" class="headerlink" title="用途：保证了数据的物理独立性"></a>用途：保证了数据的物理独立性</h4>当数据库的储存结构改变了，DBA只需修改模式&#x2F;内模式映射，使模式保持不变</li></ul><h1 id="三级模式结构与二级映射的优点"><a href="#三级模式结构与二级映射的优点" class="headerlink" title="三级模式结构与二级映射的优点"></a>三级模式结构与二级映射的优点</h1><ol><li>保证数据的独立性</li><li>方便用户使用</li><li>保证数据的安全性</li><li>有利于数据的共享性</li></ol><h1 id="习题："><a href="#习题：" class="headerlink" title="习题："></a>习题：</h1><p>在数据库系统结构中,在三级模式间引入二级映像的主要作用是 提高数据与程序的独立性<br><em>要保证数据库逻辑数据独立性，需要修改的是：模式与外模式的映像。</em></p>]]></content>
+      
+      
+      <categories>
+          
+          <category> MySQL数据库 </category>
+          
+          <category> 数据库系统概述 </category>
+          
+      </categories>
+      
+      
+        <tags>
+            
+            <tag> 数据库笔记 </tag>
+            
+        </tags>
+      
+    </entry>
+    
+    
+    
+    <entry>
+      <title>1.2.2 数据库系统组成</title>
+      <link href="/post/51680dda.html"/>
+      <url>/post/51680dda.html</url>
+      
+        <content type="html"><![CDATA[<h1 id="数据库系统组成"><a href="#数据库系统组成" class="headerlink" title="数据库系统组成"></a>数据库系统组成</h1><h2 id="1-硬件资源"><a href="#1-硬件资源" class="headerlink" title="1.硬件资源"></a>1.硬件资源</h2><ol><li>足够大的内存</li><li>足够大的外存</li><li>较高的通道能力，提高数据传输率</li></ol><h2 id="2-软件"><a href="#2-软件" class="headerlink" title="2.软件"></a>2.软件</h2><ol><li>操作系统</li><li>DBMS</li><li>高级语言及其编译系统</li><li>以DBMS为核心的应用开发工具</li><li>为特定应用环境开发的数据库应用系统</li></ol><h2 id="3-人员（5类）"><a href="#3-人员（5类）" class="headerlink" title="3.人员（5类）"></a>3.人员（5类）</h2><h3 id="1-数据库管理员（DBA）"><a href="#1-数据库管理员（DBA）" class="headerlink" title="1. 数据库管理员（DBA）"></a>1. 数据库管理员（DBA）</h3><ul><li>决定数据库中的信息内容和结构</li><li>决定数据库的存储结构和存取策略</li><li>定义数据的安全性要求和完整性约束条件<ul><li>监控数据库的使用和运行</li><li>周期性转储数据库(数据文件、日志文件)</li></ul></li><li>系统故障、介质故障恢复，监视运行</li><li>数据库的改进和重组</li><li>性能监控和调优</li></ul><h3 id="2-系统分析员"><a href="#2-系统分析员" class="headerlink" title="2.系统分析员"></a>2.系统分析员</h3><ul><li>负责应用系统的需求分析和规范说明</li><li>与用户及DBA协商，确定系统硬软件配置</li><li>参与数据库系统的概要设计。</li></ul><h3 id="3-数据库设计人员：通常担任DBA"><a href="#3-数据库设计人员：通常担任DBA" class="headerlink" title="3.数据库设计人员：通常担任DBA"></a>3.数据库设计人员：通常担任DBA</h3><ul><li>参加用户需求调查和系统分析</li><li>确定数据库中的数据</li><li>设计数据库各级模式。</li></ul><h3 id="4-程序员"><a href="#4-程序员" class="headerlink" title="4.程序员"></a>4.程序员</h3><ul><li>设计和编写应用系统程序、进行调试和安装。</li></ul><h3 id="5-用户"><a href="#5-用户" class="headerlink" title="5.用户"></a>5.用户</h3>]]></content>
+      
+      
+      <categories>
+          
+          <category> MySQL数据库 </category>
+          
+          <category> 数据库系统概述 </category>
+          
+      </categories>
+      
+      
+        <tags>
+            
+            <tag> 数据库笔记 </tag>
+            
+        </tags>
+      
+    </entry>
+    
+    
+    
+    <entry>
+      <title>1.2.1 数据库系统特点</title>
+      <link href="/post/47b2e5ac.html"/>
+      <url>/post/47b2e5ac.html</url>
+      
+        <content type="html"><![CDATA[<h1 id="数据库的特点"><a href="#数据库的特点" class="headerlink" title="数据库的特点"></a>数据库的特点</h1><h2 id="1-数据结构化"><a href="#1-数据结构化" class="headerlink" title="1. 数据结构化"></a>1. 数据结构化</h2><p>这是数据库与文件系统的根本区别</p><h2 id="2-数据的共享性高，冗余度低-易扩充"><a href="#2-数据的共享性高，冗余度低-易扩充" class="headerlink" title="2. 数据的共享性高，冗余度低,易扩充"></a>2. 数据的共享性高，冗余度低,易扩充</h2><h2 id="3-数据的独立性高"><a href="#3-数据的独立性高" class="headerlink" title="3. 数据的独立性高"></a>3. 数据的独立性高</h2><ol><li>物理独立性<br>指用户的应用程序与存储在磁盘上的数据库中数据是相互独立的。<br>当数据的物理存储改变时，应用程序不用改变;</li><li>逻辑独立性<br>是指用户的应用程序与数据库的逻辑结构是相互独立的。<br>数据的逻辑结构改变时，用户程序也可以不变。<br>习题：数据库系统的数据独立性是指 不会因为系统数据储存结构与数据逻辑结构的变化而影响应用程序</li></ol><h2 id="4-数据由DBMS统一管理和控制"><a href="#4-数据由DBMS统一管理和控制" class="headerlink" title="4. 数据由DBMS统一管理和控制"></a>4. 数据由DBMS统一管理和控制</h2><h4 id="1-数据的安全性"><a href="#1-数据的安全性" class="headerlink" title="1. 数据的安全性"></a>1. 数据的安全性</h4><p><em>主动安全</em><br>保证数据库中的数据是安全、可靠的.<br>有效地防止数据库中的数据被非法使用或非法修改<br>保护数据以防止用户不合法的使用造成对数据的泄密和破坏，使每个用户只能按指定方式操纵数据。</p><h4 id="2-数据的完整性"><a href="#2-数据的完整性" class="headerlink" title="2. 数据的完整性"></a>2. 数据的完整性</h4><p>保证数据在数据库中正确的特性。<br>将数据控制在有效的范围内，或保证数据之间满足一定的关系。</p><h4 id="3-并发控制"><a href="#3-并发控制" class="headerlink" title="3. 并发控制"></a>3. 并发控制</h4><p>对多用户的并发操作加以控制和协调，防止相互干扰而得到错误的结果。<br>例如：12306买票，可以多个用户并发读取数据</p><h4 id="4-数据恢复"><a href="#4-数据恢复" class="headerlink" title="4. 数据恢复"></a>4. 数据恢复</h4><p><em>被动安全</em><br>保证数据库中的数据是安全、可靠的.<br>数据遭到破坏时能立刻将数据完全恢复<br>将数据库从错误状态恢复到某一已知的正确状态。</p>]]></content>
+      
+      
+      <categories>
+          
+          <category> MySQL数据库 </category>
+          
+          <category> 数据库系统概述 </category>
+          
+      </categories>
+      
+      
+        <tags>
+            
+            <tag> 数据库笔记 </tag>
+            
+        </tags>
+      
+    </entry>
+    
+    
+    
+    <entry>
+      <title>1.1 DB DBMS DBA DBS</title>
+      <link href="/post/926540d5.html"/>
+      <url>/post/926540d5.html</url>
+      
+        <content type="html"><![CDATA[<h1 id="数据库（DB）"><a href="#数据库（DB）" class="headerlink" title="数据库（DB）"></a>数据库（DB）</h1><p>是长期储存在计算机内、有组织的、可共享的大量数据集合。<br>特点：永久储存，有组织，可共享</p><h1 id="数据库管理系统（DBMS）"><a href="#数据库管理系统（DBMS）" class="headerlink" title="数据库管理系统（DBMS）"></a>数据库管理系统（DBMS）</h1><p>用于管理、控制数据库中各种数据库对象的系统软件<br>是位于用户与操作系统之间的一层数据管理软件。<br>例如：MySQL、Oracle</p><h1 id="数据库管理员（DBA）"><a href="#数据库管理员（DBA）" class="headerlink" title="数据库管理员（DBA）"></a>数据库管理员（DBA）</h1><p>负责数据库的建立、使用和维护的专门的人员。</p><h1 id="数据库系统（DBS"><a href="#数据库系统（DBS" class="headerlink" title="数据库系统（DBS)"></a>数据库系统（DBS)</h1><p>是指在计算机系统中,引入数据库之后的系统<br>有组织、动态的存储大量数据<br>提供数据处理和共享机制<br><strong><u>DBS&#x3D;计算机系统（硬件、软件平台、人）+DBMS+DB</u></strong></p><p>在数据库系统阶段,数据是 整体结构化的</p>]]></content>
+      
+      
+      <categories>
+          
+          <category> MySQL数据库 </category>
+          
+          <category> 数据库系统概述 </category>
+          
+      </categories>
+      
+      
+        <tags>
+            
+            <tag> 数据库笔记 </tag>
+            
+        </tags>
+      
+    </entry>
+    
+    
+  
+  
+</search>
