@@ -37,4 +37,9 @@ p,li{
 font-size: 20px;
 }
 /* code字体大小在\themes\butterfly\source\css\_highlight\highlight.styl */
-
+.card-category-list-name,.card-category-list-count{
+font-size: 18px;
+}
+.toc-text{
+font-size: 15px;
+}

@@ -4,6 +4,60 @@
   
     
     <entry>
+      <title>9.2 索引的管理</title>
+      <link href="/post/8c33f9e2.html"/>
+      <url>/post/8c33f9e2.html</url>
+      
+        <content type="html"><![CDATA[<h1 id="创建索引"><a href="#创建索引" class="headerlink" title="创建索引"></a>创建索引</h1><p>直接创建索引<br>    在创建表的同时创建索引 Create Table<br>    为已存在的表创建索引  Create Index<br>    通过修改表创建索引 Alter Table<br>间接创建索引<br>    创建主键约束——唯一聚簇索引<br>    创建唯一性约束——唯一非聚簇索引</p><h2 id="1-在创建表的同时创建索引"><a href="#1-在创建表的同时创建索引" class="headerlink" title="1.在创建表的同时创建索引"></a>1.在创建表的同时创建索引</h2><figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">CREATE</span> <span class="keyword">TABLE</span> <span class="operator">&lt;</span>表名<span class="operator">&gt;</span></span><br><span class="line">(属性名<span class="number">1</span> 数据类型 [完整性约束],</span><br><span class="line"> 属性名<span class="number">2</span> 数据类型 [完整性约束],</span><br><span class="line"> INDEX<span class="operator">|</span>KEY[索引名](属性名[(长度)][ASCIDESC]</span><br><span class="line"> )[表设置]</span><br></pre></td></tr></table></figure><p>[例1]在创建学生表时，为姓名属性创建普通索引，以升序排列。</p><figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">CREATE</span> <span class="keyword">TABLE</span> Stu(</span><br><span class="line">Sno <span class="type">char</span>(<span class="number">10</span>) <span class="keyword">Primary</span> Key,</span><br><span class="line">Sname <span class="type">char</span>(<span class="number">4</span>),</span><br><span class="line">Ssex Enum(<span class="string">&#x27;男&#x27;</span>,<span class="string">&#x27;女&#x27;</span>),</span><br><span class="line"><span class="keyword">UNIQUE</span> INDEX Sname_index (Sname <span class="keyword">ASC</span>)</span><br><span class="line">);</span><br></pre></td></tr></table></figure><p>等价</p><figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">CREATE</span> <span class="keyword">TABLE</span> Stu(</span><br><span class="line">Sno <span class="type">char</span>(<span class="number">10</span>) <span class="keyword">Primary</span> Key,</span><br><span class="line">Sname <span class="type">char</span>(<span class="number">4</span>) <span class="keyword">UNIQUE</span>,</span><br><span class="line">Ssex Enum(<span class="string">&#x27;男&#x27;</span>,<span class="string">&#x27;女&#x27;</span>),</span><br><span class="line">);</span><br></pre></td></tr></table></figure><blockquote><h1 id="唯一性约束是索引么"><a href="#唯一性约束是索引么" class="headerlink" title="唯一性约束是索引么"></a>唯一性约束是索引么</h1><p>唯一约束和唯一索引,都可以实现数据列的唯一性,列值可以为null(允许存在多个null值) 创建唯一性约束,会自动创建一个同名的唯一索引,这个索引不能够单独删除,删除唯一约束会自动删除索引。</p></blockquote><h2 id="2-为已存在的表创建索引"><a href="#2-为已存在的表创建索引" class="headerlink" title="2.为已存在的表创建索引"></a>2.为已存在的表创建索引</h2><p>格式：</p><figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">CREATE</span> 索引类型 索引名称 <span class="keyword">ON</span> 数据表名(字段);</span><br></pre></td></tr></table></figure><p>[例1]在books表中的bookname字段上建立名为BkNameIdx的普通索引</p><figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">CREATE</span> INDEX BkNameIdx <span class="keyword">ON</span> books(bookname);</span><br><span class="line"></span><br></pre></td></tr></table></figure>]]></content>
+      
+      
+      <categories>
+          
+          <category> MySQL数据库 </category>
+          
+          <category> MySQL索引 </category>
+          
+      </categories>
+      
+      
+        <tags>
+            
+            <tag> 数据库笔记 </tag>
+            
+        </tags>
+      
+    </entry>
+    
+    
+    
+    <entry>
+      <title>9.1 索引</title>
+      <link href="/post/d5dd329e.html"/>
+      <url>/post/d5dd329e.html</url>
+      
+        <content type="html"><![CDATA[<h1 id="索引的定义"><a href="#索引的定义" class="headerlink" title="索引的定义"></a>索引的定义</h1><p>是个根据表中一列或者若干列按照一定顺序建立的列值与记录行之间的对应关系表</p><h1 id="索引的使用过程"><a href="#索引的使用过程" class="headerlink" title="索引的使用过程"></a>索引的使用过程</h1><h1 id="索引的存储结构"><a href="#索引的存储结构" class="headerlink" title="索引的存储结构"></a>索引的存储结构</h1><h2 id="1-B树-InnoDB"><a href="#1-B树-InnoDB" class="headerlink" title="(1)B树(InnoDB)"></a>(1)B树(InnoDB)</h2><h2 id="2-HASH-Memory"><a href="#2-HASH-Memory" class="headerlink" title="(2)HASH(Memory)"></a>(2)HASH(Memory)</h2><p>每个表 可以创建的索引：至少十六个</p><h1 id="索引的作用"><a href="#索引的作用" class="headerlink" title="索引的作用"></a>索引的作用</h1><h2 id="优点"><a href="#优点" class="headerlink" title="优点"></a>优点</h2><ul><li>创建唯一索引，保证数据表中每行数据的唯一性</li><li>加快数据的检索速度</li><li>加速表之间的连接，以及参照完整性</li><li>使用ORDER BY、GROUP BY子句进行数据检索时，显著减少排序和分组的时间</li><li>查询操作时，可使用优化隐藏器，提高系统性能<h2 id="缺点"><a href="#缺点" class="headerlink" title="缺点"></a>缺点</h2></li><li>创建索引和维护索引耗费时间</li><li>索引需要占用物理空间</li><li>当对表中数据进行增、删、改、时，要动态维护索引，降低数据维护的速度<h2 id="特征"><a href="#特征" class="headerlink" title="特征"></a>特征</h2><h3 id="1-唯一索引"><a href="#1-唯一索引" class="headerlink" title="(1)唯一索引"></a>(1)唯一索引</h3>保证在索引列中的全部数据是唯一的，不包含重复的数据</li><li>表中有<code>主键</code>或<code>唯一约束</code>时，DBMS自动为其创建唯一索引</li><li>一般不直接创建唯一索引</li><li>若表中已有数据，创建唯一索引前检查索引列<code>数据是否唯一</code>，唯一才能创建成功<br>确保每一个实体的索引属性值都是唯一的</li></ul><p>例如下图中cname可以创建唯一索引，ccredit不能创建唯一索引<br><img src="https://tuchuang-1309886987.cos.ap-beijing.myqcloud.com/20220415201454.png"></p><h3 id="2-复合索引"><a href="#2-复合索引" class="headerlink" title="(2)复合索引"></a>(2)复合索引</h3><p>一个索引创建在两列或多个列上</p><ul><li>当几列作为一个关键值出现时，创建复合索引</li><li>创建索引的列来自同一个表</li><li>创建复合索引的规则<ul><li>最多包含16列，索引列总长&lt;900字节</li><li>索引列的排列顺序非常重要，即先定义最唯一的列</li></ul></li></ul><h1 id="索引的分类"><a href="#索引的分类" class="headerlink" title="索引的分类"></a>索引的分类</h1><h2 id="1-按对属性取值要求分"><a href="#1-按对属性取值要求分" class="headerlink" title="1.按对属性取值要求分"></a>1.按对属性取值要求分</h2><p>(1)普通索引：不附加任何限制条件<br>(2)唯一性索引：创建索引的属性值必须唯一</p><h2 id="2-按创建索引的列数分"><a href="#2-按创建索引的列数分" class="headerlink" title="2.按创建索引的列数分"></a>2.按创建索引的列数分</h2><p>(1)单列索引：在表中的单个字段上创建索引<br>(2)多列索引：在表中的多个字段上创建索引</p><h2 id="3-按是否影响表中数据存放顺序"><a href="#3-按是否影响表中数据存放顺序" class="headerlink" title="3.按是否影响表中数据存放顺序"></a>3.按是否影响表中数据存放顺序</h2><p>(1)聚簇索引：数据的实际存放顺序与索引顺序一致<br>(2)非聚簇索引：数据的实际存放顺序与索引顺序不一致</p><h2 id="4-其它索引"><a href="#4-其它索引" class="headerlink" title="4.其它索引"></a>4.其它索引</h2><p>(1)全文索引：</p><ul><li>使用FULLTEXT参数可以设置索引为全文索引</li><li>只能在CHAR、VARCHAR、TEXT类型上创建<br>(2)空间索引：只能创建在空间数据类型上</li></ul>]]></content>
+      
+      
+      <categories>
+          
+          <category> MySQL数据库 </category>
+          
+          <category> MySQL索引 </category>
+          
+      </categories>
+      
+      
+        <tags>
+            
+            <tag> 数据库笔记 </tag>
+            
+        </tags>
+      
+    </entry>
+    
+    
+    
+    <entry>
       <title>实验二 单表查询</title>
       <link href="/post/229b247c.html"/>
       <url>/post/229b247c.html</url>
