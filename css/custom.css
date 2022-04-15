@@ -33,8 +33,10 @@
   background-color: #49b1f5;
 }
 
-p,code{
+p{
 font-size: 20px;
 }
-
+code{
+font-size: 50px;
+}
 
