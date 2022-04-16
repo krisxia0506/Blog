@@ -46,7 +46,7 @@ strong {
 code,
 kbd,
 samp {
-  font-family: monospace, monospace;
+  font-family: jetbrains mono, monospace;
   font-size: 1em
 }
 
@@ -178,6 +178,8 @@ template {
 [hidden] {
   display: none
 }
+
+
 .limit-one-line,
 #article-container .flink .flink-item-name,
 #article-container .flink .flink-item-desc,
@@ -1659,11 +1661,10 @@ figure.highlight pre .javascript .function {
 #article-container pre,
 #article-container code {
   font-size: 18px;
-  font-family: Menlo !important;
+  font-family: FZFW !important;
 }
 #article-container code {
   padding: 2px 4px;
-  font-size: 20px;
   background: rgba(27,31,35,0.05);
   color: #f47466;
 }
