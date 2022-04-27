@@ -4,6 +4,31 @@
   
     
     <entry>
+      <title>JAVA抽象和接口</title>
+      <link href="/post/61e0111f.html"/>
+      <url>/post/61e0111f.html</url>
+      
+        <content type="html"><![CDATA[<h1 id="抽象类和抽象方法-abstract"><a href="#抽象类和抽象方法-abstract" class="headerlink" title="抽象类和抽象方法(abstract)"></a>抽象类和抽象方法(abstract)</h1><h2 id="抽象类"><a href="#抽象类" class="headerlink" title="抽象类"></a>抽象类</h2><ol><li><code>不能实例化</code>，也就是不能new</li><li>抽象类中，不一定包含抽象方法，但是类中<code>包含了抽象方法</code>，则这个类<code>必须是抽象类</code></li><li>抽象类中，可以有构造方法，是供子类创建对象时，初始化父类成员使用的。</li><li>抽象类可以继承抽象类 , 抽象类也可以继承正常类 , 正常类可以继承抽象类</li></ol><figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="keyword">abstract</span> <span class="keyword">class</span> <span class="title class_">Animals</span> &#123;<span class="comment">//抽象类</span></span><br><span class="line">    <span class="comment">//这是一个抽象方法，代表吃东西，但是具体吃什么（大括号的内容）不确定</span></span><br><span class="line">     <span class="keyword">public</span> <span class="keyword">abstract</span> <span class="keyword">void</span> <span class="title function_">eat</span><span class="params">()</span>;</span><br><span class="line">     <span class="comment">//这是普通的成员方法</span></span><br><span class="line">     <span class="keyword">public</span> <span class="keyword">void</span> <span class="title function_">normalMethod</span><span class="params">()</span>&#123;</span><br><span class="line">         System.out.println(<span class="string">&quot;这是普通成员方法&quot;</span>);</span><br><span class="line">     &#125;</span><br><span class="line"> &#125;</span><br></pre></td></tr></table></figure><h2 id="抽象方法"><a href="#抽象方法" class="headerlink" title="抽象方法"></a>抽象方法</h2><p>被子类重写了，实际上在父类中没有任何意义，只是为了让子类重写，从而使用多态而存在的方法</p><ol><li>抽象方法只有方法的声明，<code>没有方法体</code></li><li>包含抽象方法的类，一定是一个抽象类。反之，抽象类中可以没有抽象方法的。</li><li>若子类<code>重写了父类中的所有的抽象方法</code>后，此子类方可实例化</li><li>若子类没有重写父类中的所有的抽象方法，则此子类也是一个抽象类，需要使用abstract修饰</li><li>可以有参数，也可以为空</li></ol><figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="keyword">abstract</span> <span class="keyword">void</span> <span class="title function_">eat</span><span class="params">()</span>;<span class="comment">//没有方法体</span></span><br></pre></td></tr></table></figure><h1 id="接口-interface"><a href="#接口-interface" class="headerlink" title="接口(interface)"></a>接口(interface)</h1><blockquote><p>Java是单重继承，即某个类只能有一个直接父类。</p><p>若一个类有多个父类，在Java中需要使用接口。</p><p>例如:如何表示Panda类既是Animal类的子类，同时又是受保护的和有价值的含义？</p><p>则可以定义Animal类和两个接口，Animal作为Panda的父类，而让Panda类实现两个接口。</p></blockquote><p>本质上说，类是事物的抽象，而接口是一种行为的抽象，因此接口中的方法大部分都是抽象方法。</p><h2 id="接口的定义"><a href="#接口的定义" class="headerlink" title="接口的定义"></a>接口的定义</h2><ol><li>接口中可以有公共的抽象方法、公共的静态方法和公共的default方法，default修饰方法只能在接口中使用，在接口中被default标记的方法为普通方法，可以直接写方法体。</li><li>接口中的属性必须定义为公共静态常量属性，都是public static final修饰的，必须要赋值</li><li>接口可以继承接口</li><li>不可以声明私有成员</li><li>接口中的属性默认是<code>public static final</code> 的，方法默认是<code>public abstract</code>的</li></ol><p>接口中的抽象方法可以省略<code>public abstract</code></p><figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">public</span> interface 接口名&#123;</span><br><span class="line">    属性</span><br><span class="line">    方法</span><br><span class="line">    <span class="keyword">void</span> <span class="title function_">eat</span><span class="params">()</span>;    <span class="comment">//省略`public abstract`，默认表示抽象的公共方法</span></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure><h2 id="接口的实现-implements"><a href="#接口的实现-implements" class="headerlink" title="接口的实现(implements)"></a>接口的实现(implements)</h2><ol><li>实现接口的类，若不是抽象类，则需要重写接口中的抽象方法</li><li>一个类只能有一个父类，但是可以实现多个接口</li><li>一个类要实现多个接口，则将这些接口名称用逗号分隔</li><li>有了接口，java有了多重继承的能力</li><li>支持多态</li></ol><figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="keyword">class</span> <span class="title class_">Panda</span> <span class="keyword">extends</span> <span class="title class_">Animal</span> <span class="keyword">implements</span> <span class="title class_">a</span>,b,c&#123;</span><br><span class="line">    <span class="comment">//重写接口的所有抽象方法</span></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure><h2 id="接口的继承"><a href="#接口的继承" class="headerlink" title="接口的继承"></a>接口的继承</h2><p><strong>java中接口不能实现接口，但是一个接口可以继承一个或多个接口，和类之间的继承方式比较相似。</strong></p><p>在接口的多继承中extends关键字只需要使用一次，在其后跟着继承接口。 如下所示：</p><figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="keyword">interface</span> <span class="title class_">Hockey</span> <span class="keyword">extends</span> <span class="title class_">Sports</span>, Event</span><br></pre></td></tr></table></figure><h1 id="接口与抽象类的比较"><a href="#接口与抽象类的比较" class="headerlink" title="接口与抽象类的比较"></a>接口与抽象类的比较</h1><ol><li>抽象类是类，是事物的抽象;而接口是行为的抽象，这一点是两者本质上的区别</li><li>接口中的成员和抽象类中的成员不相同。</li><li>一个类只能继承于一个抽象类，却可以实现多个接口。</li></ol>]]></content>
+      
+      
+      <categories>
+          
+          <category> JAVA </category>
+          
+      </categories>
+      
+      
+        <tags>
+            
+            <tag> JAVA学习 </tag>
+            
+        </tags>
+      
+    </entry>
+    
+    
+    
+    <entry>
       <title>实验四 索引与视图</title>
       <link href="/post/c9fc6a7f.html"/>
       <url>/post/c9fc6a7f.html</url>
