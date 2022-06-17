@@ -4,6 +4,33 @@
   
     
     <entry>
+      <title>Django 简介</title>
+      <link href="/post/ea9aca5a.html"/>
+      <url>/post/ea9aca5a.html</url>
+      
+        <content type="html"><![CDATA[<h1 id="Django-简介"><a href="#Django-简介" class="headerlink" title="Django 简介"></a>Django 简介</h1><p>Django 是一个由 Python 编写的一个开放源代码的 Web 应用框架。</p><p>使用 Django，只要很少的代码，Python 的程序开发人员就可以轻松地完成一个正式网站所需要的大部分内容，并进一步开发出全功能的 Web 服务 Django 本身基于 MVC 模型，即 Model（模型）+ View（视图）+ Controller（控制器）设计模式，MVC 模式使后续对程序的修改和扩展简化，并且使程序某一部分的重复利用成为可能。</p><h2 id="Django-的-MTV"><a href="#Django-的-MTV" class="headerlink" title="Django 的 MTV"></a>Django 的 MTV</h2><p>Django 的 MTV 模式本质上和 MVC 是一样的，也是为了各组件间保持松耦合关系，只是定义上有些许不同，Django 的 MTV 分别是指：</p><ul><li>M 表示模型（Model）：编写程序应有的功能，负责业务对象与数据库的映射(ORM)。</li><li>T 表示模板 (Template)：负责如何把页面(html)展示给用户。</li><li>V 表示视图（View）：负责业务逻辑，并在适当时候调用 Model和 Template。</li></ul><p>除了以上三层之外，还需要一个 URL 分发器，它的作用是将一个个 URL 的页面请求分发给不同的 View 处理，View 再调用相应的 Model 和 Template，MTV 的响应模式如下所示：</p><p><img src="https://tuchuang-1309886987.cos.ap-beijing.myqcloud.com/MTV-Diagram.png" alt="img"></p><p>用户操作流程图：</p><p><img src="https://tuchuang-1309886987.cos.ap-beijing.myqcloud.com/1589777036-2760-fs1oSv4dOWAwC5yW.png" alt="img"></p><h2 id="Django-ORM"><a href="#Django-ORM" class="headerlink" title="Django ORM"></a>Django ORM</h2><p>Django 模型使用自带的 ORM。</p><p>对象关系映射（Object Relational Mapping，简称 ORM ）用于实现面向对象编程语言里不同类型系统的数据之间的转换。</p><p>ORM 在业务逻辑层和数据库层之间充当了桥梁的作用。</p><p>ORM 是通过使用描述对象和数据库之间的映射的元数据，将程序中的对象自动持久化到数据库中。</p><p><img src="https://tuchuang-1309886987.cos.ap-beijing.myqcloud.com/django-orm1.png" alt="img"></p><p>ORM 解析过程:</p><ul><li>1、ORM 会将 Python 代码转成为 SQL 语句。</li><li>2、SQL 语句通过 pymysql 传送到数据库服务端。</li><li>3、在数据库中执行 SQL 语句并将结果返回。</li></ul><p>ORM 对应关系表：</p><p><img src="https://tuchuang-1309886987.cos.ap-beijing.myqcloud.com/orm-object.png" alt="img"></p><h2 id="Django-路由"><a href="#Django-路由" class="headerlink" title="Django 路由"></a>Django 路由</h2><p>路由简单的来说就是根据用户请求的 URL 链接来判断对应的处理程序，并返回处理结果，也就是 URL 与 Django 的视图建立映射关系。</p><p>Django 路由在 urls.py 配置，urls.py 中的每一条配置对应相应的处理方法。</p><h2 id="相关命令"><a href="#相关命令" class="headerlink" title="相关命令"></a>相关命令</h2><h3 id="运行服务器命令："><a href="#运行服务器命令：" class="headerlink" title="运行服务器命令："></a>运行服务器命令：</h3><p>可以不写IP和端口，默认IP是127.0.0.1，默认端口为8000。</p> <figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">python manage.py runserver ip:端口</span><br></pre></td></tr></table></figure><p>如果增加、修改、删除文件，服务器会自动重启;</p><h3 id="数据迁移"><a href="#数据迁移" class="headerlink" title="数据迁移"></a>数据迁移</h3><p>在app内部，我们经常会使用model创建模型，然后将模型导入数据库，因此这里就涉及到两个命令：</p><figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">python manage.py makemigrations  生成数据迁移文件</span><br><span class="line">python manage.py migrate  迁移数据</span><br></pre></td></tr></table></figure><h3 id="创建超级用户"><a href="#创建超级用户" class="headerlink" title="创建超级用户"></a>创建超级用户</h3><p>如果我们的用户模型继承了django自带的user模型，则可以再命令行创建一个superuser。</p><figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">python manage.py createsuperuser</span><br></pre></td></tr></table></figure>]]></content>
+      
+      
+      <categories>
+          
+          <category> Python </category>
+          
+          <category> Django </category>
+          
+      </categories>
+      
+      
+        <tags>
+            
+            <tag> Django </tag>
+            
+        </tags>
+      
+    </entry>
+    
+    
+    
+    <entry>
       <title>实验六 触发器与事件</title>
       <link href="/post/8928a7cb.html"/>
       <url>/post/8928a7cb.html</url>
