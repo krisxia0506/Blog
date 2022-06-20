@@ -4,6 +4,33 @@
   
     
     <entry>
+      <title>Django项目的支付模块配置</title>
+      <link href="/post/1f6c7dc0.html"/>
+      <url>/post/1f6c7dc0.html</url>
+      
+        <content type="html"><![CDATA[<h1 id="支付宝开发者平台"><a href="#支付宝开发者平台" class="headerlink" title="支付宝开发者平台"></a>支付宝开发者平台</h1><p>进入支付宝<a href="https://www.alipay.com/">https://www.alipay.com/</a></p><p>选择我是开发者</p><p><img src="https://tuchuang-1309886987.cos.ap-beijing.myqcloud.com/image-20220620094539395.png" alt="image-20220620094539395"></p><p>扫码登陆后进入控制台</p><p><img src="https://tuchuang-1309886987.cos.ap-beijing.myqcloud.com/image-20220620094607711.png" alt="image-20220620094607711"></p><p>首次登陆开放平台需要入驻</p><p><img src="https://tuchuang-1309886987.cos.ap-beijing.myqcloud.com/image-20220620094915149.png" alt="image-20220620094915149"></p><h1 id="获取APPID、私钥和公钥"><a href="#获取APPID、私钥和公钥" class="headerlink" title="获取APPID、私钥和公钥"></a>获取APPID、私钥和公钥</h1><p>选择沙箱</p><p><img src="https://tuchuang-1309886987.cos.ap-beijing.myqcloud.com/image-20220620094655128.png" alt="image-20220620094655128"></p><p>进入后，公钥模式是开启的</p><p><img src="https://tuchuang-1309886987.cos.ap-beijing.myqcloud.com/image-20220620095002875.png" alt="image-20220620095002875"></p><p>点击查看，选择<code>非java语言</code>的公钥和私钥，记住他</p><p><img src="https://tuchuang-1309886987.cos.ap-beijing.myqcloud.com/image-20220620095139047.png" alt="image-20220620095139047"></p><p>记住这个APPID</p><p><img src="https://tuchuang-1309886987.cos.ap-beijing.myqcloud.com/image-20220620095658474.png" alt="image-20220620095658474"></p><h1 id="替换项目中的APPID、私钥和公钥"><a href="#替换项目中的APPID、私钥和公钥" class="headerlink" title="替换项目中的APPID、私钥和公钥"></a>替换项目中的APPID、私钥和公钥</h1><p>把项目中，<code>pays.py</code>和<code>pay_new.py</code>中的<code>私钥</code>和<code>公钥</code>还有<code>appid</code>修改成自己的</p><p><code>-----BEGIN PUBLIC KEY-----</code>和<code>-----END PUBLIC KEY-----</code>不要删，仅替换中间部分</p><p>pays.py</p><p><img src="https://tuchuang-1309886987.cos.ap-beijing.myqcloud.com/image-20220620095358129.png" alt="image-20220620095358129"></p><p>pay_new.py</p><p><img src="https://tuchuang-1309886987.cos.ap-beijing.myqcloud.com/image-20220620095530540.png" alt="image-20220620095530540"></p><h1 id="使用自己的沙箱账号支付"><a href="#使用自己的沙箱账号支付" class="headerlink" title="使用自己的沙箱账号支付"></a>使用自己的沙箱账号支付</h1><p>此时我们的支付页面就是我们自己的接口</p><p><img src="https://tuchuang-1309886987.cos.ap-beijing.myqcloud.com/image-20220620095829648.png" alt="image-20220620095829648"></p><p>支付时，不要使用扫码支付，使用账户支付，支付时使用的账号密码是在<code>沙箱账号</code></p><p><img src="https://tuchuang-1309886987.cos.ap-beijing.myqcloud.com/image-20220620095937162.png" alt="image-20220620095937162"></p>]]></content>
+      
+      
+      <categories>
+          
+          <category> Python </category>
+          
+          <category> Django </category>
+          
+      </categories>
+      
+      
+        <tags>
+            
+            <tag> Django </tag>
+            
+        </tags>
+      
+    </entry>
+    
+    
+    
+    <entry>
       <title>母婴商城项目运行指南(Django)</title>
       <link href="/post/c6749025.html"/>
       <url>/post/c6749025.html</url>
